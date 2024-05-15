@@ -25,9 +25,5 @@ func datebase_constructor(x):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	datebase_constructor(cards)
-	for x in cards:
-		print(x," : ", cards[x]) # Replace with function body.
-	var testid = 25
-	var testcard = cards.get(testid)
-	print(testcard)
+
 

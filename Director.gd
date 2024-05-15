@@ -2,56 +2,26 @@ extends Node2D
 
 const MAX_HANDSIZE = 8
  
-var drawpile = range(1)
+var drawpile = range(32)
 var discardpile = []
-var hand = []
-var testhand = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Discard_Deck.visible = false
 	$DrawDeck/Amount.text = str(drawpile.size())
-	print('\nDeck is: \n',drawpile)
 	drawpile.shuffle()
-	print('\nDrawpile (shuffled) is: \n',drawpile)
-	for card in hand:
-		print('\nHand: ', card.face, " rank: ",card.rank )
-	print('\nNew Drawpile: ', drawpile )
-	#labelupdate()
+	var cardlist = []
+	for each in drawpile:
+		var data = Database.cards.get(each)
+		cardlist.append(data.face + " of " + data.suit)
+	
+	for each in cardlist:
+		print(each)
+	print("^Drawpile in reverse order^")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-
-func drawto(amount):
-	var drawncards = []
-	for each in range(hand.size(),amount):
-		var card = Database.cards.get(drawpile.pop_front())
-		drawncards.append(card)
-	hand.append_array(drawncards)
-
-#func labelupdate():
-	#var labels = [$Hand1/Label, $Hand1/Label2, $Hand1/Label3, $Hand1/Label4, $Hand1/Label5, $Hand1/Label6, $Hand1/Label7, $Hand1/Label8]
-	#var lranks = [$Hand1/Label/Lrank, $Hand1/Label/Lrank2, $Hand1/Label/Lrank3, $Hand1/Label/Lrank4, $Hand1/Label/Lrank5, $Hand1/Label/Lrank6, $Hand1/Label/Lrank7, $Hand1/Label/Lrank8]
-	#var lpoints = [$Hand1/Label/Lpoints, $Hand1/Label/Lpoints2, $Hand1/Label/Lpoints3, $Hand1/Label/Lpoints4, $Hand1/Label/Lpoints5, $Hand1/Label/Lpoints6, $Hand1/Label/Lpoints7, $Hand1/Label/Lpoints8]
-	#var i = 0
-	#for label in labels:
-		#label.text = label.text.replace('.',hand[i].face)
-		#label.text = label.text.replace(',',hand[i].suit)
-		#i+=1
-	#i = 0
-	#for label in lranks:
-		#label.text = label.text.replace('0',str(hand[i].rank))
-		#i+=1
-	#i = 0
-	#for label in lpoints:
-		#label.text = label.text.replace('0',str((hand[i].value)))
-		#i+=1
-	#var total = 0
-	#for card in hand:
-		#total += card.value
-	#$Hand1/Total.text = $Hand1/Total.text.replace('0',str(total))
 
 func draw_card(to_hand):
 	var children = to_hand.get_child_count()
@@ -75,17 +45,14 @@ func _on_button_pressed():
 
 func reset_button_pressed():
 	if not $Player1/Hand.get_child_count():
-		print('empty hand')
+		print(" Can't.. empty hand, Dummy")
 		return
 	var node = $Player1/Hand
-	print('node: ', node)
 	for n in node.get_children():
 		var card = n.get('id')
 		discardpile.append(card)
-		print('removing: ',card)
 		node.remove_child(n)
 		n.queue_free()
-	print(discardpile)
 	$Discard_Deck/Amount.text = str(discardpile.size())
 	butt_check()
 	$Discard_Deck.visible = true
@@ -102,7 +69,6 @@ func draw_full_hand_pressed():
 		await get_tree().create_timer(time).timeout
 		sum += time
 		time = (time/3)+.07
-	print("Time taken: ",sum)
 	butt_check()
 	pass # Replace with function body.
 

@@ -34,7 +34,7 @@ offset_left = 987.0
 offset_top = 174.0
 offset_right = 1131.0
 offset_bottom = 243.0
-text = "Clear Hand"
+text = "Discard Hand"
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
 position = Vector2(1038, 539)
