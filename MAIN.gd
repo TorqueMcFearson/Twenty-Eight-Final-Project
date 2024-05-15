@@ -4,6 +4,7 @@ const MAX_HANDSIZE = 8
 const FACES = ["7", "8", "9", "10", "J", "Q", "K", "A"]
 const SUITS = ["♥", "♦", "♣", "♠"]
 var deck = []
+
 var drawpile = []
 var hand = []
 
@@ -18,6 +19,7 @@ func _ready():
 	drawto(MAX_HANDSIZE)
 	print('\nHand: ', hand )
 	print('\nNew Drawpile: ', drawpile )
+	labelupdate()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -35,4 +37,19 @@ func drawto(amount):
 	print('\nDrawn cards: ', drawncards )
 	hand.append_array(drawncards)
 	
-		
+func labelupdate():
+	var labels = [$Hand1/Label, $Hand1/Label2, $Hand1/Label3, $Hand1/Label4, $Hand1/Label5, $Hand1/Label6, $Hand1/Label7, $Hand1/Label8]
+	var i = 0
+	for label in labels:
+		var tempface = hand[i][0]
+		if tempface == '1':
+			tempface = '10'
+		var tempsuit = hand[i][-1]
+		label.text = label.text.replace('x',tempface)
+		label.text = label.text.replace('y',tempsuit)
+		i+=1
+
+
+
+
+

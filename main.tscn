@@ -1,6 +1,188 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=5 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://MAIN.gd" id="1_aoq84"]
+[ext_resource type="Script" path="res://Card1.gd" id="2_8sk0p"]
+
+[sub_resource type="Theme" id="Theme_675i3"]
+
+[sub_resource type="SystemFont" id="SystemFont_wuesb"]
 
 [node name="MAIN" type="Node2D"]
 script = ExtResource("1_aoq84")
+
+[node name="Hand1" type="Node2D" parent="."]
+
+[node name="Card1" type="Node2D" parent="Hand1"]
+script = ExtResource("2_8sk0p")
+
+[node name="Card2" type="Node2D" parent="Hand1"]
+
+[node name="Card3" type="Node2D" parent="Hand1"]
+
+[node name="Card4" type="Node2D" parent="Hand1"]
+
+[node name="Label" type="Label" parent="Hand1"]
+offset_left = 61.0
+offset_top = 339.0
+offset_right = 173.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label2" type="Label" parent="Hand1"]
+offset_left = 183.0
+offset_top = 339.0
+offset_right = 295.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label2"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label3" type="Label" parent="Hand1"]
+offset_left = 320.0
+offset_top = 339.0
+offset_right = 432.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label3"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label4" type="Label" parent="Hand1"]
+offset_left = 450.0
+offset_top = 339.0
+offset_right = 562.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label4"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label5" type="Label" parent="Hand1"]
+offset_left = 586.0
+offset_top = 339.0
+offset_right = 698.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label5"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label6" type="Label" parent="Hand1"]
+offset_left = 709.0
+offset_top = 339.0
+offset_right = 821.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label6"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label7" type="Label" parent="Hand1"]
+offset_left = 834.0
+offset_top = 339.0
+offset_right = 946.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label7"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Label8" type="Label" parent="Hand1"]
+offset_left = 963.0
+offset_top = 339.0
+offset_right = 1075.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " x
+   y
+        x"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label8"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+
+[node name="Hand2" type="Node2D" parent="."]
+
+[node name="Hand3" type="Node2D" parent="."]
+
+[node name="Hand4" type="Node2D" parent="."]
