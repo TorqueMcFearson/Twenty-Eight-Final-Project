@@ -11,7 +11,7 @@ func datebase_constructor(x):
 	for face in FACES:
 		rank += 1
 		for suit in SUITS:
-			# produces 
+			# Name, Face, Suit, Rank, value 
 			x[id] = {'name':face+suit, 'face':face, 'suit':suit,'rank':rank,'value':POINTS.get(face,0)}
 			id +=1
 
