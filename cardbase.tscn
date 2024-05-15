@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dja2dtkvdqnnh"]
+
+[ext_resource type="Script" path="res://Card.gd" id="1_r4njs"]
+[ext_resource type="Texture2D" uid="uid://cob4iqyfbsj7m" path="res://Assets/Cards/PNG/Cards/cardClubs2.png" id="2_bj37g"]
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_r4njs")
+face = "7"
+suit = "Diamonds"
+
+[node name="CardBack" type="Sprite2D" parent="."]
+texture = ExtResource("2_bj37g")
+centered = false

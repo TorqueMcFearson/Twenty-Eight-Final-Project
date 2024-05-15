@@ -1,0 +1,395 @@
+[gd_scene load_steps=6 format=3 uid="uid://bkoutyesd3bli"]
+
+[ext_resource type="Script" path="res://Director.gd" id="1_aoq84"]
+[ext_resource type="Script" path="res://Card1.gd" id="2_8sk0p"]
+
+[sub_resource type="Theme" id="Theme_675i3"]
+
+[sub_resource type="SystemFont" id="SystemFont_wuesb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1lup"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="MAIN" type="Node2D"]
+script = ExtResource("1_aoq84")
+
+[node name="Hand1" type="Node2D" parent="."]
+
+[node name="Card1" type="Node2D" parent="Hand1"]
+script = ExtResource("2_8sk0p")
+
+[node name="CardBack" type="Sprite2D" parent="Hand1/Card1"]
+position = Vector2(491, 181)
+
+[node name="Card2" type="Node2D" parent="Hand1"]
+
+[node name="Card3" type="Node2D" parent="Hand1"]
+
+[node name="Card4" type="Node2D" parent="Hand1"]
+
+[node name="Total" type="Label" parent="Hand1"]
+offset_left = 464.0
+offset_top = 564.0
+offset_right = 655.0
+offset_bottom = 606.0
+theme_override_colors/font_color = Color(0.94, 1, 0.955, 1)
+theme_override_font_sizes/font_size = 30
+text = "Point total: 0 "
+
+[node name="Label" type="Label" parent="Hand1"]
+offset_left = 61.0
+offset_top = 339.0
+offset_right = 173.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Lrank" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = -30.0
+offset_right = 90.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 153.0
+offset_right = 106.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank2" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = -30.0
+offset_right = 211.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints2" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 153.0
+offset_right = 227.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank3" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = -30.0
+offset_right = 338.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints3" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 153.0
+offset_right = 365.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank4" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 402.0
+offset_top = -30.0
+offset_right = 473.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints4" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 389.0
+offset_top = 153.0
+offset_right = 489.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank5" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 539.0
+offset_top = -30.0
+offset_right = 610.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints5" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 526.0
+offset_top = 153.0
+offset_right = 626.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank6" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 664.0
+offset_top = -30.0
+offset_right = 735.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints6" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 651.0
+offset_top = 153.0
+offset_right = 751.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank7" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 783.0
+offset_top = -30.0
+offset_right = 854.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints7" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 770.0
+offset_top = 153.0
+offset_right = 870.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Lrank8" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 919.0
+offset_top = -30.0
+offset_right = 990.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "Rank: 0"
+
+[node name="Lpoints8" type="Label" parent="Hand1/Label"]
+layout_mode = 0
+offset_left = 906.0
+offset_top = 153.0
+offset_right = 1006.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Hand1"]
+offset_left = 183.0
+offset_top = 339.0
+offset_right = 295.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label2"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label3" type="Label" parent="Hand1"]
+offset_left = 320.0
+offset_top = 339.0
+offset_right = 432.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label3"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label4" type="Label" parent="Hand1"]
+offset_left = 450.0
+offset_top = 339.0
+offset_right = 562.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label4"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label5" type="Label" parent="Hand1"]
+offset_left = 586.0
+offset_top = 339.0
+offset_right = 698.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label5"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label6" type="Label" parent="Hand1"]
+offset_left = 709.0
+offset_top = 339.0
+offset_right = 821.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label6"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label7" type="Label" parent="Hand1"]
+offset_left = 834.0
+offset_top = 339.0
+offset_right = 946.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label7"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Label8" type="Label" parent="Hand1"]
+offset_left = 963.0
+offset_top = 339.0
+offset_right = 1075.0
+offset_bottom = 489.0
+theme = SubResource("Theme_675i3")
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wuesb")
+theme_override_font_sizes/font_size = 34
+text = " .
+   ,
+        ."
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Hand1/Label8"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 106.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+
+[node name="Hand2" type="Node2D" parent="."]
+
+[node name="Hand3" type="Node2D" parent="."]
+
+[node name="Hand4" type="Node2D" parent="."]

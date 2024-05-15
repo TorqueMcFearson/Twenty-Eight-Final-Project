@@ -1,392 +1,86 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=4 format=3 uid="uid://bkoutyesd3bli"]
 
-[ext_resource type="Script" path="res://MAIN.gd" id="1_aoq84"]
-[ext_resource type="Script" path="res://Card1.gd" id="2_8sk0p"]
+[ext_resource type="Script" path="res://Director.gd" id="1_aoq84"]
+[ext_resource type="Script" path="res://CardConstructor.gd" id="2_0ku85"]
+[ext_resource type="Texture2D" uid="uid://c7c1yqixvchs6" path="res://Assets/Cards/PNG/Cards/cardBack_red2.png" id="3_smt1h"]
 
-[sub_resource type="Theme" id="Theme_675i3"]
-
-[sub_resource type="SystemFont" id="SystemFont_wuesb"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1lup"]
-bg_color = Color(1, 1, 1, 1)
-
-[node name="MAIN" type="Node2D"]
+[node name="Director" type="Node2D"]
 script = ExtResource("1_aoq84")
 
-[node name="Hand1" type="Node2D" parent="."]
+[node name="CardConstructor" type="Node" parent="."]
+script = ExtResource("2_0ku85")
 
-[node name="Card1" type="Node2D" parent="Hand1"]
-script = ExtResource("2_8sk0p")
+[node name="Player1" type="Node2D" parent="."]
 
-[node name="Card2" type="Node2D" parent="Hand1"]
+[node name="Hand" type="Node2D" parent="Player1"]
+position = Vector2(347, 543)
 
-[node name="Card3" type="Node2D" parent="Hand1"]
+[node name="Draw_Button" type="Button" parent="."]
+offset_left = 987.0
+offset_top = 17.0
+offset_right = 1131.0
+offset_bottom = 86.0
+text = "Draw Card"
 
-[node name="Card4" type="Node2D" parent="Hand1"]
+[node name="Draw_Full_Button" type="Button" parent="."]
+offset_left = 987.0
+offset_top = 98.0
+offset_right = 1131.0
+offset_bottom = 167.0
+text = "Draw Full Hand"
 
-[node name="Total" type="Label" parent="Hand1"]
-offset_left = 464.0
-offset_top = 564.0
-offset_right = 655.0
-offset_bottom = 606.0
-theme_override_colors/font_color = Color(0.94, 1, 0.955, 1)
-theme_override_font_sizes/font_size = 30
-text = "Point total: 0 "
+[node name="Reset_Button" type="Button" parent="."]
+offset_left = 987.0
+offset_top = 174.0
+offset_right = 1131.0
+offset_bottom = 243.0
+text = "Clear Hand"
 
-[node name="Label" type="Label" parent="Hand1"]
-offset_left = 61.0
-offset_top = 339.0
-offset_right = 173.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
+[node name="DrawDeck" type="Sprite2D" parent="."]
+position = Vector2(1038, 539)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_smt1h")
 
-[node name="Panel" type="Panel" parent="Hand1/Label"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
+[node name="Deck Label" type="Label" parent="DrawDeck"]
+offset_left = -73.3333
+offset_top = -132.0
+offset_right = 78.6667
+offset_bottom = -58.0
+scale = Vector2(1.12642, 1.12642)
+theme_override_font_sizes/font_size = 25
+text = "Draw Deck "
 
-[node name="Lrank" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 19.0
-offset_top = -30.0
-offset_right = 90.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 6.0
-offset_top = 153.0
-offset_right = 106.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
+[node name="Amount" type="Label" parent="DrawDeck"]
+offset_left = -54.6667
+offset_top = -37.3333
+offset_right = 61.3333
+offset_bottom = 36.6667
+theme_override_font_sizes/font_size = 50
+text = "32"
 horizontal_alignment = 1
 
-[node name="Lrank2" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 140.0
-offset_top = -30.0
-offset_right = 211.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
+[node name="Discard_Deck" type="Sprite2D" parent="."]
+position = Vector2(120, 539)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_smt1h")
 
-[node name="Lpoints2" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 127.0
-offset_top = 153.0
-offset_right = 227.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
+[node name="Deck Label" type="Label" parent="Discard_Deck"]
+offset_left = -77.3333
+offset_top = -129.333
+offset_right = 78.6667
+offset_bottom = -55.3333
+theme_override_font_sizes/font_size = 25
+text = "Discard Deck"
+
+[node name="Amount" type="Label" parent="Discard_Deck"]
+offset_left = -58.6667
+offset_top = -37.3333
+offset_right = 57.3333
+offset_bottom = 36.6667
+theme_override_font_sizes/font_size = 50
+text = "31"
 horizontal_alignment = 1
 
-[node name="Lrank3" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 267.0
-offset_top = -30.0
-offset_right = 338.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints3" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 265.0
-offset_top = 153.0
-offset_right = 365.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Lrank4" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 402.0
-offset_top = -30.0
-offset_right = 473.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints4" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 389.0
-offset_top = 153.0
-offset_right = 489.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Lrank5" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 539.0
-offset_top = -30.0
-offset_right = 610.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints5" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 526.0
-offset_top = 153.0
-offset_right = 626.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Lrank6" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 664.0
-offset_top = -30.0
-offset_right = 735.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints6" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 651.0
-offset_top = 153.0
-offset_right = 751.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Lrank7" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 783.0
-offset_top = -30.0
-offset_right = 854.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints7" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 770.0
-offset_top = 153.0
-offset_right = 870.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Lrank8" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 919.0
-offset_top = -30.0
-offset_right = 990.0
-offset_bottom = -2.0
-theme_override_colors/font_color = Color(1, 0.623, 0.42, 1)
-theme_override_font_sizes/font_size = 20
-text = "Rank: 0"
-
-[node name="Lpoints8" type="Label" parent="Hand1/Label"]
-layout_mode = 0
-offset_left = 906.0
-offset_top = 153.0
-offset_right = 1006.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.707677, 0.91, 0.4914, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Points: 0"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="Hand1"]
-offset_left = 183.0
-offset_top = 339.0
-offset_right = 295.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label2"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label3" type="Label" parent="Hand1"]
-offset_left = 320.0
-offset_top = 339.0
-offset_right = 432.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label3"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label4" type="Label" parent="Hand1"]
-offset_left = 450.0
-offset_top = 339.0
-offset_right = 562.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label4"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label5" type="Label" parent="Hand1"]
-offset_left = 586.0
-offset_top = 339.0
-offset_right = 698.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label5"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label6" type="Label" parent="Hand1"]
-offset_left = 709.0
-offset_top = 339.0
-offset_right = 821.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label6"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label7" type="Label" parent="Hand1"]
-offset_left = 834.0
-offset_top = 339.0
-offset_right = 946.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label7"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Label8" type="Label" parent="Hand1"]
-offset_left = 963.0
-offset_top = 339.0
-offset_right = 1075.0
-offset_bottom = 489.0
-theme = SubResource("Theme_675i3")
-theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_wuesb")
-theme_override_font_sizes/font_size = 34
-text = " .
-   ,
-        ."
-uppercase = true
-
-[node name="Panel" type="Panel" parent="Hand1/Label8"]
-show_behind_parent = true
-layout_mode = 0
-offset_right = 106.0
-offset_bottom = 148.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e1lup")
-
-[node name="Hand2" type="Node2D" parent="."]
-
-[node name="Hand3" type="Node2D" parent="."]
-
-[node name="Hand4" type="Node2D" parent="."]
+[connection signal="pressed" from="Draw_Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Draw_Full_Button" to="." method="draw_full_hand_pressed"]
+[connection signal="pressed" from="Reset_Button" to="." method="reset_button_pressed"]
