@@ -13,32 +13,79 @@ script = ExtResource("2_0ku85")
 [node name="Player1" type="Node2D" parent="."]
 
 [node name="Hand" type="Node2D" parent="Player1"]
-position = Vector2(347, 543)
+position = Vector2(375, 543)
 
-[node name="Draw_Button" type="Button" parent="."]
-offset_left = 987.0
-offset_top = 17.0
-offset_right = 1131.0
-offset_bottom = 86.0
-text = "Draw Card"
+[node name="Player2" type="Node2D" parent="."]
 
-[node name="Draw_Full_Button" type="Button" parent="."]
-offset_left = 987.0
-offset_top = 98.0
-offset_right = 1131.0
-offset_bottom = 167.0
-text = "Draw Full Hand"
+[node name="Hand" type="Node2D" parent="Player2"]
+position = Vector2(76, 163)
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+
+[node name="Player3" type="Node2D" parent="."]
+
+[node name="Hand" type="Node2D" parent="Player3"]
+position = Vector2(728, 81)
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+
+[node name="Player4" type="Node2D" parent="."]
+
+[node name="Hand" type="Node2D" parent="Player4"]
+position = Vector2(1073, 419)
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+
+[node name="Deal_ALL" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 276.0
+offset_top = 169.0
+offset_right = 420.0
+offset_bottom = 238.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Deal All
+4 cards"
+
+[node name="flip_cards" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 433.0
+offset_top = 169.0
+offset_right = 577.0
+offset_bottom = 238.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Hand 1 flip cards"
 
 [node name="Reset_Button" type="Button" parent="."]
-offset_left = 987.0
-offset_top = 174.0
-offset_right = 1131.0
-offset_bottom = 243.0
-text = "Discard Hand"
+offset_left = 595.0
+offset_top = 169.0
+offset_right = 739.0
+offset_bottom = 238.0
+text = "Discard Hands"
+
+[node name="Shuffle" type="Button" parent="."]
+offset_left = 760.0
+offset_top = 169.0
+offset_right = 904.0
+offset_bottom = 238.0
+text = "Shuffle"
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
-position = Vector2(1038, 539)
-scale = Vector2(0.75, 0.75)
+position = Vector2(1084, 567)
+scale = Vector2(0.63, 0.63)
 texture = ExtResource("3_smt1h")
 
 [node name="Deck Label" type="Label" parent="DrawDeck"]
@@ -49,6 +96,7 @@ offset_bottom = -58.0
 scale = Vector2(1.12642, 1.12642)
 theme_override_font_sizes/font_size = 25
 text = "Draw Deck "
+metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="DrawDeck"]
 offset_left = -54.6667
@@ -58,10 +106,11 @@ offset_bottom = 36.6667
 theme_override_font_sizes/font_size = 50
 text = "32"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Discard_Deck" type="Sprite2D" parent="."]
-position = Vector2(120, 539)
-scale = Vector2(0.75, 0.75)
+position = Vector2(62, 567)
+scale = Vector2(0.63, 0.63)
 texture = ExtResource("3_smt1h")
 
 [node name="Deck Label" type="Label" parent="Discard_Deck"]
@@ -71,6 +120,7 @@ offset_right = 78.6667
 offset_bottom = -55.3333
 theme_override_font_sizes/font_size = 25
 text = "Discard Deck"
+metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="Discard_Deck"]
 offset_left = -58.6667
@@ -80,7 +130,9 @@ offset_bottom = 36.6667
 theme_override_font_sizes/font_size = 50
 text = "31"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="Draw_Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Draw_Full_Button" to="." method="draw_full_hand_pressed"]
+[connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
+[connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
 [connection signal="pressed" from="Reset_Button" to="." method="reset_button_pressed"]
+[connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]

@@ -4,8 +4,10 @@ const MAX_HANDSIZE = 8
  
 var drawpile = range(32)
 var discardpile = []
-
+@onready var dealerpool = [$Player1,$Player2,$Player3,$Player4]
+@onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
 # Called when the node enters the scene tree for the first time.
+
 func _ready():
 	$Discard_Deck.visible = false
 	$DrawDeck/Amount.text = str(drawpile.size())
@@ -23,12 +25,15 @@ func _ready():
 func _process(delta):
 	pass
 
+# variable = value1 if condition else: value2
 func draw_card(to_hand):
-	var children = to_hand.get_child_count()
-	var new_card = $CardConstructor.newcard(drawpile.pop_back())
-	if not new_card:
+	if not drawpile.size():
+		print('Draw pile empty, dumbass')
 		return 0
-	var x_offset = to_hand.get_child_count()
+	var face_show = true if to_hand == $Player1/Hand else false
+	var children = to_hand.get_child_count()
+	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
+	var x_offset = children
 	new_card.position.x += x_offset*40
 	to_hand.add_child(new_card)
 	$DrawDeck/Amount.text = str(drawpile.size())
@@ -37,40 +42,39 @@ func draw_card(to_hand):
 		$DrawDeck.visible = false
 	return 1
 
-func _on_button_pressed():
-	butt_off()
-	draw_card($Player1/Hand)
-	butt_check()
-	pass # Replace with function body.
-
 func reset_button_pressed():
-	if not $Player1/Hand.get_child_count():
-		print(" Can't.. empty hand, Dummy")
+	var hands = $Player1/Hand.get_children()
+	if not hands:
+		print("Hands are empty, dummy!")
 		return
-	var node = $Player1/Hand
-	for n in node.get_children():
-		var card = n.get('id')
-		discardpile.append(card)
-		node.remove_child(n)
-		n.queue_free()
+	for hand in handpool:
+		for n in hand.get_children():
+			var card = n.get('id')
+			discardpile.append(card)
+			hand.remove_child(n)
+			n.queue_free()
 	$Discard_Deck/Amount.text = str(discardpile.size())
 	butt_check()
 	$Discard_Deck.visible = true
 
 	pass # Replace with function body.
 
-func draw_full_hand_pressed():
+func _on_deal_all_pressed():
 	butt_off()
-	var time= 0.28
-	var sum = 0.0
-	for n in range($Player1/Hand.get_child_count(),MAX_HANDSIZE):
-		if not draw_card($Player1/Hand):
-			break
-		await get_tree().create_timer(time).timeout
-		sum += time
-		time = (time/3)+.07
+	var time=0.45
+	for n in MAX_HANDSIZE/2:
+		for hand in handpool:
+			if not draw_card(hand):
+				butt_check()
+				return
+			await get_tree().create_timer(time).timeout
+			time = (time/2)+.03
 	butt_check()
-	pass # Replace with function body.
+
+func _on_flip_cards_pressed():
+	var cards = $Player1/Hand.get_children()
+	for card in cards:
+		card.face_toggle()
 
 func butt_check():
 	if not drawpile.size():
@@ -81,15 +85,35 @@ func butt_check():
 		butt_on()
 
 func butt_on():
-	$Draw_Button.disabled = false
-	$Draw_Full_Button.disabled = false
 	$Reset_Button.disabled = false
+	$Deal_ALL.disabled = false
 func butt_off():
-	$Draw_Button.disabled = true
-	$Draw_Full_Button.disabled = true
 	$Reset_Button.disabled = true
+	$Deal_ALL.disabled = true
 func reset_on():
 	$Reset_Button.disabled = false
 func reset_off():
 	$Reset_Button.disabled = true
+
+
+func _on_shuffle_pressed():
+	reset_button_pressed()
+	drawpile.append_array(discardpile)
+	discardpile = []
+	drawpile.shuffle()
+	deck_refresh()
+	pass # Replace with function body.
+	
+func deck_refresh():
+	butt_on()
+	var drawpile_size = drawpile.size()
+	var discardpile_size = discardpile.size()
+	$Discard_Deck/Amount.text = str(discardpile_size)
+	$DrawDeck/Amount.text = str(drawpile_size)
+	$DrawDeck.visible = drawpile_size
+	$Discard_Deck.visible = discardpile_size
+	print('drawpile =', drawpile)
+	print('discardpile =', discardpile)
+	print("deck refreshed")
+	butt_check()
 	

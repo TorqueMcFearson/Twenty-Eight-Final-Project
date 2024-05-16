@@ -11,3 +11,24 @@ suit = "Diamonds"
 [node name="CardBack" type="Sprite2D" parent="."]
 texture = ExtResource("2_bj37g")
 centered = false
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+offset_left = 1.0
+offset_right = 41.0
+offset_bottom = 40.0
+scale = Vector2(3.48, 4.76)
+border_color = Color(2.33434e-06, 0.65124, 0.144172, 0.721569)
+border_width = 1.2
+
+[node name="Label" type="Label" parent="."]
+offset_left = 21.0
+offset_top = -34.0
+offset_right = 164.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "2 Points"
+
+[connection signal="gui_input" from="ReferenceRect" to="." method="_on_reference_rect_gui_input"]
+[connection signal="mouse_entered" from="ReferenceRect" to="." method="_on_reference_rect_mouse_entered"]
+[connection signal="mouse_exited" from="ReferenceRect" to="." method="_on_reference_rect_mouse_exited"]
