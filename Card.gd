@@ -1,6 +1,6 @@
 extends Node2D
 
-# id, face, suit, rank, value 
+# id, face, suit, rank, value
 var id = 0
 @export_enum("7", "8", "9", "10", "J", "Q", "K", "A")var face : String
 @export_enum("Diamonds", "Spades", "Hearts", "Clubs") var suit : String
@@ -17,7 +17,12 @@ func _ready():
 	else:
 		face_down()
 	$Label.visible = false
-	$Label.text = str(value) + " Points"
+	$Label.text = str((value if value else "No")) + " Point" + ("" if value == 1 else "s")
+	if value == 0:
+		$Label.modulate = Color(0.513, 0.513, 0.513, 0.99)
+	else:
+		var hue_adjust = (3-value) * -0.15
+		$Label.modulate = Color.from_hsv(0.300+hue_adjust,.9,1)
 	pass
 
 

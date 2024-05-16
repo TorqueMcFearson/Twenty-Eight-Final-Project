@@ -6,7 +6,7 @@ func _ready():
 	
 	pass # Replace with function body.
 
-
+# id, face, suit, rank, value
 func newcard(id,face_show):
 	if id == null:
 		print("NULL encountered on newcard() in Card Constructor")
