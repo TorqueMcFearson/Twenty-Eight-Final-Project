@@ -9,6 +9,7 @@ var id = 0
 @export var face_show : bool
 var inplay = false
 var card_back_img = load("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
+var slot = Vector2(0,0)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +31,21 @@ func _ready():
 func _process(delta):
 	#if lifted:
 		#global_position = get_global_mouse_position() - offset
+	pass
+	
+func grow_and_go(to_hand):
+	scale = Vector2(0,0)
+	var tween = create_tween()
+	tween.tween_property(self,'scale',Vector2(1,1),.25)
+	var tween2 = create_tween()
+	tween2.tween_property(self,'position',slot,.25)
+
+func go():
+	var tween = create_tween()
+	tween.tween_property(self,'scale',Vector2(1,1),.25)
+	var tween2 = create_tween()
+	tween2.tween_property(self,'global_position',slot,.25)
+
 	pass
 	
 func face_toggle():
@@ -83,5 +99,9 @@ func _on_reference_rect_mouse_exited():
 
 func _on_reference_rect_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
-		get_node('/root/Director').playcard(self)
+		if inplay == false:
+			get_node('/root/Director').playcard(self)
+		else:
+			get_node('/root/Director').take_card(self)
+		
 	pass # Replace with function body.

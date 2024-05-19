@@ -82,78 +82,21 @@ scale = Vector2(1.14642, 1.17701)
 texture = ExtResource("9_rqqrw")
 offset = Vector2(636.687, 508.163)
 
-[node name="Player1" type="Node2D" parent="."]
-
-[node name="Hand" type="Node2D" parent="Player1"]
-position = Vector2(375, 543)
-
-[node name="Playslot" type="Panel" parent="Player1"]
-offset_left = 524.0
-offset_top = 368.0
-offset_right = 664.0
-offset_bottom = 559.0
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
-
-[node name="Player2" type="Node2D" parent="."]
-
-[node name="Hand" type="Node2D" parent="Player2"]
-position = Vector2(76, 163)
-rotation = 1.5708
-scale = Vector2(0.75, 0.75)
-
-[node name="Playslot" type="Panel" parent="Player2"]
-offset_left = 516.0
-offset_top = 256.0
-offset_right = 656.0
-offset_bottom = 447.0
-rotation = 1.5708
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
-
-[node name="Card" parent="Player2/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
-face_show = true
-
-[node name="Player3" type="Node2D" parent="."]
-
-[node name="Hand" type="Node2D" parent="Player3"]
-position = Vector2(728, 81)
-rotation = 3.14159
-scale = Vector2(0.75, 0.75)
-
-[node name="Playslot" type="Panel" parent="Player3"]
-offset_left = 628.0
-offset_top = 248.0
-offset_right = 768.0
-offset_bottom = 439.0
-rotation = 3.14159
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
-
-[node name="Card" parent="Player3/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
-face_show = true
-
-[node name="Player4" type="Node2D" parent="."]
-
-[node name="Hand" type="Node2D" parent="Player4"]
-position = Vector2(1073, 419)
-rotation = -1.5708
-scale = Vector2(0.75, 0.75)
-
-[node name="Playslot" type="Panel" parent="Player4"]
-offset_left = 636.0
-offset_top = 360.0
-offset_right = 776.0
-offset_bottom = 551.0
-rotation = -1.5708
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
-
-[node name="Card" parent="Player4/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
-face_show = true
+[node name="Deal_One_Card" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 502.0
+offset_top = 273.0
+offset_right = 646.0
+offset_bottom = 342.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Deal 1 card"
 
 [node name="Deal_ALL" type="Button" parent="."]
 anchors_preset = 8
@@ -203,25 +146,26 @@ offset_bottom = 244.0
 text = "Shuffle"
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
-position = Vector2(1067, 558)
+position = Vector2(1011, 490)
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("8_aq1nh")
+centered = false
 
 [node name="Deck Label" type="Label" parent="DrawDeck"]
-offset_left = -28.5715
-offset_top = 49.2064
-offset_right = 123.429
-offset_bottom = 123.206
+offset_left = 54.3492
+offset_top = 159.302
+offset_right = 206.35
+offset_bottom = 233.301
 scale = Vector2(0.690244, 0.690244)
 theme_override_font_sizes/font_size = 25
 text = "Draw Deck "
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="DrawDeck"]
-offset_left = -40.0636
-offset_top = -54.5396
-offset_right = 75.9364
-offset_bottom = 19.4604
+offset_left = 42.8571
+offset_top = 55.5556
+offset_right = 158.857
+offset_bottom = 129.556
 theme_override_font_sizes/font_size = 50
 text = "32"
 horizontal_alignment = 1
@@ -229,29 +173,103 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Discard_Deck" type="Sprite2D" parent="."]
 texture_repeat = 1
-position = Vector2(70, 559)
+position = Vector2(14, 490)
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("8_aq1nh")
+centered = false
 
 [node name="Deck Label" type="Label" parent="Discard_Deck"]
-offset_left = -36.5079
-offset_top = 46.0318
-offset_right = 119.492
-offset_bottom = 120.031
+offset_left = 44.4444
+offset_top = 158.73
+offset_right = 200.444
+offset_bottom = 232.729
 scale = Vector2(0.690244, 0.690244)
 theme_override_font_sizes/font_size = 25
 text = "Discard Deck"
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="Discard_Deck"]
-offset_left = -39.6825
-offset_top = -50.7937
-offset_right = 76.3175
-offset_bottom = 23.2063
+offset_left = 41.2698
+offset_top = 61.9047
+offset_right = 157.27
+offset_bottom = 135.905
 theme_override_font_sizes/font_size = 50
 text = "31"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Player1" type="Node2D" parent="."]
+
+[node name="Playslot" type="Panel" parent="Player1"]
+offset_left = 524.0
+offset_top = 368.0
+offset_right = 664.0
+offset_bottom = 559.0
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Hand" type="Node2D" parent="Player1"]
+position = Vector2(375, 543)
+
+[node name="Player2" type="Node2D" parent="."]
+
+[node name="Playslot" type="Panel" parent="Player2"]
+offset_left = 516.0
+offset_top = 256.0
+offset_right = 656.0
+offset_bottom = 447.0
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player2/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
+
+[node name="Hand" type="Node2D" parent="Player2"]
+position = Vector2(76, 163)
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+
+[node name="Player3" type="Node2D" parent="."]
+
+[node name="Playslot" type="Panel" parent="Player3"]
+offset_left = 628.0
+offset_top = 248.0
+offset_right = 768.0
+offset_bottom = 439.0
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player3/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
+
+[node name="Hand" type="Node2D" parent="Player3"]
+position = Vector2(728, 81)
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+
+[node name="Player4" type="Node2D" parent="."]
+
+[node name="Playslot" type="Panel" parent="Player4"]
+offset_left = 636.0
+offset_top = 360.0
+offset_right = 776.0
+offset_bottom = 551.0
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player4/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
+
+[node name="Hand" type="Node2D" parent="Player4"]
+position = Vector2(1073, 419)
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
 
 [node name="HSlider" type="HSlider" parent="."]
 offset_left = 32.0
@@ -270,10 +288,10 @@ offset_bottom = 40.0
 
 [node name="Trump Card" type="Panel" parent="UI"]
 layout_mode = 0
-offset_left = 976.0
-offset_top = 43.0
-offset_right = 1140.0
-offset_bottom = 256.0
+offset_left = 826.0
+offset_top = 78.0
+offset_right = 990.0
+offset_bottom = 291.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
@@ -292,6 +310,7 @@ scale = Vector2(0.740824, 0.740824)
 theme = ExtResource("12_l36oq")
 text = "Trump Card"
 
+[connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
 [connection signal="pressed" from="Reset_Button" to="." method="reset_button_pressed"]
