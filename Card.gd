@@ -8,6 +8,7 @@ var id = 0
 @export var value : int
 @export var face_show : bool
 var inplay = false
+var tweening = false
 var card_back_img = load("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 var slot = Vector2(0,0)
 
@@ -34,19 +35,28 @@ func _process(delta):
 	pass
 	
 func grow_and_go(to_hand):
+	tweening = true
 	scale = Vector2(0,0)
 	var tween = create_tween()
+	tween.finished.connect(_tween_end)
 	tween.tween_property(self,'scale',Vector2(1,1),.25)
 	var tween2 = create_tween()
 	tween2.tween_property(self,'position',slot,.25)
 
 func go():
+	tweening = true
 	var tween = create_tween()
+	tween.finished.connect(_tween_end)
 	tween.tween_property(self,'scale',Vector2(1,1),.25)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'global_position',slot,.25)
+	tween2.tween_property(self,'position',slot,.25)
 
-	pass
+
+	
+	
+func _tween_end():
+	tweening = false
+	print(self, 'tween done')
 	
 func face_toggle():
 	if get_child(0).texture == card_back_img:
@@ -66,15 +76,15 @@ func face_up():
 	pass
 
 func _on_reference_rect_mouse_entered():
-	if not inplay:
+	if not inplay and not tweening:
 		if face_show :
 			$Label.visible = true
-		position.y -= 15
+		position.y = -15
 func _on_reference_rect_mouse_exited():
-	if not inplay:
+	if not inplay and not tweening:
 		if face_show:
 			$Label.visible = false 
-		position.y += 15
+		position.y = 0
 	
 
 #var lifted = false
@@ -98,7 +108,7 @@ func _on_reference_rect_mouse_exited():
 
 
 func _on_reference_rect_gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and not tweening:
 		if inplay == false:
 			get_node('/root/Director').playcard(self)
 		else:

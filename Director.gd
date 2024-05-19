@@ -6,25 +6,28 @@ var drawpile = range(32)
 var discardpile = []
 @onready var dealerpool = [$Player1,$Player2,$Player3,$Player4]
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
-var fade_goal = Color(0,0,0,0)
+var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
-# Called when the node enters the scene tree for the first time.
 
-func _ready():
-	$"Black Fade".visible == true
-	$Discard_Deck.visible = false
-	$DrawDeck/Amount.text = str(drawpile.size())
-	$Shuffle.disabled = true
-	$Reset_Button.disabled = true
-	drawpile.shuffle()
-	var cardlist = []
-	for each in drawpile:
+# Called when the node enters the scene tree for the first time.
+func _ready(): 
+	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
+	$"Black Fade".visible = true # Rectangle $"Black Fade" covers the screen, it's used to fade in and out.
+	$Discard_Deck.visible = false # Hides Discard deck until cards are in it.
+	$DrawDeck/Amount.text = str(drawpile.size()) #Changes Deck Label to display amount in it.
+	$Shuffle.disabled = true # Shuffle starts disabled because drawpile full
+	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
+	
+	# NOTE:Database.gd is AutoLoaded into game, so it's in every scene.
+	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
+	var cardlist = [] ## Debug tool: Just prints to console the draw cirds in order
+	for each in drawpile: 
 		var data = Database.cards.get(each)
 		cardlist.append(data.face + " of " + data.suit)
 	for each in cardlist:
 		print(each)
 	print("^Drawpile in reverse order^")
-	await get_tree().create_timer(2).timeout
+
 	print('done')
 	
 	
@@ -72,7 +75,6 @@ func reset_button_pressed():
 	$Discard_Deck/Amount.text = str(discardpile.size())
 	butt_check()
 	$Discard_Deck.visible = true
-
 	pass # Replace with function body.
 
 ### Trigger for $Deal_ALL button#
@@ -111,19 +113,19 @@ func butt_check():
 
 func butt_on():
 	$Shuffle.disabled = false
-	$Reset_Button.disabled = false
+	$Discard_Button.disabled = false
 	$Deal_ALL.disabled = false
 	$Deal_One_Card.disabled = false
 func butt_off():
 	$Shuffle.disabled = true
-	$Reset_Button.disabled = true
+	$Discard_Button.disabled = true
 	$Deal_ALL.disabled = true
 	$Deal_One_Card.disabled = true
 func reset_on():
-	$Reset_Button.disabled = false
+	$Discard_Button.disabled = false
 	$Shuffle.disabled = false
 func reset_off():
-	$Reset_Button.disabled = true
+	$Discard_Button.disabled = true
 	$Shuffle.disabled = true
 
 
@@ -135,7 +137,7 @@ func _on_shuffle_pressed():
 	drawpile.shuffle()
 	deck_refresh()
 	$Shuffle.disabled = true
-	$Reset_Button.disabled = true
+	$Discard_Button.disabled = true
 	pass # Replace with function body.
 	
 func deck_refresh():
@@ -156,9 +158,9 @@ func deck_refresh():
 func _on_h_slider_value_changed(value):
 	if value < -30:
 		Music.volume_db = value * 2
+
 	else:
 		Music.volume_db = value
-	
 	pass # Replace with function body.
 	
 func fade_in(delta):
@@ -166,6 +168,7 @@ func fade_in(delta):
 	var fade_mod = $"Black Fade".get_modulate()
 	$"Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
 	fade_rate+=0.03
+	print($"Black Fade".get_modulate())
 	if fade_mod.a <0.1:
 		print("DONE")
 		set_process(false)
@@ -183,14 +186,20 @@ func fade_out(delta):
 ## Cards that are clicked call this function passing 'self' in args
 func playcard(card):
 	if true:
+		var hand = card.get_parent()
 		var playslot = card.get_node("../../Playslot")
 		print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
-		card.slot = playslot.global_position
+		card.slot = Vector2 (0,0)
 		card.reparent(playslot)
 		card.go()
 		card.inplay = true
 		card.get_child(3).visible = false
 		$Card_Fwip.play()
+		var slot = Vector2(0,0)
+		for each in hand.get_children():
+			each.slot = slot
+			each.go()
+			slot += Vector2(40,0)
 	else:
 		print('not yours')
 
@@ -206,6 +215,7 @@ func _on_deal_one_card_pressed():
 ## TODO : Set everything to position not global_position
 ## NOTE: Why? Global_positioning doesn't take into account the hands rotation.
 ##
+
 func take_card(card):
 	var to_hand = card.get_node("../../Hand")
 	var children = to_hand.get_child_count()
@@ -216,9 +226,17 @@ func take_card(card):
 	print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
 	card.reparent(to_hand,true)
 	print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
-	card.slot = to_hand.global_position + Vector2(children*40,0)
+	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot
 	card.go()
 	$Card_Fwip.play(.11)
 	card.inplay = false
 	return 1
+
+
+func _on_mute_toggled(toggled_on):
+	if toggled_on:
+		Music.stream_paused = true
+	else:
+		Music.stream_paused = false
+	pass # Replace with function body.

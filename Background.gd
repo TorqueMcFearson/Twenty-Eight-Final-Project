@@ -10,7 +10,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	modulate = Color.from_hsv(hue_value, 0.18, light_value, 0.605)
+	modulate = Color.from_hsv(hue_value, 0.18, light_value, 0.705)
 	if hue_value >= 1:
 		hue_value = .01
 	else:

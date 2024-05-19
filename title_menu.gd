@@ -3,6 +3,7 @@ extends Node2D
 var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
 var game_start = false
+var main = preload("res://main.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,7 +17,7 @@ func _process(delta):
 	
 	var fade_mod = $"Control/Black Fade".get_modulate()
 	$"Control/Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
-	fade_rate+=0.02
+	fade_rate+=0.04
 	if fade_mod.a <.1:
 		print("DONE")
 		set_process(false)
@@ -24,7 +25,7 @@ func _process(delta):
 		set_process(false)
 		if game_start == true:
 			$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
-			get_tree().change_scene_to_file("res://main.tscn")
+			get_tree().change_scene_to_packed(main)
 		else:
 			print('QUITTED')
 			get_tree().quit()
