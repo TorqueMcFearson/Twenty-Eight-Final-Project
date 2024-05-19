@@ -18,9 +18,10 @@ offset_right = 41.0
 offset_bottom = 40.0
 scale = Vector2(3.48, 4.76)
 border_color = Color(2.33434e-06, 0.65124, 0.144172, 0.721569)
-border_width = 1.2
+border_width = 0.0
 
 [node name="Label" type="Label" parent="."]
+visible = false
 modulate = Color(0.085, 0.5, 0.201, 1)
 offset_left = 21.0
 offset_top = -34.0
@@ -28,6 +29,13 @@ offset_right = 164.0
 offset_bottom = 21.0
 theme_override_font_sizes/font_size = 20
 text = "2 Points"
+
+[node name="shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.113725)
+show_behind_parent = true
+scale = Vector2(1.00196, 1)
+texture = ExtResource("2_bj37g")
+centered = false
 
 [connection signal="gui_input" from="ReferenceRect" to="." method="_on_reference_rect_gui_input"]
 [connection signal="mouse_entered" from="ReferenceRect" to="." method="_on_reference_rect_mouse_entered"]

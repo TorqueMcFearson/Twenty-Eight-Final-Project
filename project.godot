@@ -11,13 +11,18 @@ config_version=5
 [application]
 
 config/name="Twenty-Eight"
-run/main_scene="res://main.tscn"
+run/main_scene="res://title_menu.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Database="*res://Database.gd"
+Music="*res://music.tscn"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [editor]
 

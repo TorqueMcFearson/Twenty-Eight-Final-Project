@@ -1,0 +1,42 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dlipcofxf27vx"]
+
+[ext_resource type="FontFile" uid="uid://b2lncg1cpel7s" path="res://Assets/Jaro-Regular-VariableFont_opsz.ttf" id="1_argma"]
+[ext_resource type="FontVariation" uid="uid://c8rq88qct3is7" path="res://Assets/Font Edit.tres" id="1_jtt76"]
+[ext_resource type="StyleBox" uid="uid://drsf617xtxbf4" path="res://Assets/button_box.tres" id="2_ymm3h"]
+[ext_resource type="StyleBox" uid="uid://bept7wefxd7qq" path="res://Assets/Title_box.tres" id="4_1q73j"]
+
+[resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.79, 0.785128, 0.4977, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0.505337, 0.79, 0.4266, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 0, 0, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 10
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("1_jtt76")
+Button/styles/disabled = ExtResource("2_ymm3h")
+Button/styles/focus = ExtResource("2_ymm3h")
+Button/styles/hover = ExtResource("2_ymm3h")
+Button/styles/normal = ExtResource("2_ymm3h")
+Button/styles/pressed = ExtResource("2_ymm3h")
+Label/colors/font_color = Color(0.93, 0.93, 0.93, 1)
+Label/colors/font_hover_color = Color(0, 0, 0, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 0.74902)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.886275)
+Label/constants/outline_size = 8
+Label/constants/shadow_offset_x = 3
+Label/constants/shadow_offset_y = 5
+Label/constants/shadow_outline_size = 12
+Label/font_sizes/font_size = 20
+Label/fonts/font = ExtResource("1_argma")
+Label/styles/normal = ExtResource("4_1q73j")

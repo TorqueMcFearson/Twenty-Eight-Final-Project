@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://boy4ayo7ueya0"]
+
+[sub_resource type="SystemFont" id="SystemFont_8omwh"]
+font_names = PackedStringArray("Play", "Malgun Gothic")
+
+[resource]
+Label/colors/font_color = Color(1, 0.917647, 1, 1)
+Label/colors/font_outline_color = Color(0.94, 0.8178, 0.94, 1)
+Label/font_sizes/font_size = 100
+Label/fonts/font = SubResource("SystemFont_8omwh")

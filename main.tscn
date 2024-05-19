@@ -1,19 +1,99 @@
-[gd_scene load_steps=4 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=14 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Director.gd" id="1_aoq84"]
 [ext_resource type="Script" path="res://CardConstructor.gd" id="2_0ku85"]
-[ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="3_r18is"]
+[ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/casino-background-green-texture-SBI-300447118 (1).jpg" id="2_x4buj"]
+[ext_resource type="AudioStream" uid="uid://bmp5ojusf5648" path="res://Assets/Cards/Sounds/Card-Shuffle.wav" id="3_t5s6t"]
+[ext_resource type="Script" path="res://Background.gd" id="3_tofsu"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_cco4v"]
+[ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
+[ext_resource type="PackedScene" uid="uid://dja2dtkvdqnnh" path="res://cardbase.tscn" id="10_c5jdw"]
+[ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/spade_trump.png" id="11_1u346"]
+[ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Working_Theme.tres" id="12_l36oq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
+bg_color = Color(0, 0, 0, 0.0431373)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 0.0823529)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="Director" type="Node2D"]
 script = ExtResource("1_aoq84")
 
+[node name="Black Fade" type="ColorRect" parent="."]
+visible = false
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -87.0
+offset_top = -59.0
+offset_right = 67.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [node name="CardConstructor" type="Node" parent="."]
 script = ExtResource("2_0ku85")
+
+[node name="Card_Fwip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7opyx")
+volume_db = -11.085
+pitch_scale = 0.69
+max_polyphony = 6
+
+[node name="Card_Shuffle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_t5s6t")
+volume_db = -11.085
+max_polyphony = 6
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+modulate = Color(0.74, 0.74, 0.74, 1)
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("2_x4buj")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("5_cco4v")
+centered = false
+script = ExtResource("3_tofsu")
+metadata/_edit_lock_ = true
+
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("9_rqqrw")
+offset = Vector2(636.687, 508.163)
 
 [node name="Player1" type="Node2D" parent="."]
 
 [node name="Hand" type="Node2D" parent="Player1"]
 position = Vector2(375, 543)
+
+[node name="Playslot" type="Panel" parent="Player1"]
+offset_left = 524.0
+offset_top = 368.0
+offset_right = 664.0
+offset_bottom = 559.0
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
 [node name="Player2" type="Node2D" parent="."]
 
@@ -22,12 +102,38 @@ position = Vector2(76, 163)
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 
+[node name="Playslot" type="Panel" parent="Player2"]
+offset_left = 516.0
+offset_top = 256.0
+offset_right = 656.0
+offset_bottom = 447.0
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player2/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
+
 [node name="Player3" type="Node2D" parent="."]
 
 [node name="Hand" type="Node2D" parent="Player3"]
 position = Vector2(728, 81)
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
+
+[node name="Playslot" type="Panel" parent="Player3"]
+offset_left = 628.0
+offset_top = 248.0
+offset_right = 768.0
+offset_bottom = 439.0
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player3/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
 
 [node name="Player4" type="Node2D" parent="."]
 
@@ -36,16 +142,29 @@ position = Vector2(1073, 419)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
+[node name="Playslot" type="Panel" parent="Player4"]
+offset_left = 636.0
+offset_top = 360.0
+offset_right = 776.0
+offset_bottom = 551.0
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="Card" parent="Player4/Playslot" instance=ExtResource("10_c5jdw")]
+visible = false
+face_show = true
+
 [node name="Deal_ALL" type="Button" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 276.0
-offset_top = 169.0
-offset_right = 420.0
-offset_bottom = 238.0
+offset_left = 368.0
+offset_top = 175.0
+offset_right = 512.0
+offset_bottom = 244.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
@@ -59,10 +178,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 433.0
-offset_top = 169.0
-offset_right = 577.0
-offset_bottom = 238.0
+offset_left = 368.0
+offset_top = 372.0
+offset_right = 512.0
+offset_bottom = 441.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
@@ -70,69 +189,111 @@ size_flags_vertical = 4
 text = "Hand 1 flip cards"
 
 [node name="Reset_Button" type="Button" parent="."]
-offset_left = 595.0
-offset_top = 169.0
-offset_right = 739.0
-offset_bottom = 238.0
+offset_left = 640.0
+offset_top = 372.0
+offset_right = 784.0
+offset_bottom = 441.0
 text = "Discard Hands"
 
 [node name="Shuffle" type="Button" parent="."]
-offset_left = 760.0
-offset_top = 169.0
-offset_right = 904.0
-offset_bottom = 238.0
+offset_left = 640.0
+offset_top = 175.0
+offset_right = 784.0
+offset_bottom = 244.0
 text = "Shuffle"
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
-position = Vector2(1084, 567)
+position = Vector2(1067, 558)
 scale = Vector2(0.63, 0.63)
-texture = ExtResource("3_r18is")
+texture = ExtResource("8_aq1nh")
 
 [node name="Deck Label" type="Label" parent="DrawDeck"]
-offset_left = -73.3333
-offset_top = -132.0
-offset_right = 78.6667
-offset_bottom = -58.0
-scale = Vector2(1.12642, 1.12642)
+offset_left = -28.5715
+offset_top = 49.2064
+offset_right = 123.429
+offset_bottom = 123.206
+scale = Vector2(0.690244, 0.690244)
 theme_override_font_sizes/font_size = 25
 text = "Draw Deck "
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="DrawDeck"]
-offset_left = -54.6667
-offset_top = -37.3333
-offset_right = 61.3333
-offset_bottom = 36.6667
+offset_left = -40.0636
+offset_top = -54.5396
+offset_right = 75.9364
+offset_bottom = 19.4604
 theme_override_font_sizes/font_size = 50
 text = "32"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Discard_Deck" type="Sprite2D" parent="."]
-position = Vector2(62, 567)
+texture_repeat = 1
+position = Vector2(70, 559)
 scale = Vector2(0.63, 0.63)
-texture = ExtResource("3_r18is")
+texture = ExtResource("8_aq1nh")
 
 [node name="Deck Label" type="Label" parent="Discard_Deck"]
-offset_left = -77.3333
-offset_top = -129.333
-offset_right = 78.6667
-offset_bottom = -55.3333
+offset_left = -36.5079
+offset_top = 46.0318
+offset_right = 119.492
+offset_bottom = 120.031
+scale = Vector2(0.690244, 0.690244)
 theme_override_font_sizes/font_size = 25
 text = "Discard Deck"
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="Discard_Deck"]
-offset_left = -58.6667
-offset_top = -37.3333
-offset_right = 57.3333
-offset_bottom = 36.6667
+offset_left = -39.6825
+offset_top = -50.7937
+offset_right = 76.3175
+offset_bottom = 23.2063
 theme_override_font_sizes/font_size = 50
 text = "31"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="HSlider" type="HSlider" parent="."]
+offset_left = 32.0
+offset_top = -32.0
+offset_right = 144.0
+offset_bottom = 96.0
+min_value = -40.0
+max_value = -5.0
+value = -13.0
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Trump Card" type="Panel" parent="UI"]
+layout_mode = 0
+offset_left = 976.0
+offset_top = 43.0
+offset_right = 1140.0
+offset_bottom = 256.0
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+
+[node name="SpadeTrump" type="Sprite2D" parent="UI/Trump Card"]
+position = Vector2(12, 10.6667)
+texture = ExtResource("11_1u346")
+centered = false
+
+[node name="Label" type="Label" parent="UI/Trump Card"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -37.3333
+offset_right = 195.0
+offset_bottom = 3.66666
+scale = Vector2(0.740824, 0.740824)
+theme = ExtResource("12_l36oq")
+text = "Trump Card"
+
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
 [connection signal="pressed" from="Reset_Button" to="." method="reset_button_pressed"]
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

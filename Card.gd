@@ -7,6 +7,7 @@ var id = 0
 @export var rank : int
 @export var value : int
 @export var face_show : bool
+var inplay = false
 var card_back_img = load("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 
 
@@ -49,17 +50,17 @@ func face_up():
 	pass
 
 func _on_reference_rect_mouse_entered():
-	if face_show:
+	if face_show and not inplay:
 		$Label.visible = true
 	position.y -= 15
 func _on_reference_rect_mouse_exited():
-	if face_show:
+	if face_show and not inplay:
 		$Label.visible = false 
 	position.y += 15
 	
 
-var lifted = false
-var offset = 0
+#var lifted = false
+#var offset = 0
 
 ####### Was just me testing dragging the cards #####
 
@@ -76,3 +77,9 @@ var offset = 0
 		#print('_input recieve')
 		#lifted = false
 		#get_viewport().set_input_as_handled()
+
+
+func _on_reference_rect_gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		get_node('/root/Director').playcard(self)
+	pass # Replace with function body.

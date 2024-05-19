@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://c8rq88qct3is7"]
+
+[ext_resource type="FontFile" uid="uid://b2lncg1cpel7s" path="res://Assets/Jaro-Regular-VariableFont_opsz.ttf" id="1_qbn6e"]
+
+[resource]
+base_font = ExtResource("1_qbn6e")
+variation_opentype = {
+1869640570: 6
+}
