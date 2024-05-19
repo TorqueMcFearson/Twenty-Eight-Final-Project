@@ -50,13 +50,15 @@ func face_up():
 	pass
 
 func _on_reference_rect_mouse_entered():
-	if face_show and not inplay:
-		$Label.visible = true
-	position.y -= 15
+	if not inplay:
+		if face_show :
+			$Label.visible = true
+		position.y -= 15
 func _on_reference_rect_mouse_exited():
-	if face_show and not inplay:
-		$Label.visible = false 
-	position.y += 15
+	if not inplay:
+		if face_show:
+			$Label.visible = false 
+		position.y += 15
 	
 
 #var lifted = false

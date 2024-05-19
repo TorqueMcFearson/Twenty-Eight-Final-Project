@@ -163,7 +163,6 @@ func fade_in(delta):
 	var fade_mod = $"Black Fade".get_modulate()
 	$"Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
 	fade_rate+=0.03
-	print(fade_mod)
 	if fade_mod.a <0.1:
 		print("DONE")
 		set_process(false)
@@ -185,7 +184,5 @@ func playcard(card):
 		card.position = Vector2(0,0)
 		card.inplay = true
 		card.get_child(3).visible = false
-		print(card.position)
-		print(card.scale)
 	else:
 		print('not yours')

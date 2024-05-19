@@ -17,7 +17,6 @@ func _process(delta):
 	var fade_mod = $"Control/Black Fade".get_modulate()
 	$"Control/Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
 	fade_rate+=0.02
-	print(fade_mod)
 	if fade_mod.a <.1:
 		print("DONE")
 		set_process(false)
