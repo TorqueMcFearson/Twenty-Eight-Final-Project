@@ -1,18 +1,23 @@
 [gd_scene load_steps=3 format=3 uid="uid://dja2dtkvdqnnh"]
 
-[ext_resource type="Script" path="res://Card.gd" id="1_r4njs"]
+[ext_resource type="Script" path="res://Scripts/Card.gd" id="1_uq76w"]
 [ext_resource type="Texture2D" uid="uid://cob4iqyfbsj7m" path="res://Assets/Cards/PNG/Cards/cardClubs2.png" id="2_bj37g"]
 
 [node name="Card" type="Node2D"]
-script = ExtResource("1_r4njs")
+script = ExtResource("1_uq76w")
 face = "7"
 suit = "Diamonds"
 
-[node name="CardBack" type="Sprite2D" parent="."]
-position = Vector2(70, 93)
+[node name="shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.113725)
 texture = ExtResource("2_bj37g")
 centered = false
-offset = Vector2(-70, -93)
+
+[node name="CardBack" type="Sprite2D" parent="."]
+position = Vector2(37, 26)
+texture = ExtResource("2_bj37g")
+centered = false
+offset = Vector2(-37.0151, -26)
 
 [node name="ReferenceRect" type="ReferenceRect" parent="."]
 offset_left = 1.0
@@ -31,13 +36,6 @@ offset_right = 164.0
 offset_bottom = 21.0
 theme_override_font_sizes/font_size = 20
 text = "2 Points"
-
-[node name="shadow" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0, 0.113725)
-show_behind_parent = true
-scale = Vector2(1.00196, 1)
-texture = ExtResource("2_bj37g")
-centered = false
 
 [connection signal="gui_input" from="ReferenceRect" to="." method="_on_reference_rect_gui_input"]
 [connection signal="mouse_entered" from="ReferenceRect" to="." method="_on_reference_rect_mouse_entered"]

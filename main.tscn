@@ -1,14 +1,15 @@
-[gd_scene load_steps=15 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=16 format=3 uid="uid://bkoutyesd3bli"]
 
-[ext_resource type="Script" path="res://Director.gd" id="1_aoq84"]
-[ext_resource type="Script" path="res://CardConstructor.gd" id="2_0ku85"]
+[ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
+[ext_resource type="Script" path="res://Scripts/CardConstructor.gd" id="2_rcgu6"]
 [ext_resource type="AudioStream" uid="uid://bmp5ojusf5648" path="res://Assets/Cards/Sounds/Card-Shuffle.wav" id="3_t5s6t"]
-[ext_resource type="Script" path="res://Background.gd" id="3_tofsu"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_cco4v"]
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="5_oe1mm"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="7_4cs5p"]
 [ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="10_10vqy"]
 [ext_resource type="PackedScene" uid="uid://dja2dtkvdqnnh" path="res://cardbase.tscn" id="10_c5jdw"]
 [ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/spade_trump.png" id="11_1u346"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
@@ -27,10 +28,10 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [node name="Director" type="Node2D"]
-script = ExtResource("1_aoq84")
+script = ExtResource("1_04n5t")
 
 [node name="CardConstructor" type="Node" parent="."]
-script = ExtResource("2_0ku85")
+script = ExtResource("2_rcgu6")
 
 [node name="Card_Fwip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_7opyx")
@@ -57,7 +58,7 @@ position = Vector2(-755.217, -630.805)
 scale = Vector2(1.30435, 1.93498)
 texture = ExtResource("5_cco4v")
 centered = false
-script = ExtResource("3_tofsu")
+script = ExtResource("7_4cs5p")
 metadata/_edit_lock_ = true
 
 [node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
@@ -69,6 +70,7 @@ offset = Vector2(636.687, 508.163)
 region_rect = Rect2(0, 0, 100, 1260)
 
 [node name="Deal_One_Card" type="Button" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -85,6 +87,7 @@ size_flags_vertical = 4
 text = "Deal 1 card"
 
 [node name="Deal_ALL" type="Button" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -102,6 +105,7 @@ text = "Deal All
 4 cards"
 
 [node name="flip_cards" type="Button" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -118,6 +122,7 @@ size_flags_vertical = 4
 text = "Hand 1 flip cards"
 
 [node name="Discard_Button" type="Button" parent="."]
+visible = false
 offset_left = 640.0
 offset_top = 372.0
 offset_right = 784.0
@@ -125,6 +130,7 @@ offset_bottom = 441.0
 text = "Discard Hands"
 
 [node name="Shuffle" type="Button" parent="."]
+visible = false
 offset_left = 640.0
 offset_top = 175.0
 offset_right = 784.0
@@ -184,7 +190,8 @@ text = "31"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Player1" type="Node2D" parent="."]
+[node name="Player1" type="Node2D" parent="." groups=["Players"]]
+script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player1"]
 offset_left = 524.0
@@ -197,7 +204,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 [node name="Hand" type="Node2D" parent="Player1"]
 position = Vector2(375, 543)
 
-[node name="Player2" type="Node2D" parent="."]
+[node name="Player2" type="Node2D" parent="." groups=["Players"]]
+script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player2"]
 offset_left = 516.0
@@ -216,7 +224,8 @@ position = Vector2(76, 163)
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 
-[node name="Player3" type="Node2D" parent="."]
+[node name="Player3" type="Node2D" parent="." groups=["Players"]]
+script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player3"]
 offset_left = 628.0
@@ -235,7 +244,8 @@ position = Vector2(728, 81)
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 
-[node name="Player4" type="Node2D" parent="."]
+[node name="Player4" type="Node2D" parent="." groups=["Players"]]
+script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player4"]
 offset_left = 636.0

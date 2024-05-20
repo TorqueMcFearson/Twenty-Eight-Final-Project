@@ -27,10 +27,11 @@ func _ready():
 	else:
 		var hue_adjust = (3-value) * -0.15
 		$Label.modulate = Color.from_hsv(0.300+hue_adjust,.9,1)
-	pass
 
 
 func _process(delta):
+	
+	
 	#if lifted:
 		#global_position = get_global_mouse_position() - offset
 	pass
@@ -63,13 +64,13 @@ func face_toggle():
 		face_down()
 		
 func face_down():
-	get_child(0).texture = card_back_img
+	get_node("CardBack").texture = card_back_img
 	face_show = false
 	pass
 	
 func face_up():
 	var cardasssemble = "res://Assets/Cards/PNG/Cards/card" + suit + face + ".png"
-	get_child(0).texture = load(cardasssemble)
+	get_node("CardBack").texture = load(cardasssemble)
 	face_show = true
 	pass
 

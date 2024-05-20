@@ -16,12 +16,16 @@ extends Node
 # The dealer then completes the deal, giving four more cards to 
 # each player, so that everyone has eight.
 signal bet_or_pass(which)
-var max_bid = 0
-var current_bid = 0
+var current_bid = 14
+
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print('Please enter a bid:')
-	
+	if current_bid != 0:
+		$"Current Bet/Amount".text = str("Current Bet: ", current_bid)
+	else:
+		$"Current Bet".visible = false
+	$HSlider.min_value = current_bid+1
 	
 	
 	
@@ -31,27 +35,17 @@ func _process(delta):
 
 
 func _on_bet_pressed():
-	 
-	if current_bid >= 24:
-		print('Bid is too high!')
-		$Bet.disabled = true
-
-	else:
-		current_bid = int($Label.text)
-		print('Current bid is set to: ', current_bid)
-		print('Bid is set to: ', max_bid)
-		$Pass.disabled = true
-		$Bet.disabled = true
-		emit_signal("bet_or_pass",current_bid)
+	$Pass.disabled = true
+	$Bet.disabled = true
+	current_bid = $HSlider.value
+	emit_signal("bet_or_pass",current_bid)
 
 
 func _on_pass_pressed():
-	print('Bid passed')
-	if $Pass.button_pressed == true :
 		$Bet.disabled = true
 		$Pass.disabled = true
 		emit_signal("bet_or_pass",0)
 
 func _on_h_slider_value_changed(value):
-	$Label.text = str(value)
+	$"Bet Please/Amount".text = str(value)
 	pass # Replace with function body.

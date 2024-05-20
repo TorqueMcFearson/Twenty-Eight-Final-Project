@@ -8,6 +8,10 @@ var discardpile = []
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
 var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
+var current_bet = 14
+var round = 0
+var pass_count
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready(): 
@@ -17,7 +21,7 @@ func _ready():
 	$DrawDeck/Amount.text = str(drawpile.size()) #Changes Deck Label to display amount in it.
 	$Shuffle.disabled = true # Shuffle starts disabled because drawpile full
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
-	
+	$Player1.human = true
 	# NOTE:Database.gd is AutoLoaded into game, so it's in every scene.
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
 	var cardlist = [] ## Debug tool: Just prints to console the draw cirds in order
@@ -28,38 +32,46 @@ func _ready():
 		print(each)
 	print("^Drawpile in reverse order^")
 	await get_tree().create_timer(1).timeout
-	#_on_deal_all_pressed()
-	#Call_betting()
+	_on_deal_all_pressed()
+	await get_tree().create_timer(3).timeout
+	get_tree().call_group("Players", "ready_bid")
+	while true:
+		round +=1
+		print ('\n *****Round ',round, '******\n')
+		Call_betting()
+		await get_node("BettingUI").bet_or_pass
+		await get_tree().create_timer(1).timeout
+		get_tree().call_group("Players", "ai_bid")
+		if pass_count == 3:
+			break
+	print('****ROUND OVER*****')
+	print('Bet is: ',current_bet)
+		
+	
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	fade_in(delta)
 
 func Call_betting():
-	await get_tree().create_timer(3).timeout
-	$Player1.top_level = true
-	$Player1.position.y -=20
+	
+	$Player1/Hand.z_index = 5
 	var betscene = load("res://betting_ui.tscn").instantiate()
+	betscene.current_bid = current_bet
 	$"Black Fade".modulate = Color(1, 1, 1, 0.475)
 	add_child(betscene)
-	print("scene is : ",betscene)
 	var bet = await get_node("BettingUI").bet_or_pass
-	print("SHIT IS ",bet)
-	print("AWAIT DID WORK")
-	$Player1.top_level = false
-	$Player1.position.y +=20
+	if not bet:
+		pass_count = +1
+		print('Player Passed! Count:', pass_count)
+		
+	else:
+		pass_count = 0
+		current_bet = bet
+		print('Player Bet: ',bet)
+	$Player1/Hand.z_index = 5
 	betscene.queue_free()
 	$"Black Fade".modulate = Color(1, 1, 1, 0)
-	#if bet == 0:
-	#
-	#else:
-		
-#func return_bet(pass_or_bet)
-#if pass_or_bet == 'Passed'
-	#pass count +1
-#if pass_or_bet == 'Bet'
-	#$BettingUI.
+
 
 ## THE EVER IMPORTANT DRAW CARD FUNCTION
 func draw_card(to_hand):
