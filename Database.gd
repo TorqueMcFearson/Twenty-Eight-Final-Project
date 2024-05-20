@@ -1,13 +1,13 @@
 extends Node
 # id, face, suit, rank, value
 const FACES = ["7", "8", "Q", "K", "10", "A", "9", "J"] # Arranged from lowest rank to highest
-const SUITS = ["Diamonds", "Spades", "Hearts", "Clubs"] # I guess it's okay to use Unicode in strings apparently.
-const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value.
+const SUITS = ["Diamonds", "Spades", "Hearts", "Clubs"] # 
+const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value. Returns for J,9,A,10
 var cards = {} # Declare array, for use in functions
 
 func datebase_constructor(x):
-	var id = 0
-	var rank = 0
+	var id = 0 # Unique Id for every suit/face
+	var rank = 0 # Rising rank value for every face.
 	for face in FACES:
 		rank += 1
 		for suit in SUITS:
@@ -17,7 +17,7 @@ func datebase_constructor(x):
 				'face':face, 
 				'suit':suit,
 				'rank':rank,
-				'value':POINTS.get(face,0)}
+				'value':POINTS.get(face,0)} # Searches POINTS with face, returns value if found 0 is default. 
 			id +=1
 
 

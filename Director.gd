@@ -28,8 +28,8 @@ func _ready():
 		print(each)
 	print("^Drawpile in reverse order^")
 	await get_tree().create_timer(1).timeout
-	_on_deal_all_pressed()
-	Call_betting()
+	#_on_deal_all_pressed()
+	#Call_betting()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
