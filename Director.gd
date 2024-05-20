@@ -27,15 +27,39 @@ func _ready():
 	for each in cardlist:
 		print(each)
 	print("^Drawpile in reverse order^")
+	await get_tree().create_timer(1).timeout
+	_on_deal_all_pressed()
+	Call_betting()
 
-	
-	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	fade_in(delta)
 
-	
+func Call_betting():
+	await get_tree().create_timer(3).timeout
+	$Player1.top_level = true
+	$Player1.position.y -=20
+	var betscene = load("res://betting_ui.tscn").instantiate()
+	$"Black Fade".modulate = Color(1, 1, 1, 0.475)
+	add_child(betscene)
+	print("scene is : ",betscene)
+	var bet = await get_node("BettingUI").bet_or_pass
+	print("SHIT IS ",bet)
+	print("AWAIT DID WORK")
+	$Player1.top_level = false
+	$Player1.position.y +=20
+	betscene.queue_free()
+	$"Black Fade".modulate = Color(1, 1, 1, 0)
+	#if bet == 0:
+	#
+	#else:
+		
+#func return_bet(pass_or_bet)
+#if pass_or_bet == 'Passed'
+	#pass count +1
+#if pass_or_bet == 'Bet'
+	#$BettingUI.
 
 ## THE EVER IMPORTANT DRAW CARD FUNCTION
 func draw_card(to_hand):
@@ -148,9 +172,6 @@ func deck_refresh():
 	$DrawDeck.visible = drawpile_size
 	$Discard_Deck.visible = discardpile_size
 	$Shuffle.disabled = true
-	print('drawpile =', drawpile)
-	print('discardpile =', discardpile)
-	print("deck refreshed")
 	butt_check()
 
 
@@ -160,7 +181,6 @@ func fade_in(delta):
 	var fade_mod = $"Black Fade".get_modulate()
 	$"Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
 	fade_rate+=0.03
-	print($"Black Fade".get_modulate())
 	if fade_mod.a <0.1:
 		print("DONE")
 		set_process(false)
@@ -170,7 +190,6 @@ func fade_out(delta):
 	var fade_mod = $"Black Fade".get_modulate()
 	$"Black Fade".set_modulate(lerp(fade_mod, fade_goal, fade_rate*delta))
 	fade_rate+=0.03
-	print(fade_mod)
 	if fade_mod.a <0.1:
 		print("DONE")
 		set_process(false)

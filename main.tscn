@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dja2dtkvdqnnh" path="res://cardbase.tscn" id="10_c5jdw"]
 [ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/spade_trump.png" id="11_1u346"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
-[ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="12_l36oq"]
+[ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
@@ -28,22 +28,6 @@ corner_radius_bottom_left = 6
 
 [node name="Director" type="Node2D"]
 script = ExtResource("1_aoq84")
-
-[node name="Black Fade" type="ColorRect" parent="."]
-visible = false
-top_level = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -87.0
-offset_top = -59.0
-offset_right = 67.0
-offset_bottom = 38.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.01024, 1.02017)
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
 
 [node name="CardConstructor" type="Node" parent="."]
 script = ExtResource("2_0ku85")
@@ -300,8 +284,22 @@ offset_top = -37.3333
 offset_right = 195.0
 offset_bottom = 3.66666
 scale = Vector2(0.740824, 0.740824)
-theme = ExtResource("12_l36oq")
+theme = ExtResource("13_ejbv2")
 text = "Trump Card"
+
+[node name="Black Fade" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_right = 1142.0
+offset_bottom = 636.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
