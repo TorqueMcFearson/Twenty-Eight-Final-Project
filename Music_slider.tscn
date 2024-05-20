@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=3 uid="uid://t5scb6qrkf2q"]
+
+[ext_resource type="Texture2D" uid="uid://bhjaa5ujh1j1n" path="res://Assets/HyperCasual Game UI/musicBtn.png" id="1_5pvxf"]
+[ext_resource type="Texture2D" uid="uid://ckqymomtf6grr" path="res://Assets/HyperCasual Game UI/pauseBtn.png" id="2_mesjg"]
+
+[sub_resource type="GDScript" id="GDScript_jsoji"]
+script/source = "extends HSlider
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$Mute.toggled.connect(_on_mute_toggled)
+	pass
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func _on_mute_toggled(toggled_on):
+	if toggled_on:
+		Music.stream_paused = true
+	else:
+		Music.stream_paused = false
+		print(\"worked on audio script\")
+	pass # Replace with function body.
+
+func _on_value_changed(value):
+	if value < -30:
+		Music.volume_db = value * 2
+
+	else:
+		Music.volume_db = value
+	pass # Replace with function body.pass # Replace with function body.
+
+
+func _on_mute_mouse_entered():
+	$Mute.self_modulate = Color(0.442, 0.558, 0.85)
+	pass # Replace with function body.
+
+func _on_mute_mouse_exited():
+	$Mute.self_modulate = Color(0.409, 0.5, 0.73)
+"
+
+[node name="Music_Slider" type="HSlider"]
+self_modulate = Color(0.5376, 0.65728, 0.96, 1)
+offset_left = 57.0
+offset_top = 20.0
+offset_right = 169.0
+offset_bottom = 50.0
+min_value = -40.0
+max_value = -5.0
+value = -13.0
+script = SubResource("GDScript_jsoji")
+
+[node name="Mute" type="TextureButton" parent="."]
+self_modulate = Color(0.4088, 0.499807, 0.73, 1)
+texture_filter = 3
+layout_mode = 0
+offset_left = -38.0
+offset_top = 1.0
+offset_right = 300.0
+offset_bottom = 284.0
+scale = Vector2(0.109548, 0.109548)
+toggle_mode = true
+texture_normal = ExtResource("1_5pvxf")
+texture_pressed = ExtResource("2_mesjg")
+stretch_mode = 3
+
+[connection signal="value_changed" from="." to="." method="_on_value_changed"]
+[connection signal="mouse_entered" from="Mute" to="." method="_on_mute_mouse_entered"]
+[connection signal="mouse_exited" from="Mute" to="." method="_on_mute_mouse_exited"]
+[connection signal="toggled" from="Mute" to="." method="_on_mute_toggled"]

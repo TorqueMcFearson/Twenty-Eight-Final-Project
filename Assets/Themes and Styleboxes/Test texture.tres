@@ -1,0 +1,8 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://sskh2ak2ofco"]
+
+[ext_resource type="Texture2D" uid="uid://br1qqtm2e5sgw" path="res://Assets/Gamebox.png" id="1_2vikw"]
+
+[resource]
+content_margin_left = 1.0
+texture = ExtResource("1_2vikw")
+region_rect = Rect2(19.6867, 8.65074, 283.636, 283.471)
