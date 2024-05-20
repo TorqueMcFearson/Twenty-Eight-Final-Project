@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=3 format=3 uid="uid://vaqjrd6whv3q"]
 
-[ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/PoetsenOne-Regular.ttf" id="1_wu23n"]
+[ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="1_wu23n"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6lg70"]
 

@@ -1,19 +1,18 @@
-[gd_scene load_steps=16 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=15 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Director.gd" id="1_aoq84"]
 [ext_resource type="Script" path="res://CardConstructor.gd" id="2_0ku85"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
-[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/casino-background-green-texture-SBI-300447118 (1).jpg" id="2_x4buj"]
 [ext_resource type="AudioStream" uid="uid://bmp5ojusf5648" path="res://Assets/Cards/Sounds/Card-Shuffle.wav" id="3_t5s6t"]
 [ext_resource type="Script" path="res://Background.gd" id="3_tofsu"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_cco4v"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="5_oe1mm"]
 [ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
 [ext_resource type="PackedScene" uid="uid://dja2dtkvdqnnh" path="res://cardbase.tscn" id="10_c5jdw"]
 [ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/spade_trump.png" id="11_1u346"]
-[ext_resource type="Texture2D" uid="uid://bhjaa5ujh1j1n" path="res://Assets/HyperCasual Game UI/musicBtn.png" id="11_n4dew"]
-[ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Working_Theme.tres" id="12_l36oq"]
-[ext_resource type="Texture2D" uid="uid://ckqymomtf6grr" path="res://Assets/HyperCasual Game UI/pauseBtn.png" id="12_o1tl1"]
+[ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
+[ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="12_l36oq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
@@ -64,7 +63,7 @@ max_polyphony = 6
 modulate = Color(0.74, 0.74, 0.74, 1)
 position = Vector2(579, 326)
 scale = Vector2(0.766667, 0.5168)
-texture = ExtResource("2_x4buj")
+texture = ExtResource("5_oe1mm")
 metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
@@ -83,6 +82,7 @@ position = Vector2(-738.26, -608.129)
 scale = Vector2(1.14642, 1.17701)
 texture = ExtResource("9_rqqrw")
 offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
 
 [node name="Deal_One_Card" type="Button" parent="."]
 anchors_preset = 8
@@ -273,26 +273,7 @@ position = Vector2(1073, 419)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
-[node name="HSlider" type="HSlider" parent="."]
-offset_left = 57.0
-offset_top = 20.0
-offset_right = 169.0
-offset_bottom = 50.0
-min_value = -40.0
-max_value = -5.0
-value = -13.0
-
-[node name="Mute" type="TextureButton" parent="HSlider"]
-modulate = Color(0.454902, 0.498039, 0.490196, 1)
-texture_filter = 3
-layout_mode = 0
-offset_left = -36.0
-offset_right = 220.0
-offset_bottom = 256.0
-scale = Vector2(0.109548, 0.109548)
-toggle_mode = true
-texture_normal = ExtResource("11_n4dew")
-texture_pressed = ExtResource("12_o1tl1")
+[node name="Music_Slider" parent="." instance=ExtResource("11_exjj8")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -327,5 +308,3 @@ text = "Trump Card"
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
 [connection signal="pressed" from="Discard_Button" to="." method="reset_button_pressed"]
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
-[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]
-[connection signal="toggled" from="HSlider/Mute" to="." method="_on_mute_toggled"]

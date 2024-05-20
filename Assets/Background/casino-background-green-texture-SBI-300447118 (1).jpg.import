@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccucoe03a61o6"
-path="res://.godot/imported/background.jpg-b3a2c7d1c105d56ba01ce5ef14c041a0.ctex"
+uid="uid://bhrdddut7di7w"
+path="res://.godot/imported/casino-background-green-texture-SBI-300447118 (1).jpg-09cfd7c223beee3447df56833f03b73c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/background.jpg"
-dest_files=["res://.godot/imported/background.jpg-b3a2c7d1c105d56ba01ce5ef14c041a0.ctex"]
+source_file="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg"
+dest_files=["res://.godot/imported/casino-background-green-texture-SBI-300447118 (1).jpg-09cfd7c223beee3447df56833f03b73c.ctex"]
 
 [params]
 

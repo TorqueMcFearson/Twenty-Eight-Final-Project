@@ -39,24 +39,21 @@ func grow_and_go(to_hand):
 	scale = Vector2(0,0)
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
-	tween.tween_property(self,'scale',Vector2(1,1),.25)
+	tween.tween_property(self,'scale',Vector2(1,1),.35).set_ease(Tween.EASE_IN)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.25)
+	tween2.tween_property(self,'position',slot,.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_BACK)
 
 func go():
 	tweening = true
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
-	tween.tween_property(self,'scale',Vector2(1,1),.25)
+	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(6)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.25)
+	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(10)
 
 
-	
-	
 func _tween_end():
 	tweening = false
-	print(self, 'tween done')
 	
 func face_toggle():
 	if get_child(0).texture == card_back_img:

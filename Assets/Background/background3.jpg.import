@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lmops2oruyf4"
-path="res://.godot/imported/casino bakground.jpg-4e45a6cf5782d19a8d6a4374451fe1ed.ctex"
+uid="uid://cc71bcrml0jqa"
+path="res://.godot/imported/background3.jpg-a4684f13c2ec9058de328e2c075e147e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/casino bakground.jpg"
-dest_files=["res://.godot/imported/casino bakground.jpg-4e45a6cf5782d19a8d6a4374451fe1ed.ctex"]
+source_file="res://Assets/Background/background3.jpg"
+dest_files=["res://.godot/imported/background3.jpg-a4684f13c2ec9058de328e2c075e147e.ctex"]
 
 [params]
 

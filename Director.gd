@@ -28,7 +28,6 @@ func _ready():
 		print(each)
 	print("^Drawpile in reverse order^")
 
-	print('done')
 	
 	
 
@@ -155,13 +154,6 @@ func deck_refresh():
 	butt_check()
 
 
-func _on_h_slider_value_changed(value):
-	if value < -30:
-		Music.volume_db = value * 2
-
-	else:
-		Music.volume_db = value
-	pass # Replace with function body.
 	
 func fade_in(delta):
 
@@ -188,7 +180,6 @@ func playcard(card):
 	if true:
 		var hand = card.get_parent()
 		var playslot = card.get_node("../../Playslot")
-		print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
 		card.slot = Vector2 (0,0)
 		card.reparent(playslot)
 		card.go()
@@ -223,9 +214,7 @@ func take_card(card):
 		print('Hand is full, dumbass')
 		return 0
 	var x_offset = children
-	print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
 	card.reparent(to_hand,true)
-	print('Before reparent... current position: ',card.position, ' current global position: ',card.global_position)
 	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot
 	card.go()
@@ -234,9 +223,3 @@ func take_card(card):
 	return 1
 
 
-func _on_mute_toggled(toggled_on):
-	if toggled_on:
-		Music.stream_paused = true
-	else:
-		Music.stream_paused = false
-	pass # Replace with function body.
