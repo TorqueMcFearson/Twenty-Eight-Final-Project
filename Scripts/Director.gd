@@ -10,7 +10,7 @@ var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
 var current_bet = 14
 var round = 0
-var pass_count
+var pass_count = 0
 	
 
 # Called when the node enters the scene tree for the first time.
@@ -53,7 +53,6 @@ func _process(delta):
 	fade_in(delta)
 
 func Call_betting():
-	
 	$Player1/Hand.z_index = 5
 	var betscene = load("res://betting_ui.tscn").instantiate()
 	betscene.current_bid = current_bet
@@ -61,7 +60,7 @@ func Call_betting():
 	add_child(betscene)
 	var bet = await get_node("BettingUI").bet_or_pass
 	if not bet:
-		pass_count = +1
+		pass_count += 1
 		print('Player Passed! Count:', pass_count)
 		
 	else:

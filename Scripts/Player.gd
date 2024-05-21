@@ -4,9 +4,12 @@ var matches = {}
 var points = 0
 var bet_goal = 0
 var human = false
+var aggression = .5 # Modifies how range of how high they'll bet. 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
+	aggression = randf_range(.5,1)
 	pass # Replace with function body.
 
 
@@ -21,7 +24,7 @@ func ai_bid():
 	if current_bet < bet_goal:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
-		var ai_bet = randi_range(current_bet+1,(bet_goal-current_bet)/2+current_bet)
+		var ai_bet = randi_range(current_bet+1,(bet_goal-current_bet)*aggression+current_bet)
 		print(self.name,' bets:', ai_bet)
 		$"..".current_bet  = ai_bet
 		$"..".pass_count = 0
@@ -38,4 +41,4 @@ func ready_bid():
 		points += card.value
 	matches = matches.values().max()
 	bet_goal = (matches * 2) + (points/2) + 14
-	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal)
+	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
