@@ -1,4 +1,5 @@
 extends Node2D
+
 ## Game Start Initialization
 ## NOTE:Database.gd & Music.gd is AutoLoaded into game, so it's in ALL scenes.
 ## So, music is always active and database is always accessible (without a node).
@@ -44,9 +45,9 @@ func _ready():
 	print("^Drawpile in reverse order^")
 	## ------------------Round Calling Starts-------------------------- ## 
 	#return     #<---- uncomment 'return' to start main without auto-director.
-	await get_tree().create_timer(1).timeout # Typical pause. For 1 sec.
-	_on_deal_all_pressed()						# 4 cards delt to each player.
-	await get_tree().create_timer(3).timeout
+	await get_tree().create_timer(2).timeout # Typical pause. For 1 sec.
+	await _on_deal_all_pressed()					 # 4 cards delt to each player.
+	await get_tree().create_timer(3.5).timeout
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_round() 					# Calls and waits for the Betting round.
 	await trump_round()						# Calls and waits the Trump choosing round.
@@ -288,3 +289,5 @@ func _on_play_card_pressed(): # Play card in play slot.. TODO:
 	if card:
 		print(card.face,' of ',card.suit, " Card Played") # Currently just prints card.
 	pass # Replace with function body.
+
+
