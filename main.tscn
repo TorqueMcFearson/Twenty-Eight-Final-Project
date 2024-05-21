@@ -1,3 +1,4 @@
+
 [gd_scene load_steps=18 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
@@ -16,6 +17,7 @@
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="15_e71xe"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
 
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
 border_width_left = 3
@@ -28,6 +30,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+
 [sub_resource type="SystemFont" id="SystemFont_6atd5"]
 font_names = PackedStringArray("Antique Olive CompactPS")
 font_weight = 950
@@ -37,6 +40,7 @@ script = ExtResource("1_04n5t")
 
 [node name="CardConstructor" type="Node" parent="."]
 script = ExtResource("2_rcgu6")
+
 
 [node name="Card_Fwip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_7opyx")
@@ -63,7 +67,9 @@ position = Vector2(-755.217, -630.805)
 scale = Vector2(1.30435, 1.93498)
 texture = ExtResource("5_cco4v")
 centered = false
+
 script = ExtResource("7_4cs5p")
+
 metadata/_edit_lock_ = true
 
 [node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
@@ -195,8 +201,11 @@ text = "31"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+
 [node name="Player1" type="Node2D" parent="." groups=["Players"]]
 script = ExtResource("10_10vqy")
+
+
 
 [node name="Playslot" type="Panel" parent="Player1"]
 offset_left = 524.0
