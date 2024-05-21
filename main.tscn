@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="10_10vqy"]
-[ext_resource type="PackedScene" uid="uid://dja2dtkvdqnnh" path="res://cardbase.tscn" id="10_c5jdw"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
 [ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 [ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="13_r0gnh"]
@@ -28,6 +27,10 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="SystemFont" id="SystemFont_6atd5"]
+font_names = PackedStringArray("Antique Olive CompactPS")
+font_weight = 950
 
 [node name="Director" type="Node2D"]
 script = ExtResource("1_04n5t")
@@ -218,9 +221,6 @@ rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
-[node name="Card" parent="Player2/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
-
 [node name="Hand" type="Node2D" parent="Player2"]
 position = Vector2(76, 163)
 rotation = 1.5708
@@ -237,9 +237,6 @@ offset_bottom = 439.0
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
-
-[node name="Card" parent="Player3/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
 
 [node name="Hand" type="Node2D" parent="Player3"]
 position = Vector2(728, 81)
@@ -258,9 +255,6 @@ rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
-[node name="Card" parent="Player4/Playslot" instance=ExtResource("10_c5jdw")]
-visible = false
-
 [node name="Hand" type="Node2D" parent="Player4"]
 position = Vector2(1073, 419)
 rotation = -1.5708
@@ -274,10 +268,10 @@ anchors_preset = 0
 
 [node name="Trump Card" type="Panel" parent="UI"]
 layout_mode = 0
-offset_left = 826.0
-offset_top = 78.0
-offset_right = 990.0
-offset_bottom = 291.0
+offset_left = 866.0
+offset_top = 46.0
+offset_right = 1030.0
+offset_bottom = 259.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
@@ -287,17 +281,36 @@ texture = ExtResource("13_r0gnh")
 centered = false
 offset = Vector2(12, 10)
 
-[node name="Label" type="Label" parent="UI"]
+[node name="Label" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 838.0
-offset_top = 50.0
-offset_right = 1023.0
-offset_bottom = 98.0
-scale = Vector2(0.5, 0.5)
+offset_left = 4.0
+offset_top = -48.0
+offset_right = 238.0
+offset_bottom = 26.0
 theme = ExtResource("13_ejbv2")
-text = "Trump Card"
+theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("SystemFont_6atd5")
+theme_override_font_sizes/font_size = 40
+text = "Trump"
+
+[node name="Label2" type="Label" parent="UI/Trump Card"]
+layout_mode = 0
+offset_left = 25.3334
+offset_top = 211.667
+offset_right = 138.333
+offset_bottom = 285.667
+theme = ExtResource("13_ejbv2")
+theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("SystemFont_6atd5")
+theme_override_font_sizes/font_size = 40
+text = "Card"
 
 [node name="Play Card" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -354,6 +367,6 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
-[connection signal="pressed" from="Discard_Button" to="." method="reset_button_pressed"]
+[connection signal="pressed" from="Discard_Button" to="." method="_on_discard_button_pressed"]
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]

@@ -86,15 +86,18 @@ func face_up():
 	pass
 
 func _on_reference_rect_mouse_entered():
-	if not inplay and not tweening:
-		if face_show :
-			$Label.visible = true
-		position.y = -15
-func _on_reference_rect_mouse_exited():
-	if not inplay and not tweening:
+	if not tweening:
 		if face_show:
-			$Label.visible = false 
-		position.y = 0
+			$Label.visible = true
+		if not inplay:
+			position.y = -15
+		
+func _on_reference_rect_mouse_exited():
+	if not tweening:
+		if face_show:
+			$Label.visible = false
+		if not inplay:
+			position.y = 0
 	
 
 
