@@ -4,7 +4,6 @@
 [ext_resource type="FontVariation" uid="uid://c8rq88qct3is7" path="res://Assets/Fonts/Font Edit.tres" id="1_jtt76"]
 [ext_resource type="StyleBox" uid="uid://drsf617xtxbf4" path="res://Assets/Themes and Styleboxes/button_box.tres" id="2_ymm3h"]
 
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_763tx"]
 bg_color = Color(0, 0, 0, 1)
 draw_center = false
@@ -23,7 +22,6 @@ expand_margin_right = 20.0
 expand_margin_bottom = 50.0
 shadow_color = Color(0, 0, 0, 0.784314)
 shadow_size = 14
-
 
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -60,5 +58,3 @@ Label/constants/shadow_outline_size = 12
 Label/font_sizes/font_size = 20
 Label/fonts/font = ExtResource("1_argma")
 Label/styles/normal = SubResource("StyleBoxFlat_763tx")
-
-
