@@ -9,6 +9,7 @@ var discardpile = []
 var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
 var current_bet = 14
+@onready var current_better = $Player1
 var round = 0
 var pass_count = 0
 	
@@ -31,27 +32,39 @@ func _ready():
 	for each in cardlist:
 		print(each)
 	print("^Drawpile in reverse order^")
+	$Discard_Deck/Amount.text = ''
+	
 	await get_tree().create_timer(1).timeout
 	_on_deal_all_pressed()
+	
 	await get_tree().create_timer(3).timeout
 	get_tree().call_group("Players", "ready_bid")
+	await betting_round()
+	trump_round()
+
+func _process(delta):
+	fade_in(delta)
+	
+func betting_round():
 	while true:
 		round +=1
 		print ('\n *****Round ',round, '******\n')
-		Call_betting()
-		await get_node("BettingUI").bet_or_pass
+		await Call_betting()
 		await get_tree().create_timer(1).timeout
 		get_tree().call_group("Players", "ai_bid")
 		if pass_count == 3:
 			break
-	print('****ROUND OVER*****')
-	print('Bet is: ',current_bet)
-		
+	print("Winner: ", current_better.name, " Bet: ", current_bet)
 	
-
-func _process(delta):
-	fade_in(delta)
-
+func trump_round():
+	if current_better.human:
+		print("THIS WOULD GO TO TRUMP PICK.")
+	else:
+		current_better.pick_trump()
+	
+func second_deal():
+	_on_deal_all_pressed()
+	
 func Call_betting():
 	$Player1/Hand.z_index = 5
 	var betscene = load("res://betting_ui.tscn").instantiate()
@@ -66,6 +79,7 @@ func Call_betting():
 	else:
 		pass_count = 0
 		current_bet = bet
+		current_better = $Player1
 		print('Player Bet: ',bet)
 	$Player1/Hand.z_index = 5
 	betscene.queue_free()
@@ -77,7 +91,7 @@ func draw_card(to_hand):
 	if not drawpile.size():
 		print('Draw pile empty, dumbass')
 		return 0
-	var face_show = true if to_hand == $Player1/Hand else false
+	var face_show = true if to_hand.get_parent().human else false
 	var children = to_hand.get_child_count()
 	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
 	var x_offset = children
@@ -95,21 +109,32 @@ func draw_card(to_hand):
 	
 
 func reset_button_pressed():
+	butt_off()
+	var time=0.40
+	$Card_Fwip.pitch_scale = .69
 	var hands = $Player1/Hand.get_children()
-	$Card_Shuffle.play()
 	if not hands:
 		print("Hands are empty, dummy!")
 		return
-	for hand in handpool:
-		for n in hand.get_children():
-			var card = n.get('id')
-			discardpile.append(card)
-			hand.remove_child(n)
-			n.queue_free()
-	$Discard_Deck/Amount.text = str(discardpile.size())
-	butt_check()
+	var killtimer = get_tree().create_timer(4)
 	$Discard_Deck.visible = true
+	for hand in handpool:
+		for card in hand.get_children():
+			var id = card.get('id')
+			discardpile.append(id)
+			card.go_and_die()
+			await get_tree().create_timer(time).timeout
+			$Discard_Deck/Amount.text = str(discardpile.size())
+			$Card_Fwip.play()
+			$Card_Fwip.pitch_scale += .01
+			time = time+.005-(time*time)
+			
+	butt_check()
+	await killtimer.timeout
+	print('hand children ',$Player1/Hand.get_children())
 	pass # Replace with function body.
+	
+	
 
 ### Trigger for $Deal_ALL button#
 func _on_deal_all_pressed():
@@ -120,12 +145,10 @@ func _on_deal_all_pressed():
 		for hand in handpool:
 			if not draw_card(hand):
 				butt_check()
-				$Card_Fwip.pitch_scale += .01
 				return
 			await get_tree().create_timer(time).timeout
+			$Card_Fwip.pitch_scale += .01
 			time = time+.005-(time*time)
-			
-
 	$Card_Fwip.pitch_scale = .69
 	butt_check()
 
@@ -164,7 +187,7 @@ func reset_off():
 
 
 func _on_shuffle_pressed():
-	reset_button_pressed()
+	
 	drawpile.append_array(discardpile)
 	discardpile = []
 	$Card_Shuffle.play()
@@ -172,6 +195,8 @@ func _on_shuffle_pressed():
 	deck_refresh()
 	$Shuffle.disabled = true
 	$Discard_Button.disabled = true
+	print(drawpile)
+	print(discardpile)
 	pass # Replace with function body.
 	
 func deck_refresh():

@@ -28,6 +28,7 @@ func ai_bid():
 		print(self.name,' bets:', ai_bet)
 		$"..".current_bet  = ai_bet
 		$"..".pass_count = 0
+		$"..".current_better = $"."
 	else:
 		$"..".pass_count += 1
 		print(self.name,' AI PASSED! Count:', $"..".pass_count)
@@ -39,6 +40,13 @@ func ready_bid():
 	for card in $Hand.get_children():
 		matches[card.suit] = matches.get(card.suit, 0) + 1
 		points += card.value
-	matches = matches.values().max()
-	bet_goal = (matches * 2) + (points/2) + 14
+	var suit_match = matches.values().max()
+	bet_goal = (suit_match * 2) + (points/2) + 14
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
+
+func pick_trump():
+	if human:
+		pass
+	else:
+		var trump = matches.find_key(matches.values().max())
+		print(self.name, ' has chose the trump card ', trump)

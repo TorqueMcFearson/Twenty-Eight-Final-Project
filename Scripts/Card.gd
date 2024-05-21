@@ -31,7 +31,6 @@ func _ready():
 
 func _process(delta):
 	
-	
 	#if lifted:
 		#global_position = get_global_mouse_position() - offset
 	pass
@@ -53,7 +52,19 @@ func go():
 	var tween2 = create_tween()
 	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(10)
 
-
+func go_and_die():
+	tweening = true
+	slot = ($"../../../Discard_Deck".get_global_position() - Vector2(-64,-64))
+	var tween = create_tween()
+	tween.finished.connect(_tween_end)
+	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(6)
+	var tween2 = create_tween()
+	tween2.tween_property(self,'global_position',slot,.56).set_ease(Tween.EASE_IN).set_trans(10)
+	await tween2.finished
+	get_parent().remove_child(self)
+	queue_free()
+	
+	
 func _tween_end():
 	tweening = false
 	
@@ -104,7 +115,6 @@ func _on_reference_rect_mouse_exited():
 		#print('_input recieve')
 		#lifted = false
 		#get_viewport().set_input_as_handled()
-
 
 func _on_reference_rect_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and not tweening:
