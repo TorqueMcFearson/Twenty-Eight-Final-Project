@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uv5gnwhg2i0t"
-path="res://.godot/imported/heart_trump.png-831c950872669813a9c7c14685ad229c.ctex"
+uid="uid://bn3nc238ex8ey"
+path="res://.godot/imported/Clubs_trump.png-c299928cbd46a88811eb5bb74a1a6798.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/PNG/Cards/heart_trump.png"
-dest_files=["res://.godot/imported/heart_trump.png-831c950872669813a9c7c14685ad229c.ctex"]
+source_file="res://Assets/Cards/PNG/Cards/Clubs_trump.png"
+dest_files=["res://.godot/imported/Clubs_trump.png-c299928cbd46a88811eb5bb74a1a6798.ctex"]
 
 [params]
 

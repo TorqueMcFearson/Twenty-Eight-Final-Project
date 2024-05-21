@@ -12,6 +12,7 @@ var current_bet = 14
 @onready var current_better = $Player1
 var round = 0
 var pass_count = 0
+var trump_suit
 	
 
 # Called when the node enters the scene tree for the first time.
@@ -60,7 +61,14 @@ func trump_round():
 	if current_better.human:
 		print("THIS WOULD GO TO TRUMP PICK.")
 	else:
-		current_better.pick_trump()
+		trump_suit = current_better.pick_trump()
+	var tween= get_tree().create_tween()
+	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75).set_ease(Tween.EASE_IN)
+	
+func trump_reveal():
+	var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
+	$"UI/Trump Card/Trump Sprite".texture = load(assemble)
+	pass
 	
 func second_deal():
 	_on_deal_all_pressed()
@@ -232,7 +240,7 @@ func fade_out(delta):
 		
 ## Cards that are clicked call this function passing 'self' in args
 func playcard(card):
-	if true:
+	if card.get_parent() == $Player1/Hand:
 		var hand = card.get_parent()
 		var playslot = card.get_node("../../Playslot")
 		card.slot = Vector2 (0,0)
@@ -246,6 +254,9 @@ func playcard(card):
 			each.slot = slot
 			each.go()
 			slot += Vector2(40,0)
+		get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,1),.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO).set_delay(.25)
+		
+		
 	else:
 		print('not yours')
 
@@ -258,11 +269,9 @@ func _on_deal_one_card_pressed():
 	pass # Replace with function body.
 
 ## THE EVER IMPORTANT TAKE CARD FUNCTION
-## TODO : Set everything to position not global_position
-## NOTE: Why? Global_positioning doesn't take into account the hands rotation.
-##
 
 func take_card(card):
+	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
 	var to_hand = card.get_node("../../Hand")
 	var children = to_hand.get_child_count()
 	if children > 7:
@@ -277,4 +286,13 @@ func take_card(card):
 	card.inplay = false
 	return 1
 
+func play_button_toggle():
+	play_button_toggle()
 
+
+
+func _on_play_card_pressed():
+	var card = $Player1/Playslot.get_child(0)
+	if card:
+		print(card.face,' of ',card.suit, " Card Played")
+	pass # Replace with function body.

@@ -97,14 +97,24 @@ func _on_reference_rect_mouse_exited():
 		position.y = 0
 	
 
-#var lifted = false
-#var offset = 0
+
+
+func _on_reference_rect_gui_input(event):
+	if event is InputEventMouseButton and event.pressed and not tweening:
+		if inplay == false:
+			get_node('/root/Director').playcard(self)
+		else:
+			get_node('/root/Director').take_card(self)
+		
+	pass # Replace with function body.
+
+
 
 ####### Was just me testing dragging the cards #####
-
+#var lifted = false
+#var offset = 0
 #func _input_event(viewport, event, shape_idx):
 	#pass
-
 #func _on_reference_rect_gui_input(event):
 	#if event is InputEventMouseButton and event.pressed and not lifted:
 		#offset = get_global_mouse_position() - global_position
@@ -115,12 +125,3 @@ func _on_reference_rect_mouse_exited():
 		#print('_input recieve')
 		#lifted = false
 		#get_viewport().set_input_as_handled()
-
-func _on_reference_rect_gui_input(event):
-	if event is InputEventMouseButton and event.pressed and not tweening:
-		if inplay == false:
-			get_node('/root/Director').playcard(self)
-		else:
-			get_node('/root/Director').take_card(self)
-		
-	pass # Replace with function body.

@@ -50,3 +50,4 @@ func pick_trump():
 	else:
 		var trump = matches.find_key(matches.values().max())
 		print(self.name, ' has chose the trump card ', trump)
+		return trump

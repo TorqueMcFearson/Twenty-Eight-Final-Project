@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b66sq5xgdop7o"
-path="res://.godot/imported/diamond_trump.png-887cf569dc023ef606d11d20e8f196af.ctex"
+path="res://.godot/imported/Diamonds_trump.png-1f989ee44a742d5a26c52bab3f608896.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/PNG/Cards/diamond_trump.png"
-dest_files=["res://.godot/imported/diamond_trump.png-887cf569dc023ef606d11d20e8f196af.ctex"]
+source_file="res://Assets/Cards/PNG/Cards/Diamonds_trump.png"
+dest_files=["res://.godot/imported/Diamonds_trump.png-1f989ee44a742d5a26c52bab3f608896.ctex"]
 
 [params]
 

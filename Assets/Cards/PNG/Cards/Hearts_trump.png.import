@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clk1hj7m3efn3"
-path="res://.godot/imported/spade_trump.png-54f004f54688336a3f96c4711b58cf02.ctex"
+uid="uid://uv5gnwhg2i0t"
+path="res://.godot/imported/Hearts_trump.png-ed38be63c21900fb4f17bf024898c66e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/PNG/Cards/spade_trump.png"
-dest_files=["res://.godot/imported/spade_trump.png-54f004f54688336a3f96c4711b58cf02.ctex"]
+source_file="res://Assets/Cards/PNG/Cards/Hearts_trump.png"
+dest_files=["res://.godot/imported/Hearts_trump.png-ed38be63c21900fb4f17bf024898c66e.ctex"]
 
 [params]
 
