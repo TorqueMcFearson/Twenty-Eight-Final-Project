@@ -1,17 +1,18 @@
 extends Node2D
 
-## NOTE: PROPERTIES FROM DATABASE ARE -- id, face, suit, rank, value
 
-var id = 0					# Unique Id for database lookup
+
+var id: int					# Unique Id for database lookup
 @export_enum("7", "8", "9", "10", "J", "Q", "K", "A") var face : String
 @export_enum("Diamonds", "Spades", "Hearts", "Clubs") var suit : String
+## PROPERTIES FROM DATABASE ARE -- id, face, suit, rank, value
 var rank : int				# Its order in which cards it win/lose over.
 var value : int				# It's point value in trick scoring
 var face_show : bool		# Wether is currently face up or down.
-var inplay = false			# Wether is currently in the play slot.
-var tweening = false		# Wether is currently animating.
+var inplay := false			# Wether is currently in the play slot.
+var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
-var slot = Vector2(0,0)
+var slot := Vector2(0,0)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -102,14 +103,15 @@ func _on_reference_rect_mouse_exited():
 
 
 
-func _on_reference_rect_gui_input(event):
-	if event is InputEventMouseButton and event.pressed and not tweening:
-		if inplay == false:
-			get_node('/root/Director').playcard(self)
-		else:
-			get_node('/root/Director').take_card(self)
-		
-	pass # Replace with function body.
+func _on_reference_rect_gui_input(event): # A click event
+	if Global.cards_playable and not tweening:
+		if event is InputEventMouseButton and event.pressed :
+			if inplay == false:
+				get_node('/root/Director').playcard(self)
+			else:
+				get_node('/root/Director').take_card(self)
+			
+		pass # Replace with function body.
 
 
 

@@ -5,6 +5,9 @@ const SUITS = ["Diamonds", "Spades", "Hearts", "Clubs"] #
 const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value. Returns for J,9,A,10
 var cards = {} # Declare array, for use in functions
 
+##---------Global Variables---------##
+var cards_playable = false
+
 func datebase_constructor(x):
 	var id = 0 # Unique Id for every suit/face
 	var rank = 0 # Rising rank value for every face.

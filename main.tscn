@@ -351,20 +351,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Black Fade" type="ColorRect" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 3.0
-offset_right = 1142.0
-offset_bottom = 636.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.01024, 1.02017)
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
 [node name="Pause slot" type="Control" parent="."]
 process_mode = 3
 top_level = true
@@ -401,6 +387,11 @@ layout_mode = 1
 
 [node name="Music_Slider" parent="Pause slot" instance=ExtResource("11_exjj8")]
 top_level = true
+layout_mode = 0
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 152.0
+offset_bottom = 40.0
 
 [node name="TextureButton" type="TextureButton" parent="Pause slot"]
 top_level = true
@@ -412,6 +403,20 @@ offset_bottom = 50.0
 texture_normal = ExtResource("17_bu8k6")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="Black Fade" type="ColorRect" parent="."]
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_right = 1142.0
+offset_bottom = 636.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
