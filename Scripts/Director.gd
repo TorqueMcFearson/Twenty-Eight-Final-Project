@@ -139,7 +139,7 @@ func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deal
 	butt_off()						# Disabled buttons til end of function.
 	var time=0.40					# Time between each card.
 	$Card_Fwip.pitch_scale = .69	# Card SFX
-	for n in MAX_HANDSIZE/2:		# For 4 cards
+	for n in 4:						# For 4 cards
 		for hand in handpool:		# For each hand
 			if not draw_card(hand):	# Run Draw_card(), if return 0, empty draw deck.
 				butt_check()
