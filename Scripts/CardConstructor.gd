@@ -15,7 +15,7 @@ func newcard(id,face_show):
 		print("NULL encountered on newcard() in Card Constructor")
 		return
 	var new_card = cardbase.instantiate() 	# Unpack Scene into a ready node.
-	var props = Database.cards.get(id)  	# Uses ID to retrieve cards props from the database
+	var props = Global.cards.get(id)  	# Uses ID to retrieve cards props from the database
 	for prop in props:						# Applies each property to the card in a for loop
 		new_card[prop] = props[prop]
 	new_card.face_show = face_show  		# Applies face_show up or down from the pass-through.

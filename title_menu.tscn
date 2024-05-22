@@ -197,6 +197,10 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Music_Slider" parent="." instance=ExtResource("5_6xoau")]
+offset_left = 36.0
+offset_top = 7.0
+offset_right = 148.0
+offset_bottom = 37.0
 
 [connection signal="mouse_entered" from="Control/Buttons/New_Game" to="." method="_on_new_game_mouse_entered" binds= ["New_Game"]]
 [connection signal="mouse_exited" from="Control/Buttons/New_Game" to="." method="_on_mouse_exited" binds= ["New_Game"]]

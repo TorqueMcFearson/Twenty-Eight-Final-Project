@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=20 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -14,7 +14,9 @@
 [ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 [ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="13_r0gnh"]
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="15_e71xe"]
+[ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
+[ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
@@ -33,6 +35,7 @@ font_names = PackedStringArray("Antique Olive CompactPS")
 font_weight = 950
 
 [node name="Director" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_04n5t")
 
 [node name="CardConstructor" type="Node" parent="."]
@@ -260,8 +263,6 @@ position = Vector2(1073, 419)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
-[node name="Music_Slider" parent="." instance=ExtResource("11_exjj8")]
-
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -350,8 +351,61 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Black Fade" type="ColorRect" parent="."]
+[node name="Pause slot" type="Control" parent="."]
+process_mode = 3
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Pause Fade" type="ColorRect" parent="Pause slot"]
 visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_right = 1142.0
+offset_bottom = 636.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
+visible = false
+top_level = true
+layout_mode = 1
+
+[node name="Music_Slider" parent="Pause slot" instance=ExtResource("11_exjj8")]
+top_level = true
+layout_mode = 0
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 152.0
+offset_bottom = 40.0
+
+[node name="TextureButton" type="TextureButton" parent="Pause slot"]
+top_level = true
+layout_mode = 0
+offset_left = 1095.0
+offset_top = 15.0
+offset_right = 1132.0
+offset_bottom = 50.0
+texture_normal = ExtResource("17_bu8k6")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Black Fade" type="ColorRect" parent="."]
+top_level = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -370,3 +424,4 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Discard_Button" to="." method="_on_discard_button_pressed"]
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
+[connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]

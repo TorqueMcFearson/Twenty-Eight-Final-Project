@@ -16,8 +16,8 @@ config/features=PackedStringArray("4.2", "Mobile")
 
 [autoload]
 
-Database="*res://Scripts/Database (2).gd"
 Music="*res://music.tscn"
+Global="*res://Scripts/Globals.gd"
 
 [display]
 
@@ -27,6 +27,9 @@ mouse_cursor/custom_image_hotspot=Vector2(10, 4)
 
 [editor]
 
+movie_writer/mjpeg_quality=0.5
+movie_writer/movie_file="C:/Users/User/Desktop/28-clip.avi"
+movie_writer/fps=30
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 

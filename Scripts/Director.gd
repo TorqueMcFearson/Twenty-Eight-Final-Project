@@ -1,6 +1,7 @@
 extends Node2D
+
 ## Game Start Initialization
-## NOTE:Database.gd & Music.gd is AutoLoaded into game, so it's in ALL scenes.
+## NOTE:Global.gd & Music.gd is AutoLoaded into game, so it's in ALL scenes.
 ## So, music is always active and database is always accessible (without a node).
 
 const MAX_HANDSIZE = 8 # How many cards players can hold.
@@ -20,8 +21,9 @@ var round = 0 # Typical round counter for bidding and play stage.
 var pass_count = 0 # Typical round counter for bidding and play stage.
 var trump_suit : String # What suit the bid-winning player picked.
 var trump_revealed : bool # Trump revealed to field true/false
-	
+var can_play = false
 
+##
 # Called when the node enters the scene tree for the first time.
 func _ready(): 
 	print(drawpile)
@@ -37,16 +39,16 @@ func _ready():
 	## Debug tool: Just prints to console the draw cirds in order ##
 	var cardlist = [] 
 	for each in drawpile: 
-		var data = Database.cards.get(each)
+		var data = Global.cards.get(each)
 		cardlist.append(data.face + " of " + data.suit)
 	for each in cardlist:
 		print(each)
 	print("^Drawpile in reverse order^")
 	## ------------------Round Calling Starts-------------------------- ## 
 	#return     #<---- uncomment 'return' to start main without auto-director.
-	await get_tree().create_timer(1).timeout # Typical pause. For 1 sec.
-	_on_deal_all_pressed()						# 4 cards delt to each player.
-	await get_tree().create_timer(3).timeout
+	await get_tree().create_timer(2).timeout # Typical pause. For 1 sec.
+	await _on_deal_all_pressed()					 # 4 cards delt to each player.
+	await get_tree().create_timer(3.5).timeout
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_round() 					# Calls and waits for the Betting round.
 	await trump_round()						# Calls and waits the Trump choosing round.
@@ -54,12 +56,13 @@ func _ready():
 # We don't use cause our director does things in order, by turn, not frame.
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
-	
+
+
 func betting_round():
 	while true:		# Endless true Loop until there is a winner, then breaks out.
 		round +=1
 		print ('\n *****Round ',round, '******\n')
-		await Call_betting()						# Calls Human betting screen
+		await call_bet_window()						# Calls Human betting screen
 		await get_tree().create_timer(1).timeout
 		get_tree().call_group("Players", "ai_bid")	# Calls each AIs ai_bid() from Player.gd 
 	# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
@@ -67,7 +70,8 @@ func betting_round():
 			break									# Last bid and bidder locked in.
 	print("Winner: ", current_better.name, " Bet: ", current_bet)
 	# Once loop breaks, this function completes and _ready() continues from await.
-	
+
+
 func trump_round():
 	if current_better.human: 				# If human won, will call trump pick window.
 		print("THIS WOULD GO TO TRUMP PICK Window.") # Still on my TODO list
@@ -76,16 +80,19 @@ func trump_round():
 	var tween= get_tree().create_tween() # Slides trump card in. TODO:(AI:Face down, Human:Face up.)
 	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
 	_on_deal_all_pressed()
-	
+
+
 func trump_reveal(): # TODO trump face_up if player wins or revealed during play.
 	var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
 	$"UI/Trump Card/Trump Sprite".texture = load(assemble)
 	pass
-	
+
+
 func second_deal():
 	_on_deal_all_pressed()
-	
-func Call_betting(): # Human betting window called.
+
+
+func call_bet_window(): # Human betting window called.
 	$Player1/Hand.z_index = 5 # Players moved to front of viewport. (5 is random high number)
 	var betscene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
 	betscene.current_bid = current_bet						# Scene is informed of current bet
@@ -103,7 +110,6 @@ func Call_betting(): # Human betting window called.
 	$Player1/Hand.z_index = 0								# Return cards to normal layer.
 	betscene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
-
 
 ## THE EVER IMPORTANT DRAW CARD FUNCTION ##
 func draw_card(hand):	
@@ -144,6 +150,7 @@ func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deal
 	$Card_Fwip.pitch_scale = .69		# Reset SFX pitch when done.
 	butt_check()					# Reset buttons when done.
 
+
 func _on_discard_button_pressed(): # Discards all hands to discard pile. 
 	## NOTE: Tied to a button, no  use in real game as cards would go to trick piles, not discard.
 	## So I need to retool this into 4 player-trick decks.. or 2 team-trick decks
@@ -163,7 +170,7 @@ func _on_discard_button_pressed(): # Discards all hands to discard pile.
 			time = time+.005-(time*time)	# Decrease time between cards for speed up
 	$Card_Fwip.pitch_scale = .69			# Reset SFX pitch when done.
 	butt_check()					# Reset buttons when done.
-	
+
 ## Trigger for $flip_cards button
 func _on_flip_cards_pressed(): # Useless button for flipping cards for fun.
 	$Card_Fwip.play(.07)		# SFX
@@ -173,7 +180,6 @@ func _on_flip_cards_pressed(): # Useless button for flipping cards for fun.
 
 ## \/ Screen Buttons & State handlers \/ ##
 ## NOTE: BUTTONS are for debug, won't be in final game. Make visibile from scene tree for use
-
 # Button State handlers ##
 func butt_check():
 	if not drawpile.size(): 	# Leave draw buttons off if drawpile is empty
@@ -203,7 +209,8 @@ func _on_shuffle_pressed(): # Move IDs from Discardpile to Drawpile
 	$Card_Shuffle.play()		# SFX
 	drawpile.shuffle()			# Shuffle IDs in drawpile
 	deck_refresh()				# Visually referesh onscreen decks
-	
+
+
 func deck_refresh():	# Update labels and deck sprites. DEBUG TOOL
 	butt_on()
 	var drawpile_size = drawpile.size()		
@@ -213,6 +220,7 @@ func deck_refresh():	# Update labels and deck sprites. DEBUG TOOL
 	$DrawDeck.visible = drawpile_size		#if 0 false, else true (truthy value)
 	$Discard_Deck.visible = discardpile_size
 	$Shuffle.disabled = true
+
 
 func fade_in(delta): # Simple screen fading using lerp on "Black Fade" node.
 	var fade_mod = $"Black Fade".get_modulate() # modulate lets us set opacity.
@@ -225,6 +233,8 @@ func fade_in(delta): # Simple screen fading using lerp on "Black Fade" node.
 		$"Black Fade".set_modulate(fade_goal)	# And then just assign goal.
 		print("DONE")
 		set_process(false)	# Stop _proccess, which is calling this function every frame.
+		$"Black Fade".top_level = false
+
 
 func fade_out(delta): # Same as fade_in.. actually might just merge the two..
 	# the function that calls will change the fade goal to NOT TRANSPARENT.
@@ -259,6 +269,7 @@ func playcard(card): # Click cards are moved to their assigned playslot
 	else:		# If AI's card, prevents you from playing it.
 		print('not yours')
 
+
 func take_card(card): # An inversion of playcard() move playslot card back to hand.
 	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
 	var to_hand = card.get_node("../../Hand")
@@ -274,7 +285,8 @@ func take_card(card): # An inversion of playcard() move playslot card back to ha
 	$Card_Fwip.play(.11)
 	card.inplay = false
 	return 1
-	
+
+
 func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 	butt_off()
 	if not draw_card($Player1/Hand):
@@ -283,8 +295,11 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 	butt_check()
 	pass # Replace with function body
 
-func _on_play_card_pressed(): # Play card in play slot.. TODO:
+
+func _on_play_card_pressed(): # Play card in play slot..
 	var card = $Player1/Playslot.get_child(0)
 	if card:
 		print(card.face,' of ',card.suit, " Card Played") # Currently just prints card.
 	pass # Replace with function body.
+
+
