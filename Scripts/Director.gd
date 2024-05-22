@@ -7,7 +7,7 @@ extends Node2D
 const MAX_HANDSIZE = 8 # How many cards players can hold.
 var drawpile = range(32) # Drawpile is a stack of Integer IDs 0-31 (32 cards)
 var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
-@onready var dealerpool = [$Player1,$Player2,$Player3,$Player4] #Order of players clockwise
+@onready var dealerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
 
 ## Tween globals
@@ -15,17 +15,17 @@ var fade_goal = Color(1,1,1,0) # Used for tween and lerp fading.
 var fade_rate = .01 # Used for tween and lerp fading.
 
 # Bid round and Play round data
-@onready var current_better = $Player1 # Who bet they could win.
-var current_bet = 14 # How many tricks they bet they could win.
-var round = 0 # Typical round counter for bidding and play stage.
-var pass_count = 0 # Typical round counter for bidding and play stage.
-var trump_suit : String # What suit the bid-winning player picked.
-var trump_revealed : bool # Trump revealed to field true/false
+@onready var current_better = $Player1 		# Who bet they could win. 
+var current_bet: int = 0 			  		# How many tricks they bet they could win.
+var round: int = 0 							# Typical round counter for bidding and play stage.
+var pass_count: int = 0						# Typical pass counter for bidding and play stage.
+var trump_suit : String 					# What suit the bid-winning player picked.
+var trump_revealed : bool 					# Trump revealed to field true/false
 var can_play = false
 
 ##
 # Called when the node enters the scene tree for the first time.
-func _ready(): 
+func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
 	$"Black Fade".visible = true # Rectangle $"Black Fade" covers the screen, it's used to fade in and out.
@@ -36,19 +36,19 @@ func _ready():
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
 	$Player1.human = true
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
-	## Debug tool: Just prints to console the draw cirds in order ##
-	var cardlist = [] 
-	for each in drawpile: 
-		var data = Global.cards.get(each)
-		cardlist.append(data.face + " of " + data.suit)
-	for each in cardlist:
-		print(each)
-	print("^Drawpile in reverse order^")
+	## Debug tool: Just prints to console the draw cards in order ##
+	#var cardlist = [] 
+	#for each in drawpile: 
+		#var data = Global.cards.get(each)
+		#cardlist.append(data.face + " of " + data.suit)
+	#for each in cardlist:
+		#print(each)
+	#print("^Drawpile in reverse order^")
 	## ------------------Round Calling Starts-------------------------- ## 
 	#return     #<---- uncomment 'return' to start main without auto-director.
 	await get_tree().create_timer(2).timeout # Typical pause. For 1 sec.
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
-	await get_tree().create_timer(3.5).timeout
+	await get_tree().create_timer(.5).timeout
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_round() 					# Calls and waits for the Betting round.
 	await trump_round()						# Calls and waits the Trump choosing round.
@@ -97,8 +97,8 @@ func call_bet_window(): # Human betting window called.
 	var betscene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
 	betscene.current_bid = current_bet						# Scene is informed of current bet
 	$"Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
-	add_child(betscene)										# Add the window to the root of scene.
-	var bet = await get_node("BettingUI").bet_or_pass		# Pause until signal returns bet or pass.
+	$PopUp.add_child(betscene)										# Add the window to the root of scene.
+	var bet = await get_node("PopUp/BettingUI").bet_or_pass		# Pause until signal returns bet or pass.
 	if bet: 												# bet returns value (true)
 		pass_count = 0										# bets break the pass streak.
 		current_bet = bet									# store players returned bet

@@ -22,7 +22,7 @@ func _ready():
 	else:
 		face_down()
 	$Label.visible = false
-	$Label.text = str((value if value else "No")) + " Point" + ("" if value == 1 else "s")
+	$Label.text = (str(value) if value else "No") + " Point" + ("" if value == 1 else "s")
 	if value == 0:
 		$Label.modulate = Color(0.513, 0.513, 0.513, 0.99)
 	else:
@@ -42,8 +42,14 @@ func grow_and_go(to_hand):
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
 	tween.tween_property(self,'scale',Vector2(1,1),.35).set_ease(Tween.EASE_IN)
+	
+	# NOTE: As seen below, '\' lets you put continuous code on the next line. 
+	# WARNING: Don't accidentaly add space after! '\ '
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_BACK)
+	tween2.tween_property(self,'position',slot,.5)\
+			.set_ease(Tween.EASE_IN_OUT)\
+			.set_trans(Tween.TRANS_BACK)
+			
 
 func go():
 	tweening = true
