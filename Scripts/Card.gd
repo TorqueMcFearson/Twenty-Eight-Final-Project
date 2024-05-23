@@ -30,13 +30,13 @@ func _ready():
 		$Label.modulate = Color.from_hsv(0.300+hue_adjust,.9,1)
 
 
-func _process(delta):
+func _process(_delta):
 	
 	#if lifted:
 		#global_position = get_global_mouse_position() - offset
 	pass
 	
-func grow_and_go(to_hand):
+func grow_and_go():
 	tweening = true
 	scale = Vector2(0,0)
 	var tween = create_tween()
@@ -55,18 +55,18 @@ func go():
 	tweening = true
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
-	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(6)
+	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(10)
+	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
 
 func go_and_die():
 	tweening = true
 	slot = ($"../../../Discard_Deck".get_global_position() - Vector2(-64,-64))
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
-	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(6)
+	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'global_position',slot,.56).set_ease(Tween.EASE_IN).set_trans(10)
+	tween2.tween_property(self,'global_position',slot,.56).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	await tween2.finished
 	get_parent().remove_child(self)
 	queue_free()

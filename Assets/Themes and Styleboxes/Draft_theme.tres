@@ -1,0 +1,27 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bsh455r8l6s8j"]
+
+[sub_resource type="Gradient" id="Gradient_sisph"]
+offsets = PackedFloat32Array(0.0454545, 0.329545, 0.912879, 1)
+colors = PackedColorArray(0.80025, 0.97, 0.7663, 0.313726, 0.5472, 0.72, 0.58176, 0.364706, 0.1363, 0.47, 0.458877, 0.470588, 0.17, 0.5, 0.456, 0.517647)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ncfox"]
+gradient = SubResource("Gradient_sisph")
+width = 160
+height = 160
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.987179, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w7lac"]
+texture = SubResource("GradientTexture2D_ncfox")
+
+[resource]
+HBoxContainer/constants/separation = 4
+Label/colors/font_outline_color = Color(0, 0, 0, 0.937255)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.313726)
+Label/constants/outline_size = 5
+Label/constants/shadow_offset_x = 0
+Label/constants/shadow_offset_y = 0
+Label/constants/shadow_outline_size = 9
+Label/font_sizes/font_size = 26
+Panel/styles/panel = SubResource("StyleBoxTexture_w7lac")

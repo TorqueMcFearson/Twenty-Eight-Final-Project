@@ -46,14 +46,15 @@ func _ready():
 	#print("^Drawpile in reverse order^")
 	## ------------------Round Calling Starts-------------------------- ## 
 	#return     #<---- uncomment 'return' to start main without auto-director.
-	await get_tree().create_timer(2).timeout # Typical pause. For 1 sec.
+	await get_tree().create_timer(1.5).timeout # Typical pause. For 1 sec.
+	await round_message("Match Begins!")
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
 	await get_tree().create_timer(.5).timeout
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_round() 					# Calls and waits for the Betting round.
 	await trump_round()						# Calls and waits the Trump choosing round.
+	
 
-# We don't use cause our director does things in order, by turn, not frame.
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
 
@@ -64,8 +65,10 @@ func betting_round():
 		print ('\n *****Round ',round, '******\n')
 		await call_bet_window()						# Calls Human betting screen
 		await get_tree().create_timer(1).timeout
-		get_tree().call_group("Players", "ai_bid")	# Calls each AIs ai_bid() from Player.gd 
-	# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
+		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
+		for player in dealerpool:
+			await player.ai_bid()
+		# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
 		if pass_count == 3:							# If 3 pass in a row, break loop.
 			break									# Last bid and bidder locked in.
 	print("Winner: ", current_better.name, " Bet: ", current_bet)
@@ -111,6 +114,19 @@ func call_bet_window(): # Human betting window called.
 	betscene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
 
+
+func round_message(message):
+	var label = $"Round Message"
+	label.text = message
+	await get_tree().create_tween()\
+			.tween_property(label,"modulate",Color(1, 1, 1,1),.35)\
+			.set_ease(Tween.EASE_IN_OUT).finished
+	await get_tree().create_tween()\
+			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
+			.set_ease(Tween.EASE_IN_OUT)\
+			.set_delay(1.25).finished
+	
+	
 ## THE EVER IMPORTANT DRAW CARD FUNCTION ##
 func draw_card(hand):	
 	if not drawpile.size():					# If drawpile array is empty
@@ -126,7 +142,7 @@ func draw_card(hand):
 	new_card.slot = Vector2(children*40,0) # Position stored relative to amount of cards in hand.
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
-	new_card.grow_and_go(hand) # Tween animations of scale-up and move-to stored position in hand.
+	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
 	$Card_Fwip.play(.11)		# Card SFX
 	$DrawDeck/Amount.text = str(drawpile.size()) # Refresh the amount label on drawdeck.
 	if drawpile.size() == 0:					# If that was last card, make drawdeck disappear.
@@ -277,7 +293,6 @@ func take_card(card): # An inversion of playcard() move playslot card back to ha
 	if children > 7:
 		print('Hand is full, dumbass')
 		return 0
-	var x_offset = children
 	card.reparent(to_hand,true)
 	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot

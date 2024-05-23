@@ -1,0 +1,270 @@
+[gd_scene load_steps=19 format=3 uid="uid://sdorxyjo20iq"]
+
+[ext_resource type="Script" path="res://Assets/Themes and Styleboxes/Trump Pick.gd" id="1_4fq8m"]
+[ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/Spades_trump.png" id="2_pw46y"]
+[ext_resource type="Texture2D" uid="uid://uv5gnwhg2i0t" path="res://Assets/Cards/PNG/Cards/Hearts_trump.png" id="3_76cql"]
+[ext_resource type="Texture2D" uid="uid://b66sq5xgdop7o" path="res://Assets/Cards/PNG/Cards/Diamonds_trump.png" id="4_x2tma"]
+[ext_resource type="Texture2D" uid="uid://bn3nc238ex8ey" path="res://Assets/Cards/PNG/Cards/Clubs_trump.png" id="5_pd37e"]
+
+[sub_resource type="SystemFont" id="SystemFont_4aj7e"]
+font_names = PackedStringArray("Courier New")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onpiw"]
+bg_color = Color(0.259925, 0.37, 0.2405, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.301835, 0.53, 0.1961, 1)
+border_blend = true
+shadow_color = Color(0, 0, 0, 0.262745)
+shadow_size = 7
+shadow_offset = Vector2(-5, 7)
+
+[sub_resource type="Gradient" id="Gradient_kjl4k"]
+offsets = PackedFloat32Array(0.86087, 0.956522, 1)
+colors = PackedColorArray(0.2236, 0.251507, 0.26, 0, 0.165575, 0.277971, 0.214964, 0.407108, 0.0705882, 0.14902, 0.101961, 0.454902)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mq5un"]
+gradient = SubResource("Gradient_kjl4k")
+fill = 2
+fill_from = Vector2(0.51, 0.51)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t71eg"]
+texture = SubResource("GradientTexture2D_mq5un")
+
+[sub_resource type="SystemFont" id="SystemFont_ia3h7"]
+font_names = PackedStringArray("Ink Free", "Fantasy")
+
+[sub_resource type="SystemFont" id="SystemFont_byqum"]
+font_names = PackedStringArray("Ink Free")
+font_italic = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p4n3c"]
+content_margin_left = 150.0
+content_margin_top = 200.0
+content_margin_right = 0.0
+texture = ExtResource("5_pd37e")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hwq3h"]
+content_margin_left = 150.0
+content_margin_right = 0.0
+texture = ExtResource("4_x2tma")
+modulate_color = Color(0.8635, 1, 0.79, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5w1sr"]
+content_margin_left = 150.0
+content_margin_top = 200.0
+content_margin_right = 0.0
+texture = ExtResource("4_x2tma")
+modulate_color = Color(0.98, 0.947987, 0.4998, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ndx57"]
+content_margin_left = 150.0
+content_margin_top = 200.0
+content_margin_right = 0.0
+texture = ExtResource("3_76cql")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iatws"]
+content_margin_left = 150.0
+content_margin_top = 200.0
+content_margin_right = 0.0
+texture = ExtResource("2_pw46y")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10yfu"]
+content_margin_left = 150.0
+content_margin_top = 200.0
+content_margin_right = 0.0
+texture = ExtResource("4_x2tma")
+
+[node name="Trump Pick" type="Control"]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_4fq8m")
+
+[node name="Current Bet" type="Panel" parent="."]
+modulate = Color(0.86, 0.86, 0.86, 0.976471)
+layout_mode = 0
+offset_left = 454.0
+offset_top = 140.0
+offset_right = 768.0
+offset_bottom = 191.0
+scale = Vector2(0.782695, 0.782695)
+
+[node name="Amount" type="Label" parent="Current Bet"]
+layout_mode = 2
+offset_left = -5.0
+offset_right = 314.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_onpiw")
+text = "Current Bet: 99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bet Please" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 332.0
+offset_top = 191.0
+offset_right = 820.0
+offset_bottom = 446.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_onpiw")
+
+[node name="Gradient" type="Panel" parent="Bet Please"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 483.0
+offset_bottom = 250.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_t71eg")
+
+[node name="Amount" type="Label" parent="Bet Please"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 2
+offset_left = 199.0
+offset_top = 66.0
+offset_right = 288.0
+offset_bottom = 148.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_ia3h7")
+theme_override_font_sizes/font_size = 60
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Difficult" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = -194.0
+offset_top = -15.0
+offset_right = 284.0
+offset_bottom = 21.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_font_sizes/font_size = 23
+text = "Impossible!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Bet Please"]
+layout_mode = 2
+offset_left = 127.0
+offset_top = 17.0
+offset_right = 360.0
+offset_bottom = 68.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_font_sizes/font_size = 31
+text = "Raise or Pass:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bet Please"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 17.0
+offset_top = -40.5
+offset_right = 175.0
+offset_bottom = 159.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.701583, 0.701583)
+alignment = 1
+
+[node name="Clubs" type="Button" parent="Bet Please"]
+layout_mode = 2
+offset_top = 58.0
+offset_right = 150.0
+offset_bottom = 258.0
+scale = Vector2(0.628, 0.628)
+pivot_offset = Vector2(75.495, 99.8786)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_p4n3c")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hwq3h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5w1sr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_hwq3h")
+
+[node name="Hearts" type="Button" parent="Bet Please"]
+layout_mode = 2
+offset_left = 112.0
+offset_top = 58.0
+offset_right = 262.0
+offset_bottom = 258.0
+scale = Vector2(0.628, 0.628)
+pivot_offset = Vector2(75.495, 99.8786)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_ndx57")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hwq3h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5w1sr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_hwq3h")
+
+[node name="Spades" type="Button" parent="Bet Please"]
+layout_mode = 2
+offset_left = 224.0
+offset_top = 58.0
+offset_right = 374.0
+offset_bottom = 258.0
+scale = Vector2(0.628, 0.628)
+pivot_offset = Vector2(75.495, 99.8786)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_iatws")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hwq3h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5w1sr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_hwq3h")
+
+[node name="Diamonds" type="Button" parent="Bet Please"]
+layout_mode = 2
+offset_left = 336.0
+offset_top = 58.0
+offset_right = 486.0
+offset_bottom = 258.0
+scale = Vector2(0.628, 0.628)
+pivot_offset = Vector2(75.495, 99.8786)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_10yfu")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hwq3h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5w1sr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_hwq3h")
+
+[connection signal="mouse_entered" from="Bet Please/Clubs" to="." method="_on_button_mouse_entered" binds= ["Clubs"]]
+[connection signal="mouse_exited" from="Bet Please/Clubs" to="." method="_on_button_mouse_exited" binds= ["Clubs"]]
+[connection signal="mouse_entered" from="Bet Please/Hearts" to="." method="_on_button_mouse_entered" binds= ["Hearts"]]
+[connection signal="mouse_exited" from="Bet Please/Hearts" to="." method="_on_button_mouse_exited" binds= ["Hearts"]]
+[connection signal="pressed" from="Bet Please/Hearts" to="." method="_on_pressed" binds= ["Hearts"]]
+[connection signal="mouse_entered" from="Bet Please/Spades" to="." method="_on_button_mouse_entered" binds= ["Spades"]]
+[connection signal="mouse_exited" from="Bet Please/Spades" to="." method="_on_button_mouse_exited" binds= ["Spades"]]
+[connection signal="pressed" from="Bet Please/Spades" to="." method="_on_pressed" binds= ["Spades"]]
+[connection signal="mouse_entered" from="Bet Please/Diamonds" to="." method="_on_button_mouse_entered" binds= ["Diamonds"]]
+[connection signal="mouse_exited" from="Bet Please/Diamonds" to="." method="_on_button_mouse_exited" binds= ["Diamonds"]]
+[connection signal="pressed" from="Bet Please/Diamonds" to="." method="_on_pressed" binds= ["Diamonds"]]

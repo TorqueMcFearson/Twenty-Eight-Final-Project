@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uv5gnwhg2i0t"
-path="res://.godot/imported/heart_trump.png-831c950872669813a9c7c14685ad229c.ctex"
+uid="uid://ddemk4maaw1hg"
+path="res://.godot/imported/UIpack_vector.svg-9e7e813e5be485d7fa4baf9039b4325d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/PNG/Cards/heart_trump.png"
-dest_files=["res://.godot/imported/heart_trump.png-831c950872669813a9c7c14685ad229c.ctex"]
+source_file="res://Assets/FlatUI/UIpack_vector.svg"
+dest_files=["res://.godot/imported/UIpack_vector.svg-9e7e813e5be485d7fa4baf9039b4325d.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
