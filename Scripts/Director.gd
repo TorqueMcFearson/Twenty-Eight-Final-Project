@@ -53,6 +53,8 @@ func _ready():
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_round() 					# Calls and waits for the Betting round.
 	await trump_round()						# Calls and waits the Trump choosing round.
+	for each in $Player1/Hand.get_children():
+		each.trump_check()
 	
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
@@ -63,7 +65,7 @@ func betting_round():
 	while true:		# Endless true Loop until there is a winner, then breaks out.
 		round +=1
 		print ('\n *****Round ',round, '******\n')
-		await call_bet_window()						# Calls Human betting screen
+		await call_bet_window()					# Calls Human betting screen
 		await get_tree().create_timer(1).timeout
 		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
 		for player in dealerpool:
@@ -76,12 +78,11 @@ func betting_round():
 
 
 func trump_round():
-	if current_better.human: 				# If human won, will call trump pick window.
-		print("THIS WOULD GO TO TRUMP PICK Window.") # Still on my TODO list
-	else:									# If AI won, AI picks a trump card.
-		trump_suit = current_better.pick_trump() # Calls object's pick_trump function from player.gd
-	var tween= get_tree().create_tween() # Slides trump card in. TODO:(AI:Face down, Human:Face up.)
-	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+	trump_suit = await current_better.pick_trump() 			# Calls for the bid winner to process trump choice (Player.gd)
+	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
+	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75)\
+			.set_ease(Tween.EASE_OUT)\
+			.set_trans(Tween.TRANS_SPRING)
 	_on_deal_all_pressed()
 
 
@@ -96,11 +97,11 @@ func second_deal():
 
 
 func call_bet_window(): # Human betting window called.
-	$Player1/Hand.z_index = 5 # Players moved to front of viewport. (5 is random high number)
-	var betscene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
-	betscene.current_bid = current_bet						# Scene is informed of current bet
+	$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
+	var bet_scene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
 	$"Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
-	$PopUp.add_child(betscene)										# Add the window to the root of scene.
+	bet_scene.current_bid = current_bet
+	$PopUp.add_child(bet_scene)										# Add the window to the root of scene.
 	var bet = await get_node("PopUp/BettingUI").bet_or_pass		# Pause until signal returns bet or pass.
 	if bet: 												# bet returns value (true)
 		pass_count = 0										# bets break the pass streak.
@@ -111,7 +112,7 @@ func call_bet_window(): # Human betting window called.
 		pass_count += 1										# incremeant pass streak.
 		print('Player Passed! Count:', pass_count)
 	$Player1/Hand.z_index = 0								# Return cards to normal layer.
-	betscene.queue_free()									# Kill the betting window.
+	bet_scene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
 
 
@@ -318,3 +319,12 @@ func _on_play_card_pressed(): # Play card in play slot..
 	pass # Replace with function body.
 
 
+func _on_texture_button_2_toggled(toggled_on):
+	print ('engine timescale: ',Engine.time_scale)
+	if toggled_on:
+		Engine.time_scale = 2.5
+
+	else:
+		Engine.time_scale = 1
+
+	pass # Replace with function body. # Replace with function body.

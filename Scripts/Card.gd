@@ -13,6 +13,7 @@ var inplay := false			# Wether is currently in the play slot.
 var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 var slot := Vector2(0,0)
+var trump := false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -91,11 +92,23 @@ func face_up():
 	get_node("CardBack").texture = load(cardasssemble)
 	face_show = true
 	pass
-
+	
+	
+func trump_check():
+	if suit == $"/root/Director".trump_suit:
+		#modulate = Color(1, 0.989, 0.95)
+		$CardBack/Panel.visible = true
+		trump = true
+		
+		
+		
 func _on_reference_rect_mouse_entered():
 	if not tweening:
 		if face_show:
 			$Label.visible = true
+			if trump:
+				$"Trump Label".visible = true
+				$CardBack.set_self_modulate(Color(1, 0.96000003814697, 0.75999999046326))
 		if not inplay:
 			position.y = -15
 		
@@ -103,6 +116,9 @@ func _on_reference_rect_mouse_exited():
 	if not tweening:
 		if face_show:
 			$Label.visible = false
+			if trump:
+				$"Trump Label".visible = false
+				$CardBack.set_self_modulate(Color(1, 1, 1))
 		if not inplay:
 			position.y = 0
 	

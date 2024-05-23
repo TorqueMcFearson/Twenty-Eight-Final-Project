@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=23 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
 [ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
+[ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
+[ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
@@ -292,10 +294,10 @@ offset = Vector2(12, 10)
 
 [node name="Label" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 4.0
-offset_top = -48.0
-offset_right = 238.0
-offset_bottom = 26.0
+offset_left = 15.9993
+offset_top = -52.0
+offset_right = 249.999
+offset_bottom = 22.0
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -306,10 +308,10 @@ text = "Trump"
 
 [node name="Label2" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 25.3334
-offset_top = 211.667
-offset_right = 138.333
-offset_bottom = 285.667
+offset_left = 37.3327
+offset_top = 207.667
+offset_right = 150.332
+offset_bottom = 281.667
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -454,6 +456,18 @@ texture_normal = ExtResource("17_bu8k6")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="TextureButton2" type="TextureButton" parent="Pause slot"]
+layout_mode = 0
+offset_left = 1045.0
+offset_top = 15.0
+offset_right = 1084.0
+offset_bottom = 50.0
+toggle_mode = true
+texture_normal = ExtResource("19_m4own")
+texture_pressed = ExtResource("20_rf60e")
+ignore_texture_size = true
+stretch_mode = 0
+
 [node name="Black Fade" type="ColorRect" parent="."]
 visible = false
 top_level = true
@@ -477,3 +491,4 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
+[connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]

@@ -65,16 +65,25 @@ func player_message(message):
 	get_tree().create_tween()\
 			.tween_property(label,"position",position-rise,.35)\
 			.set_ease(Tween.EASE_IN)\
-			.set_delay(.8)	
+			.set_delay(.4)	
 	await get_tree().create_tween()\
 			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
-			.set_delay(.8).finished
+			.set_delay(.4).finished
 
 func pick_trump():
 	if human:
-		pass
+		$Hand.z_index = 5 # Players moved to front of viewport. (5 is random high number)
+		var trump_pick_scene = load("res://Trump Pick.tscn").instantiate() # Betting window readied.						# Scene is informed of current bet
+		$"../Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
+		$"../PopUp".add_child(trump_pick_scene)						# Add the window to the root of scene.
+		var trump = await get_node("../PopUp/Trump Pick").trump_picked
+		 # Pause until signal returns bet or pass.
+		$Hand.z_index = 0								# Return cards to normal layer.
+		trump_pick_scene.queue_free()									# Kill the betting window.
+		$"../Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
+		return trump
+	
 	else:
 		var trump = matches.find_key(matches.values().max())
-		print(self.name, ' has chose the trump card ', trump)
 		return trump
