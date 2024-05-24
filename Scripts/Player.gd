@@ -11,7 +11,7 @@ var aggression = .5 # Modifies how range of how high they'll bet.
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	aggression = randf_range(.5,1)
+	aggression = randf_range(.5,.8)
 	pass # Replace with function body.
 
 
@@ -37,11 +37,12 @@ func ai_bid():
 		return
 	var current_bet = Director.current_bet
 	var message : String
+	var min_bet = current_bet+1
 	if current_bet < bet_goal:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
-		var ai_bet = randi_range(current_bet+1,(bet_goal-current_bet)*aggression+current_bet)
-		print(self.name,' bets:', ai_bet)
+		var ai_bet = randi_range(min_bet,(bet_goal-min_bet)*aggression+min_bet)
+		print(self.name,' bets:', ai_bet, ' for bet range of ', range(min_bet,(bet_goal-min_bet)*aggression+min_bet+1))
 		Director.current_bet  = ai_bet
 		Director.pass_count = 0
 		Director.current_better = $"."
