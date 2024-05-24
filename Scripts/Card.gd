@@ -63,10 +63,16 @@ func go():
 
 func go_and_die():
 	tweening = true
-	slot = ($"../../../Discard_Deck".get_global_position() - Vector2(-64,-64))
+	get_tree().create_tween().tween_property(self,'global_rotation',0,.45)\
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE).finished
+			
+	await get_tree().create_tween().tween_property(self,'global_position',Vector2(531,237),.45)\
+			.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).finished
+			
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
 	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(Tween.TRANS_ELASTIC)
+	
 	var tween2 = create_tween()
 	tween2.tween_property(self,'global_position',slot,.56).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	await tween2.finished
@@ -127,7 +133,7 @@ func _on_reference_rect_mouse_exited():
 
 
 func _on_reference_rect_gui_input(event): # A click event
-	if Global.cards_playable and not tweening and not disabled:
+	if Global.cards_playable and not tweening and not disabled and $"../..".human:
 		if event is InputEventMouseButton and event.pressed :
 			if inplay == false:
 				get_node('/root/Director').playcard(self)
@@ -138,7 +144,8 @@ func _on_reference_rect_gui_input(event): # A click event
 
 
 func enable_card():
-	pass
+	disabled = false
+	modulate = Color(1,1,1)
 	
 func disable_card():
 	disabled = true

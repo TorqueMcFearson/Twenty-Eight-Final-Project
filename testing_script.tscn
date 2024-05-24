@@ -3,16 +3,13 @@
 [sub_resource type="GDScript" id="GDScript_yvhe7"]
 script/source = "extends Node
 
+var testarray : Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var suit = \"Club\"
-	var suit2 = \"Spade\"
-	if \"Spade\" in [suit,suit2]:
-		print('true')
-		print([suit,suit2])
-	pass # Replace with function body.
+	
 
+	print(testarray)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -21,3 +18,9 @@ func _process(delta):
 
 [node name="Node" type="Node"]
 script = SubResource("GDScript_yvhe7")
+
+[node name="ham1" type="Node2D" parent="." groups=["Ham Squad"]]
+
+[node name="ham2" type="Node2D" parent="." groups=["Ham Squad"]]
+
+[node name="ham3" type="Node2D" parent="." groups=["Ham Squad"]]

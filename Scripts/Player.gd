@@ -1,6 +1,6 @@
 extends Node2D
 
-var held_suits = {}
+var held_suits := {}
 var points = 0
 var bet_goal = 0
 var human = false
@@ -21,6 +21,7 @@ func _process(_delta):
 
 
 func ready_bid():
+	held_suits.clear()
 	for card in $Hand.get_children():
 		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
 		points += card.value
@@ -94,38 +95,62 @@ func pick_trump():
 # 
 func play_turn():
 	if human:
-		print(director.trick_suit)
 		Global.cards_playable = true
-		if true: #self != director.dealer
-			disable_cards()
+		if self != director.dealer:
+			await disable_cards()
 		await $"../Play Card".pressed
+		var card = $Playslot.get_child(0)
+		held_suits[card.suit] -= 1
+		if self == director.dealer:
+			director.trick_suit = $Playslot.get_child(0).suit
+			print('trick-suit set to: ',director.trick_suit)
+		Global.cards_playable = false
+			
 	else:
-		pass
+		if self != director.dealer:
+			print(self," disabling cards")
+			disable_cards()
+		var cards = get_node("Hand").get_children()
+		var playable_cards = []
+		for card in cards:
+			if not card.disabled:
+				playable_cards.append(card)
+		playable_cards.shuffle()
+		var card = playable_cards.front()
+		card.face_up()
+		await director.playcard(card)
+		held_suits[card.suit] -= 1
+		if self == director.dealer:
+			director.trick_suit = $Playslot.get_child(0).suit
 
 func disable_cards():
-	var active_suits: Array[String] = [director.trick_suit]
 	var cards = get_node("Hand").get_children()
-	if director.trump_reveal:
-		active_suits.append(director.trump_suit)
-	print("active: ",active_suits, " held: ", held_suits)
-	if active_suits.any(func(x): return x in held_suits.keys()):
-		print('active suits found in hand')
-		print('Amount of cards: ',cards.size())
+	print("Looking for: ",director.trick_suit, " in: ", held_suits)
+	print("Looking for: ",director.trump_suit, " in: ", held_suits) if director.trump_revealed else 1
+	if held_suits.get(director.trick_suit):
+		print("Trick found")
 		for card in cards:
-			if card.suit in active_suits:
-				print (card.suit, ' is ', active_suits)
+			if card.suit == director.trick_suit:
+				pass
 			else:
-				print (card.suit, ' is not in ', active_suits)
 				card.disable_card()
+	elif director.trump_revealed and held_suits.get(director.trump_suit):
+		print("Trump found")
+		for card in cards:
+			if card.suit == director.trump_suit:
+				pass
+			else:
+				card.disable_card()
+	elif director.trump_revealed:
+		pass
 	else:
-		if not director.trump_revealed:
-			print("I need to see the trump")
-			director.trump_reveal()
-			disable_cards()
-			return
+		print("I need to see the trump")
+		director.trump_reveal()
+		director.round_message(str("Trump Requested by", self.name))
+		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 0.60)
+		disable_cards()
 
-func testfunc(x):
-	print("testing testfunc: ", )
+
 
 func enable_cards():
 	var active_suits = [director.trick_suit]

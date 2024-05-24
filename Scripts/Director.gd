@@ -15,16 +15,26 @@ var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
 var fade_goal = Color(1,1,1,0) # Used for tween and lerp fading.
 var fade_rate = .01 # Used for tween and lerp fading.
 
-# Bid round and Play round data
+# The Bid_Stage Data
 @onready var current_better = $Player1 		# Who bet they could win. 
 var current_bet: int = 0 			  		# How many tricks they bet they could win.
 var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
-var trump_revealed : bool 					# Trump revealed to field true/false
+var trump_revealed := false 					# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
-var trick_suit : String = "Clubs"
+
+# The Trick Data
+var highest_rank : int
+var trick_suit : String
+var trick_winner = ["Null",0]
 
 
+
+
+
+func timer(x):
+	return get_tree().create_timer(x).timeout
+	
 func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
@@ -48,17 +58,18 @@ func _ready():
 
 
 ## ------------------Round Calling Starts-------------------------- ## 
-func match_start():
+func match_start(): 
 	#return     #<---- uncomment 'return' to start main without auto-director.
-	await get_tree().create_timer(1.5).timeout # Typical pause. For 1 sec.
+	await timer(1.5) # Typical pause. For 1 sec.
 	await round_message("Match Begins!")
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
-	await get_tree().create_timer(.5).timeout
+	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_stage() 					# Calls and waits for the Betting round.
 	await trump_stage()						# Calls and waits the Trump choosing round.
 	#for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
 		#each.trump_check()					# Enable to highlight trumps when player wins
+	get_tree().call_group("Players", "ready_bid")
 	await game_stage()
 	
 
@@ -108,6 +119,45 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 func second_deal():
 	_on_deal_all_pressed()
 
+func game_stage():
+	for n in 8:
+		for hand in handpool:
+			for card in hand.get_children():
+				card.enable_card()
+		await timer(1)
+		var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
+		for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
+			var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
+			print('\n',player,"'s turn!")
+			await player.play_turn()
+			print(player,"'s turn finished!")					# Calls to the player to to play a card.
+			await timer(1.5)
+		print('*** Trick Complete ***\nStarting scoring.. trick_suit %s, ')
+		i = 0
+		for playslot in get_tree().get_nodes_in_group('Playslots'):
+			var player = playslot.get_parent()
+			var card = playslot.get_child(0)
+			print(player.name, " plays ", card.face, card.suit, ' worth ', card.rank)
+			if card.suit == trick_suit and card.rank >= trick_winner[1]:
+				print(player,card.rank," beats ", trick_winner)
+				trick_winner = [player,card.rank]
+			elif card.suit == trump_suit and trump_revealed:
+				print("Trump discovered during score")
+				trick_suit = trump_suit
+		for playslot in get_tree().get_nodes_in_group('Playslots'):
+			print()
+			var card = playslot.get_child(0)
+			card.slot = (trick_winner[0].get_node("Hand").to_global(Vector2(250,400)))
+			card.go_and_die()
+			await timer(0.08)
+		print("winner",trick_winner)
+		round_message(str(trick_winner[0].name, " wins!"))
+		dealer = trick_winner[0]
+		await timer(.6)
+	
+	
+	
+	
 
 func call_bet_window(): # Human betting window called.
 	$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
@@ -128,14 +178,7 @@ func call_bet_window(): # Human betting window called.
 	bet_scene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
 
-func game_stage():
-	var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
-	for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
-		var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
-		print(player,"'s turn!")
-		await player.play_turn()
-		print(player,"'s turn finished!")					# Calls to the player to to play a card.
-	pass
+
 
 
 func round_message(message):
@@ -291,22 +334,21 @@ func playcard(card): # Click cards are moved to their assigned playslot
 	if playslot.get_child_count():				# If playslot has card, cancel function.
 		return 
 	var hand = card.get_parent()				# store hand object
-	if player.human: 							# checks if Player is human.
-		var slot = Vector2(0,0)					# stores a base position.
-		card.slot = slot						# Updates the card's variable for upcoming tween.
-		card.reparent(playslot)					# Moves card object from hand to playslot
-		card.go()								# Tweens to playslot's base position (0,0)
-		card.inplay = true						# Set flag in objects variables.
-		card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
-		$Card_Fwip.play()						# SFX
-		for each in hand.get_children():		# For each card still in hand
-			each.slot = slot					# Update card with new spot in hand.
-			each.go()							# Tween them there.
-			slot += Vector2(40,0)				# Increase for next card.
-		get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,1),.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO).set_delay(.25)
+ 							# checks if Player is human.
+	var slot = Vector2(0,0)					# stores a base position.
+	card.slot = slot						# Updates the card's variable for upcoming tween.
+	card.reparent(playslot)					# Moves card object from hand to playslot
+	card.go()								# Tweens to playslot's base position (0,0)
+	card.inplay = true						# Set flag in objects variables.
+	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
+	$Card_Fwip.play()						# SFX
+	for each in hand.get_children():		# For each card still in hand
+		each.slot = slot					# Update card with new spot in hand.
+		each.go()							# Tween them there.
+		slot += Vector2(40,0)				# Increase for next card.
+	await get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,1),.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO).set_delay(.25)
 		# ^This fades in a Play Card button I'm working on.. to lock in your decision. ##
-	else:		# If AI's card, prevents you from playing it.
-		print('not yours')
+
 
 
 func take_card(card): # An inversion of playcard() move playslot card back to hand.
@@ -338,6 +380,8 @@ func _on_play_card_pressed(): # Play card in play slot..
 	var card = $Player1/Playslot.get_child(0)
 	if card:
 		print(card.face,' of ',card.suit, " Card Played") # Currently just prints card.
+	$"Play Card".disabled
+	
 	pass # Replace with function body.
 
 
