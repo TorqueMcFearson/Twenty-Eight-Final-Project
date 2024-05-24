@@ -1,12 +1,12 @@
 extends Node2D
-
 var held_suits := {}
 var points = 0
+var value = 0
 var bet_goal = 0
 var human = false
 var aggression = .5 # Modifies how range of how high they'll bet. 
 @onready var label = $"../Player Message" 
-@onready var Director = $".."
+@onready var Director = $"/root/Director"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,11 +24,11 @@ func ready_bid():
 	held_suits.clear()
 	for card in $Hand.get_children():
 		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
-		points += card.value
+		value += card.value
 	if human:
 		return
 	var suit_match = held_suits.values().max()
-	bet_goal = (suit_match * 2) + (points/2) + 14
+	bet_goal = (suit_match * 2) + (value/2) + 14
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
 	
 	
@@ -95,7 +95,7 @@ func pick_trump():
 # 
 func play_turn():
 	if human:
-		await Director.round_message("Your Turn", 2)
+		Director.round_message("Your Turn", 2)
 		Global.cards_playable = true
 		if self != Director.dealer:
 			await disable_cards()
@@ -147,8 +147,8 @@ func disable_cards():
 	else:
 		print("I need to see the trump")
 		Director.trump_reveal()
-		Director.round_message(str("Trump Requested by", self.name),1.35)
-		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 0.60)
+		Director.round_message(str("Trump Requested by ", self.name),1.35)
+		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 1)
 		$"../UI/Trump Card/Label".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		disable_cards()

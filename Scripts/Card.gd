@@ -1,4 +1,5 @@
 extends Node2D
+@onready var Director = $"/root/Director"
 
 
 
@@ -14,7 +15,7 @@ var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 var slot := Vector2(0,0)
 var trump := false
-var disabled := false
+var disabled := true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -140,9 +141,10 @@ func _on_reference_rect_gui_input(event): # A click event
 		if event is InputEventMouseButton and event.pressed :
 			if inplay == false:
 				get_node('/root/Director').playcard(self)
+				Director.show_play_button()
 			else:
 				get_node('/root/Director').take_card(self)
-			
+				Director.remove_play_button()
 		pass # Replace with function body.
 
 

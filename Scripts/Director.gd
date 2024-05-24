@@ -7,6 +7,8 @@ extends Node2D
 const MAX_HANDSIZE = 8 # How many cards players can hold.
 var drawpile = range(32) # Drawpile is a stack of Integer IDs 0-31 (32 cards)
 var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
+@onready var team1 = ["Player1","Player3"]
+@onready var team2 = ["Player2","Player4"]
 @onready var dealer = $Player1
 @onready var playerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
@@ -20,21 +22,17 @@ var fade_rate = .01 # Used for tween and lerp fading.
 var current_bet: int = 0 			  		# How many tricks they bet they could win.
 var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
-var trump_revealed := false 					# Trump revealed to field true/false
+var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
 
 # The Trick Data
-var highest_rank : int
 var trick_suit : String
 var trick_winner = ["Null",0]
 
 
-
-
-
-func timer(x):
+func timer(x): # Shortcut for a wait timer because the code below is too long.
 	return get_tree().create_timer(x).timeout
-	
+
 func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
@@ -73,7 +71,6 @@ func match_start():
 	await game_stage()
 	
 
-
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
 
@@ -97,12 +94,14 @@ func betting_stage():
 
 
 func trump_stage():
+	var trump_sprite = $"UI/Trump Card/Trump Sprite"
 	trump_suit = await current_better.pick_trump() 			# Calls for the bid winner to process trump choice (Player.gd)
 	if current_better.human:
 		var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
-		$"UI/Trump Card/Trump Sprite".texture = load(assemble)
+		trump_sprite.texture = load(assemble)
+		trump_sprite.modulate = Color(0.61000001430511, 0.61000001430511, 0.61000001430511)
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
-	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75)\
+	tween.tween_property(trump_sprite,'position',Vector2(0,0),.75)\
 			.set_ease(Tween.EASE_OUT)\
 			.set_trans(Tween.TRANS_SPRING)
 	_on_deal_all_pressed()
@@ -119,45 +118,81 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 func second_deal():
 	_on_deal_all_pressed()
 
-func game_stage():
-	for n in 8:
-		for hand in handpool:
-			for card in hand.get_children():
-				card.enable_card()
-		await timer(1)
-		var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
-		for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
-			var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
-			print('\n',player,"'s turn!")
-			await player.play_turn()
-			print(player,"'s turn finished!")					# Calls to the player to to play a card.
-			await timer(1.5)
-		print('*** Trick Complete ***\nStarting scoring.. trick_suit %s, ')
-		i = 0
-		for playslot in get_tree().get_nodes_in_group('Playslots'):
-			var player = playslot.get_parent()
-			var card = playslot.get_child(0)
-			print(player.name, " plays ", card.face, card.suit, ' worth ', card.rank)
-			if card.suit == trick_suit and card.rank >= trick_winner[1]:
+func game_stage(): # A loop of 8 tricks is played.
+	for n in 8:									# 8 cards per hand, 8 rounds per game.
+		await play_trick()
+	var betting_team
+	var team_points = 0
+	if current_better.name in team1:
+		betting_team = team1
+	else:
+		betting_team = team2
+		
+	for player in playerpool:
+		print(player, " has ",player.points)
+		if player.name in betting_team:
+			team_points += player.points 
+	if team_points >= current_bet:
+		print(betting_team, ' WINS with ',team_points,'/',current_bet)
+	else:
+		print(betting_team, ' LOSES with ',team_points,'/',current_bet)
+	
+func play_trick():
+	# *** Play the trick *** #
+	for hand in handpool:					
+		for card in hand.get_children():
+			card.enable_card()				# Re-enable all cards for next trick.
+	await timer(1)
+	var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
+	for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
+		var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
+		print('\n',player,"'s turn!")
+		await player.play_turn()			# Calls to the current player to to play a card.
+		print(player,"'s turn finished!")	
+		await timer(1.5)
+	print('*** Trick Complete ***\nStarting scoring..')
+	
+	# *** Decide the Winner *** #
+	for playslot in get_tree().get_nodes_in_group('Playslots'): # Array of all playslots
+		var player = playslot.get_parent()
+		var card = playslot.get_child(0)
+		if card.suit == trick_suit:
+			if card.rank >= trick_winner[1]:				# If card in suit, does it leader?
 				print(player,card.rank," beats ", trick_winner)
-				trick_winner = [player,card.rank]
-			elif card.suit == trump_suit and trump_revealed:
-				print("Trump discovered during score")
-				trick_suit = trump_suit
-		for playslot in get_tree().get_nodes_in_group('Playslots'):
-			print()
-			var card = playslot.get_child(0)
-			card.slot = (trick_winner[0].get_node("Hand").to_global(Vector2(250,400)))
-			card.go_and_die()
-			await timer(0.08)
-		print("winner",trick_winner)
-		round_message(str(trick_winner[0].name, " wins!"),1.5)
-		dealer = trick_winner[0]
-		await timer(.6)
+				trick_winner = [player,card.rank]			# Yes, Highest card in suit is New leader
+			else:
+				pass										# No, it's garbage.
+		elif card.suit == trump_suit and trump_revealed:	# If not in suit, is it a trump? 
+			print("Trump discovered during score")			# ^NOTE: Won't fire again, because 1st IF now catches suit
+			trick_suit = trump_suit 						# Yes, Suit changes to trump now.
+			trick_winner = [player,card.rank]				# Player is new leader.
+		else:
+			pass											# Not current suit, it's garbage.
 	
-	
-	
-	
+	# *** Announce the Winner *** #
+	var winning_card = trick_winner[0].get_node("Playslot").get_child(0)
+	await get_tree().create_tween()\
+			.tween_property(winning_card,'modulate',Color(0.48432621359825, 0.875, 0.44091796875),.32)\
+			.set_ease(Tween.EASE_OUT)\
+			.set_trans(Tween.TRANS_SPRING).finished			# Highlight winning card slightly
+	await round_message(str(trick_winner[0].name, " wins!"),1.5)# Display Round winner
+	await get_tree().create_tween()\
+			.tween_property(winning_card,'modulate',Color(1, 1, 1),.32)\
+			.set_ease(Tween.EASE_OUT)\
+			.set_trans(Tween.TRANS_SPRING).finished 	
+	var sum = 0
+	for playslot in get_tree().get_nodes_in_group('Playslots'):
+		var card = playslot.get_child(0)
+		sum += card.value
+		card.slot = (trick_winner[0].get_node("Hand")\
+				.to_global(Vector2(205,400)))				# Store vector 400 pixels off screen past winner.
+		card.go_and_die()									# Winning cards fly to that point.
+		await timer(0.08)									
+	trick_winner[0].points += sum							# Give the player his points.
+	print(trick_winner," won trick worth ", sum,' points!')
+	dealer = trick_winner[0]
+	await timer(.6)
+
 
 func call_bet_window(): # Human betting window called.
 	$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
@@ -181,16 +216,16 @@ func call_bet_window(): # Human betting window called.
 
 
 
-func round_message(message,duration):
+func round_message(message : String,duration):	# Template for making a message fade in center of screen.
 	var label = $"Round Message"
 	label.text = message
 	await get_tree().create_tween()\
 			.tween_property(label,"modulate",Color(1, 1, 1,1),.35)\
-			.set_ease(Tween.EASE_IN_OUT).finished
+			.set_ease(Tween.EASE_IN_OUT).finished	# No delay for fade in.
 	await get_tree().create_tween()\
 			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
-			.set_delay(duration).finished
+			.set_delay(duration).finished			# Duration delay before fades out.
 	
 	
 ## THE EVER IMPORTANT DRAW CARD FUNCTION ##
@@ -346,21 +381,23 @@ func playcard(card): # Click cards are moved to their assigned playslot
 		each.slot = slot					# Update card with new spot in hand.
 		each.go()							# Tween them there.
 		slot += Vector2(40,0)				# Increase for next card.
+	
+func show_play_button():
 	await get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,1),.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO).set_delay(.25)
-		# ^This fades in a Play Card button I'm working on.. to lock in your decision. ##
+	$"Play Card".set_disabled(false)	# ^This fades in a Play Card button I'm working on.. to lock in your decision. ##
 
-
-
+func remove_play_button():
+	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
+	$"Play Card".set_disabled(true)
+	
 func take_card(card): # An inversion of playcard() move playslot card back to hand.
 	card.get_node("shadow").visible = true
-	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
 	var to_hand = card.get_node("../../Hand")
 	var children = to_hand.get_child_count()
 	if children > 7:
 		print('Hand is full, dumbass')
 		return 0
 	card.reparent(to_hand,true)
-	
 	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot
 	card.go()
@@ -379,15 +416,11 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 
 
 func _on_play_card_pressed(): # Play card in play slot..
-	var card = $Player1/Playslot.get_child(0)
-	if card:
-		print(card.face,' of ',card.suit, " Card Played") # Currently just prints card.
-	$"Play Card".disabled
-	
+	remove_play_button()
 	pass # Replace with function body.
 
 
-func _on_texture_button_2_toggled(toggled_on):
+func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inpatience.
 	print ('engine timescale: ',Engine.time_scale)
 	if toggled_on:
 		Engine.time_scale = 2.5
