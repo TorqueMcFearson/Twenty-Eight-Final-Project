@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=23 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -13,10 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
 [ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 [ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="13_r0gnh"]
+[ext_resource type="Theme" uid="uid://dst0ncp4oxp56" path="res://Assets/Themes and Styleboxes/Draft_theme.tres" id="15_3otkc"]
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="15_e71xe"]
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
 [ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
+[ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
+[ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0431373)
@@ -135,6 +138,7 @@ offset_left = 640.0
 offset_top = 372.0
 offset_right = 784.0
 offset_bottom = 441.0
+disabled = true
 text = "Discard Hands"
 
 [node name="Shuffle" type="Button" parent="."]
@@ -143,6 +147,7 @@ offset_left = 640.0
 offset_top = 175.0
 offset_right = 784.0
 offset_bottom = 244.0
+disabled = true
 text = "Shuffle"
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
@@ -152,6 +157,7 @@ texture = ExtResource("8_aq1nh")
 centered = false
 
 [node name="Deck Label" type="Label" parent="DrawDeck"]
+visible = false
 offset_left = 54.3492
 offset_top = 159.302
 offset_right = 206.35
@@ -199,67 +205,71 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Player1" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(470, 471)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player1"]
-offset_left = 524.0
-offset_top = 368.0
-offset_right = 664.0
-offset_bottom = 559.0
+[node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
+offset_left = 54.0
+offset_top = -103.0
+offset_right = 194.0
+offset_bottom = 88.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
 [node name="Hand" type="Node2D" parent="Player1"]
-position = Vector2(375, 543)
+position = Vector2(-95, 72)
 
 [node name="Player2" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(97, 284)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player2"]
-offset_left = 516.0
-offset_top = 256.0
-offset_right = 656.0
-offset_bottom = 447.0
+[node name="Playslot" type="Panel" parent="Player2" groups=["Playslots"]]
+offset_left = 419.0
+offset_top = -28.0
+offset_right = 559.0
+offset_bottom = 163.0
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
 [node name="Hand" type="Node2D" parent="Player2"]
-position = Vector2(76, 163)
+position = Vector2(-21, -121)
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 
 [node name="Player3" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(470, 115)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player3"]
-offset_left = 628.0
-offset_top = 248.0
-offset_right = 768.0
-offset_bottom = 439.0
+[node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
+offset_left = 158.0
+offset_top = 133.0
+offset_right = 298.0
+offset_bottom = 324.0
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
 [node name="Hand" type="Node2D" parent="Player3"]
-position = Vector2(728, 81)
+position = Vector2(258, -34)
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 
 [node name="Player4" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(842, 284)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player4"]
-offset_left = 636.0
-offset_top = 360.0
-offset_right = 776.0
-offset_bottom = 551.0
+[node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
+offset_left = -206.0
+offset_top = 76.0
+offset_right = -66.0
+offset_bottom = 267.0
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
 
 [node name="Hand" type="Node2D" parent="Player4"]
-position = Vector2(1073, 419)
+position = Vector2(231, 135)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
@@ -284,9 +294,8 @@ offset = Vector2(12, 10)
 
 [node name="Label" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 4.0
 offset_top = -48.0
-offset_right = 238.0
+offset_right = 164.0
 offset_bottom = 26.0
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
@@ -295,13 +304,13 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Trump"
+horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 25.3334
-offset_top = 211.667
-offset_right = 138.333
-offset_bottom = 285.667
+offset_top = 206.667
+offset_right = 164.0
+offset_bottom = 280.667
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -309,6 +318,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Card"
+horizontal_alignment = 1
 
 [node name="Play Card" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -351,6 +361,47 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
+[node name="PopUp" type="Node" parent="."]
+
+[node name="Round Message" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 768.0
+offset_bottom = 415.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+size_flags_vertical = 1
+theme = ExtResource("15_3otkc")
+theme_override_font_sizes/font_size = 30
+text = "Null Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Message" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 470.0
+offset_top = 701.0
+offset_right = 745.0
+offset_bottom = 756.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+size_flags_vertical = 1
+theme = ExtResource("15_3otkc")
+theme_override_font_sizes/font_size = 40
+text = "Player Passed!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Pause slot" type="Control" parent="."]
 process_mode = 3
 top_level = true
@@ -371,14 +422,14 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
 offset_right = 1142.0
-offset_bottom = 636.0
+offset_bottom = 633.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
-mouse_filter = 2
+mouse_filter = 1
 color = Color(0, 0, 0, 0.501961)
+metadata/_edit_lock_ = true
 
 [node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
 visible = false
@@ -404,14 +455,28 @@ texture_normal = ExtResource("17_bu8k6")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="TextureButton2" type="TextureButton" parent="Pause slot"]
+layout_mode = 0
+offset_left = 1045.0
+offset_top = 15.0
+offset_right = 1084.0
+offset_bottom = 50.0
+toggle_mode = true
+texture_normal = ExtResource("19_m4own")
+texture_pressed = ExtResource("20_rf60e")
+ignore_texture_size = true
+stretch_mode = 0
+
 [node name="Black Fade" type="ColorRect" parent="."]
+visible = false
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
-offset_right = 1142.0
-offset_bottom = 636.0
+offset_left = -87.0
+offset_top = -59.0
+offset_right = 67.0
+offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
@@ -425,3 +490,4 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
+[connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]

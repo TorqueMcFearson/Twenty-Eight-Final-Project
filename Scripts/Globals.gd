@@ -6,9 +6,9 @@ const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value. 
 var cards = {} # Declare array, for use in functions
 
 ##---------Global Variables---------##
-var cards_playable = false
+var cards_playable = true
 
-func datebase_constructor(x):
+func database_constructor(x):
 	var id = 0 # Unique Id for every suit/face
 	var rank = 0 # Rising rank value for every face.
 	for face in FACES:
@@ -27,6 +27,6 @@ func datebase_constructor(x):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	datebase_constructor(cards)
+	database_constructor(cards)
 
 

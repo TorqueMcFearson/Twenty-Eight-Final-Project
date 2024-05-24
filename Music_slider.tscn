@@ -9,12 +9,14 @@ script/source = "extends HSlider
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Mute.toggled.connect(_on_mute_toggled)
+	#$Mute.toggled.connect(_on_mute_toggled)
+	if Music.stream_paused:
+		$Mute.set_pressed_no_signal(true)
 	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 func _on_mute_toggled(toggled_on):
@@ -25,7 +27,7 @@ func _on_mute_toggled(toggled_on):
 		print(\"worked on audio script\")
 	pass # Replace with function body.
 
-func _on_value_changed(value):
+func _on_value_changed(_value):
 	if value < -30:
 		Music.volume_db = value * 2
 
