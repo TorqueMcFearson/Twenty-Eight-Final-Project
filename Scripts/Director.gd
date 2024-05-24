@@ -7,7 +7,8 @@ extends Node2D
 const MAX_HANDSIZE = 8 # How many cards players can hold.
 var drawpile = range(32) # Drawpile is a stack of Integer IDs 0-31 (32 cards)
 var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
-@onready var dealerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
+@onready var dealer = $Player1
+@onready var playerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
 
 ## Tween globals
@@ -19,12 +20,11 @@ var fade_rate = .01 # Used for tween and lerp fading.
 var current_bet: int = 0 			  		# How many tricks they bet they could win.
 var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
-var trump_suit : String 					# What suit the bid-winning player picked.
 var trump_revealed : bool 					# Trump revealed to field true/false
-var can_play = false
+var trump_suit : String 					# What suit the bid-winning player picked.
+var trick_suit : String = "Clubs"
 
-##
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
@@ -36,6 +36,7 @@ func _ready():
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
 	$Player1.human = true
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
+	match_start()
 	## Debug tool: Just prints to console the draw cards in order ##
 	#var cardlist = [] 
 	#for each in drawpile: 
@@ -44,51 +45,63 @@ func _ready():
 	#for each in cardlist:
 		#print(each)
 	#print("^Drawpile in reverse order^")
-	## ------------------Round Calling Starts-------------------------- ## 
+
+
+## ------------------Round Calling Starts-------------------------- ## 
+func match_start():
 	#return     #<---- uncomment 'return' to start main without auto-director.
 	await get_tree().create_timer(1.5).timeout # Typical pause. For 1 sec.
 	await round_message("Match Begins!")
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
 	await get_tree().create_timer(.5).timeout
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
-	await betting_round() 					# Calls and waits for the Betting round.
-	await trump_round()						# Calls and waits the Trump choosing round.
-	for each in $Player1/Hand.get_children():
-		each.trump_check()
+	await betting_stage() 					# Calls and waits for the Betting round.
+	await trump_stage()						# Calls and waits the Trump choosing round.
+	#for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
+		#each.trump_check()					# Enable to highlight trumps when player wins
+	await game_stage()
 	
+
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
 
 
-func betting_round():
+func betting_stage():
 	while true:		# Endless true Loop until there is a winner, then breaks out.
 		round +=1
 		print ('\n *****Round ',round, '******\n')
 		await call_bet_window()					# Calls Human betting screen
 		await get_tree().create_timer(1).timeout
 		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
-		for player in dealerpool:
+		for player in playerpool:
 			await player.ai_bid()
 		# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
 		if pass_count == 3:							# If 3 pass in a row, break loop.
 			break									# Last bid and bidder locked in.
 	print("Winner: ", current_better.name, " Bet: ", current_bet)
+	dealer = current_better
+	
 	# Once loop breaks, this function completes and _ready() continues from await.
 
 
-func trump_round():
+func trump_stage():
 	trump_suit = await current_better.pick_trump() 			# Calls for the bid winner to process trump choice (Player.gd)
+	if current_better.human:
+		var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
+		$"UI/Trump Card/Trump Sprite".texture = load(assemble)
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
 	tween.tween_property($"UI/Trump Card/Trump Sprite",'position',Vector2(0,0),.75)\
 			.set_ease(Tween.EASE_OUT)\
 			.set_trans(Tween.TRANS_SPRING)
 	_on_deal_all_pressed()
+	await get_tree().create_timer(3).timeout
 
 
 func trump_reveal(): # TODO trump face_up if player wins or revealed during play.
 	var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
 	$"UI/Trump Card/Trump Sprite".texture = load(assemble)
+	trump_revealed = true
 	pass
 
 
@@ -114,6 +127,15 @@ func call_bet_window(): # Human betting window called.
 	$Player1/Hand.z_index = 0								# Return cards to normal layer.
 	bet_scene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
+
+func game_stage():
+	var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
+	for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
+		var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
+		print(player,"'s turn!")
+		await player.play_turn()
+		print(player,"'s turn finished!")					# Calls to the player to to play a card.
+	pass
 
 
 func round_message(message):
@@ -151,7 +173,6 @@ func draw_card(hand):
 		$DrawDeck.visible = false
 	return 1									# True value for success
 
-
 func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deals 4 cards to ALL.
 	butt_off()						# Disabled buttons til end of function.
 	var time=0.40					# Time between each card.
@@ -187,6 +208,7 @@ func _on_discard_button_pressed(): # Discards all hands to discard pile.
 			time = time+.005-(time*time)	# Decrease time between cards for speed up
 	$Card_Fwip.pitch_scale = .69			# Reset SFX pitch when done.
 	butt_check()					# Reset buttons when done.
+
 
 ## Trigger for $flip_cards button
 func _on_flip_cards_pressed(): # Useless button for flipping cards for fun.

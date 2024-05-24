@@ -208,7 +208,7 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(470, 471)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player1"]
+[node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
 offset_left = 54.0
 offset_top = -103.0
 offset_right = 194.0
@@ -223,7 +223,7 @@ position = Vector2(-95, 72)
 position = Vector2(97, 284)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player2"]
+[node name="Playslot" type="Panel" parent="Player2" groups=["Playslots"]]
 offset_left = 419.0
 offset_top = -28.0
 offset_right = 559.0
@@ -241,7 +241,7 @@ scale = Vector2(0.75, 0.75)
 position = Vector2(470, 115)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player3"]
+[node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
 offset_left = 158.0
 offset_top = 133.0
 offset_right = 298.0
@@ -259,7 +259,7 @@ scale = Vector2(0.75, 0.75)
 position = Vector2(842, 284)
 script = ExtResource("10_10vqy")
 
-[node name="Playslot" type="Panel" parent="Player4"]
+[node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
 offset_left = -206.0
 offset_top = 76.0
 offset_right = -66.0

@@ -1,6 +1,6 @@
 extends Node2D
 
-var matches = {}
+var held_suits = {}
 var points = 0
 var bet_goal = 0
 var human = false
@@ -21,12 +21,12 @@ func _process(_delta):
 
 
 func ready_bid():
+	for card in $Hand.get_children():
+		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
+		points += card.value
 	if human:
 		return
-	for card in $Hand.get_children():
-		matches[card.suit] = matches.get(card.suit, 0) + 1
-		points += card.value
-	var suit_match = matches.values().max()
+	var suit_match = held_suits.values().max()
 	bet_goal = (suit_match * 2) + (points/2) + 14
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
 	
@@ -85,5 +85,52 @@ func pick_trump():
 		return trump
 	
 	else:
-		var trump = matches.find_key(matches.values().max())
+		var trump = held_suits.find_key(held_suits.values().max())
 		return trump
+
+# We check for first turn.
+# Notes first we check what cards we can play
+# Then we adjust cards as disabled.
+# 
+func play_turn():
+	if human:
+		print(director.trick_suit)
+		Global.cards_playable = true
+		if true: #self != director.dealer
+			disable_cards()
+		await $"../Play Card".pressed
+	else:
+		pass
+
+func disable_cards():
+	var active_suits: Array[String] = [director.trick_suit]
+	var cards = get_node("Hand").get_children()
+	if director.trump_reveal:
+		active_suits.append(director.trump_suit)
+	print("active: ",active_suits, " held: ", held_suits)
+	if active_suits.any(func(x): return x in held_suits.keys()):
+		print('active suits found in hand')
+		print('Amount of cards: ',cards.size())
+		for card in cards:
+			if card.suit in active_suits:
+				print (card.suit, ' is ', active_suits)
+			else:
+				print (card.suit, ' is not in ', active_suits)
+				card.disable_card()
+	else:
+		if not director.trump_revealed:
+			print("I need to see the trump")
+			director.trump_reveal()
+			disable_cards()
+			return
+
+func testfunc(x):
+	print("testing testfunc: ", )
+
+func enable_cards():
+	var active_suits = [director.trick_suit]
+	if director.trump_reveal:
+		active_suits.append(director.trump_suit)
+	for card in get_node("Hand").get_children():
+		if card.suit in active_suits:
+			card.enable_card()

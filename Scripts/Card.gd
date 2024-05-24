@@ -14,6 +14,7 @@ var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 var slot := Vector2(0,0)
 var trump := false
+var disabled := false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -126,7 +127,7 @@ func _on_reference_rect_mouse_exited():
 
 
 func _on_reference_rect_gui_input(event): # A click event
-	if Global.cards_playable and not tweening:
+	if Global.cards_playable and not tweening and not disabled:
 		if event is InputEventMouseButton and event.pressed :
 			if inplay == false:
 				get_node('/root/Director').playcard(self)
@@ -136,7 +137,13 @@ func _on_reference_rect_gui_input(event): # A click event
 		pass # Replace with function body.
 
 
-
+func enable_card():
+	pass
+	
+func disable_card():
+	disabled = true
+	modulate = Color(0.80, 0.80, 0.80)
+	
 ####### Was just me testing dragging the cards #####
 #var lifted = false
 #var offset = 0
