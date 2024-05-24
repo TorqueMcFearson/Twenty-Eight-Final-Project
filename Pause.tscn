@@ -5,6 +5,7 @@ resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
+var music_recall : bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,15 +22,18 @@ func _unhandled_input(event):
 
 
 func pause_game():
-	
 	var dark = $\"../Pause Fade\"
 	if not paused:
+		music_recall = Music.stream_paused
+		Music.stream_paused = true
 		dark.visible = true
 		Engine.time_scale = 0
 		get_tree().paused = true
 		visible = true
+		
 		print('paused')
 	else:
+		Music.stream_paused = music_recall
 		dark.visible = false
 		Engine.time_scale = 1
 		get_tree().paused = false

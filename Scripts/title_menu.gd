@@ -34,13 +34,7 @@ func _process(delta):
 	
 
 
-func _on_new_game_pressed():
-	$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
-	fade_goal = Color(1,1,1,1)
-	$"Control/Black Fade".modulate = Color(1,1,1,.12)
-	fade_rate = .05
-	game_start = true
-	set_process(true)  
+
 	
 
 
@@ -55,11 +49,23 @@ func _on_mouse_exited(extra_arg_0):
 
 
 func _on_exit_pressed():
+	butts_off()
 	$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
 	fade_goal = Color(1,1,1,1)
 	$"Control/Black Fade".modulate = Color(1,1,1,.12)
 	fade_rate = .03
 	set_process(true)  
 	
-	
+func _on_new_game_pressed():
+	butts_off()
+	$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
+	fade_goal = Color(1,1,1,1)
+	$"Control/Black Fade".modulate = Color(1,1,1,.12)
+	fade_rate = .05
+	game_start = true
+	set_process(true)  
 	pass # Replace with function body.
+
+func butts_off():
+	for button in $Control/Buttons.get_children():
+		button.disabled = true

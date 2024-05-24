@@ -6,7 +6,7 @@ var bet_goal = 0
 var human = false
 var aggression = .5 # Modifies how range of how high they'll bet. 
 @onready var label = $"../Player Message" 
-@onready var director = $".."
+@onready var Director = $".."
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,22 +33,22 @@ func ready_bid():
 	
 	
 func ai_bid():
-	if human or director.pass_count == 3:
+	if human or Director.pass_count == 3:
 		return
-	var current_bet = director.current_bet
+	var current_bet = Director.current_bet
 	var message : String
 	if current_bet < bet_goal:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
 		var ai_bet = randi_range(current_bet+1,(bet_goal-current_bet)*aggression+current_bet)
 		print(self.name,' bets:', ai_bet)
-		director.current_bet  = ai_bet
-		director.pass_count = 0
-		director.current_better = $"."
+		Director.current_bet  = ai_bet
+		Director.pass_count = 0
+		Director.current_better = $"."
 		message = "Player Bet %s" %ai_bet 
 	else:
-		director.pass_count += 1
-		print(self.name,' AI PASSED! Count:', director.pass_count)
+		Director.pass_count += 1
+		print(self.name,' AI PASSED! Count:', Director.pass_count)
 		message = "Player Passed"
 	await player_message(message)
 		
@@ -95,19 +95,20 @@ func pick_trump():
 # 
 func play_turn():
 	if human:
+		await Director.round_message("Your Turn", 2)
 		Global.cards_playable = true
-		if self != director.dealer:
+		if self != Director.dealer:
 			await disable_cards()
 		await $"../Play Card".pressed
 		var card = $Playslot.get_child(0)
 		held_suits[card.suit] -= 1
-		if self == director.dealer:
-			director.trick_suit = $Playslot.get_child(0).suit
-			print('trick-suit set to: ',director.trick_suit)
+		if self == Director.dealer:
+			Director.trick_suit = $Playslot.get_child(0).suit
+			print('trick-suit set to: ',Director.trick_suit)
 		Global.cards_playable = false
 			
 	else:
-		if self != director.dealer:
+		if self != Director.dealer:
 			print(self," disabling cards")
 			disable_cards()
 		var cards = get_node("Hand").get_children()
@@ -118,44 +119,46 @@ func play_turn():
 		playable_cards.shuffle()
 		var card = playable_cards.front()
 		card.face_up()
-		await director.playcard(card)
+		await Director.playcard(card)
 		held_suits[card.suit] -= 1
-		if self == director.dealer:
-			director.trick_suit = $Playslot.get_child(0).suit
+		if self == Director.dealer:
+			Director.trick_suit = $Playslot.get_child(0).suit
 
 func disable_cards():
 	var cards = get_node("Hand").get_children()
-	print("Looking for: ",director.trick_suit, " in: ", held_suits)
-	print("Looking for: ",director.trump_suit, " in: ", held_suits) if director.trump_revealed else 1
-	if held_suits.get(director.trick_suit):
+	print("Looking for: ",Director.trick_suit, " in: ", held_suits)
+	print("Looking for: ",Director.trump_suit, " in: ", held_suits) if Director.trump_revealed else 1
+	if held_suits.get(Director.trick_suit):
 		print("Trick found")
 		for card in cards:
-			if card.suit == director.trick_suit:
+			if card.suit == Director.trick_suit:
 				pass
 			else:
 				card.disable_card()
-	elif director.trump_revealed and held_suits.get(director.trump_suit):
+	elif Director.trump_revealed and held_suits.get(Director.trump_suit):
 		print("Trump found")
 		for card in cards:
-			if card.suit == director.trump_suit:
+			if card.suit == Director.trump_suit:
 				pass
 			else:
 				card.disable_card()
-	elif director.trump_revealed:
+	elif Director.trump_revealed:
 		pass
 	else:
 		print("I need to see the trump")
-		director.trump_reveal()
-		director.round_message(str("Trump Requested by", self.name))
+		Director.trump_reveal()
+		Director.round_message(str("Trump Requested by", self.name),1.35)
 		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 0.60)
+		$"../UI/Trump Card/Label".add_theme_color_override("font_color", Color(1, 1, 1,.16))
+		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		disable_cards()
 
 
-
-func enable_cards():
-	var active_suits = [director.trick_suit]
-	if director.trump_reveal:
-		active_suits.append(director.trump_suit)
-	for card in get_node("Hand").get_children():
-		if card.suit in active_suits:
-			card.enable_card()
+#DEPRECATED: Director now calls for this directly (pun unintended).
+#func enable_cards(): 
+	#var active_suits = [Director.trick_suit]
+	#if Director.trump_reveal:
+		#active_suits.append(Director.trump_suit)
+	#for card in get_node("Hand").get_children():
+		#if card.suit in active_suits:
+			#card.enable_card()

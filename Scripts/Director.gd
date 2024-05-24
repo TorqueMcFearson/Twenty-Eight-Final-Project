@@ -61,7 +61,7 @@ func _ready():
 func match_start(): 
 	#return     #<---- uncomment 'return' to start main without auto-director.
 	await timer(1.5) # Typical pause. For 1 sec.
-	await round_message("Match Begins!")
+	await round_message("Match Begins!",1.5)
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
@@ -151,7 +151,7 @@ func game_stage():
 			card.go_and_die()
 			await timer(0.08)
 		print("winner",trick_winner)
-		round_message(str(trick_winner[0].name, " wins!"))
+		round_message(str(trick_winner[0].name, " wins!"),1.5)
 		dealer = trick_winner[0]
 		await timer(.6)
 	
@@ -181,7 +181,7 @@ func call_bet_window(): # Human betting window called.
 
 
 
-func round_message(message):
+func round_message(message,duration):
 	var label = $"Round Message"
 	label.text = message
 	await get_tree().create_tween()\
@@ -190,7 +190,7 @@ func round_message(message):
 	await get_tree().create_tween()\
 			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
-			.set_delay(1.25).finished
+			.set_delay(duration).finished
 	
 	
 ## THE EVER IMPORTANT DRAW CARD FUNCTION ##
@@ -352,6 +352,7 @@ func playcard(card): # Click cards are moved to their assigned playslot
 
 
 func take_card(card): # An inversion of playcard() move playslot card back to hand.
+	card.get_node("shadow").visible = true
 	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
 	var to_hand = card.get_node("../../Hand")
 	var children = to_hand.get_child_count()
@@ -359,6 +360,7 @@ func take_card(card): # An inversion of playcard() move playslot card back to ha
 		print('Hand is full, dumbass')
 		return 0
 	card.reparent(to_hand,true)
+	
 	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot
 	card.go()

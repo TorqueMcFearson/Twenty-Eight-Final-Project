@@ -10,6 +10,8 @@ script/source = "extends HSlider
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#$Mute.toggled.connect(_on_mute_toggled)
+	if Music.stream_paused:
+		$Mute.set_pressed_no_signal(true)
 	pass
 
 

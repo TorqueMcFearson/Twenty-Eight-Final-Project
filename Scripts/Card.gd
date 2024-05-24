@@ -117,7 +117,10 @@ func _on_reference_rect_mouse_entered():
 				$"Trump Label".visible = true
 				$CardBack.set_self_modulate(Color(1, 0.96000003814697, 0.75999999046326))
 		if not inplay:
-			position.y = -15
+			if disabled and face_show:
+				position.y = -10
+			else:
+				position.y = -20
 		
 func _on_reference_rect_mouse_exited():
 	if not tweening:
@@ -149,7 +152,8 @@ func enable_card():
 	
 func disable_card():
 	disabled = true
-	modulate = Color(0.80, 0.80, 0.80)
+	if face_show:
+		modulate = Color(0.80, 0.80, 0.80)
 	
 ####### Was just me testing dragging the cards #####
 #var lifted = false

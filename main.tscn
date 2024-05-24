@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
 [ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 [ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="13_r0gnh"]
-[ext_resource type="Theme" uid="uid://bsh455r8l6s8j" path="res://Assets/Themes and Styleboxes/Draft_theme.tres" id="15_3otkc"]
+[ext_resource type="Theme" uid="uid://dst0ncp4oxp56" path="res://Assets/Themes and Styleboxes/Draft_theme.tres" id="15_3otkc"]
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="15_e71xe"]
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
@@ -294,10 +294,9 @@ offset = Vector2(12, 10)
 
 [node name="Label" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 15.9993
-offset_top = -52.0
-offset_right = 249.999
-offset_bottom = 22.0
+offset_top = -48.0
+offset_right = 164.0
+offset_bottom = 26.0
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -305,13 +304,13 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Trump"
+horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_left = 37.3327
-offset_top = 207.667
-offset_right = 150.332
-offset_bottom = 281.667
+offset_top = 206.667
+offset_right = 164.0
+offset_bottom = 280.667
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -319,6 +318,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Card"
+horizontal_alignment = 1
 
 [node name="Play Card" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -371,9 +371,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = 768.0
-offset_bottom = 432.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_bottom = 415.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(1.5, 1.5)
 size_flags_vertical = 1
 theme = ExtResource("15_3otkc")
@@ -381,7 +381,6 @@ theme_override_font_sizes/font_size = 30
 text = "Null Text"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
 
 [node name="Player Message" type="Label" parent="."]
 anchors_preset = 8
@@ -423,14 +422,14 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
 offset_right = 1142.0
-offset_bottom = 636.0
+offset_bottom = 633.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
 mouse_filter = 1
 color = Color(0, 0, 0, 0.501961)
+metadata/_edit_lock_ = true
 
 [node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
 visible = false

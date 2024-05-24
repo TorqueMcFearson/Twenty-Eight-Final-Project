@@ -4,8 +4,10 @@
 [ext_resource type="Script" path="res://Scripts/music.gd" id="2_3cuy8"]
 
 [node name="Music" type="AudioStreamPlayer"]
+process_mode = 3
 stream = ExtResource("1_cdusq")
 volume_db = -15.038
+autoplay = true
 script = ExtResource("2_3cuy8")
 
 [connection signal="finished" from="." to="." method="_on_finished"]
