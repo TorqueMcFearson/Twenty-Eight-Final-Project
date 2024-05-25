@@ -1,12 +1,15 @@
-[gd_scene load_steps=25 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=28 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
 [ext_resource type="Script" path="res://Scripts/CardConstructor.gd" id="2_rcgu6"]
 [ext_resource type="AudioStream" uid="uid://bmp5ojusf5648" path="res://Assets/Cards/Sounds/Card-Shuffle.wav" id="3_t5s6t"]
+[ext_resource type="AudioStream" uid="uid://b7mfplm8bstp" path="res://Assets/SFX & Music/bell-shaker.wav" id="4_uix57"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_cco4v"]
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="5_oe1mm"]
+[ext_resource type="AudioStream" uid="uid://4i8if04vrsob" path="res://Assets/SFX & Music/pesticide-can-down-SBA-300099180.wav" id="5_xsm04"]
 [ext_resource type="Script" path="res://Scripts/Background.gd" id="7_4cs5p"]
+[ext_resource type="AudioStream" uid="uid://b48px1hjnuhte" path="res://Assets/SFX & Music/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav" id="7_sblwi"]
 [ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="10_10vqy"]
@@ -24,12 +27,12 @@
 [ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
-bg_color = Color(0, 0, 0, 0.0431373)
+bg_color = Color(0, 0, 0, 0.0470588)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0, 0, 0, 0.0823529)
+border_color = Color(0, 0, 0, 0.129412)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -46,15 +49,35 @@ script = ExtResource("1_04n5t")
 [node name="CardConstructor" type="Node" parent="."]
 script = ExtResource("2_rcgu6")
 
-[node name="Card_Fwip" type="AudioStreamPlayer" parent="."]
+[node name="SFX" type="Node" parent="."]
+
+[node name="Card_Fwip" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("2_7opyx")
 volume_db = -11.085
 pitch_scale = 0.69
 max_polyphony = 6
 
-[node name="Card_Shuffle" type="AudioStreamPlayer" parent="."]
+[node name="Card_Ding" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("4_uix57")
+volume_db = -15.139
+pitch_scale = 0.69
+max_polyphony = 6
+
+[node name="Card_Whiff" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("5_xsm04")
+volume_db = -10.753
+pitch_scale = 0.62
+max_polyphony = 6
+
+[node name="Card_Shuffle" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("3_t5s6t")
 volume_db = -11.085
+max_polyphony = 6
+
+[node name="Card_PopUp" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("7_sblwi")
+volume_db = -15.646
+pitch_scale = 1.1
 max_polyphony = 6
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
@@ -296,9 +319,9 @@ offset = Vector2(12, 10)
 
 [node name="Label" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_top = -48.0
+offset_top = -52.0
 offset_right = 164.0
-offset_bottom = 26.0
+offset_bottom = 22.0
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
@@ -310,9 +333,9 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="UI/Trump Card"]
 layout_mode = 0
-offset_top = 206.667
+offset_top = 209.334
 offset_right = 164.0
-offset_bottom = 280.667
+offset_bottom = 283.334
 theme = ExtResource("13_ejbv2")
 theme_override_colors/font_color = Color(1, 1, 1, 0.054902)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)

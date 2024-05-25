@@ -38,6 +38,7 @@ func ai_bid():
 	var current_bet = Director.current_bet
 	var message : String
 	var min_bet = current_bet+1
+	var color = Color(1, 1, 1,1)
 	if current_bet < bet_goal:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
@@ -46,30 +47,35 @@ func ai_bid():
 		Director.current_bet  = ai_bet
 		Director.pass_count = 0
 		Director.current_better = $"."
-		message = "Player Bet %s" %ai_bet 
+		message = "Player Bet %s" %ai_bet
+		$"../SFX/Card_Ding".pitch_scale = ai_bet*.02+.41
+		$"../SFX/Card_Ding".play()
 	else:
+		color = Color(1, 1, 1,.65)
 		Director.pass_count += 1
 		print(self.name,' AI PASSED! Count:', Director.pass_count)
 		message = "Player Passed"
-	await player_message(message)
-		
+		$"../SFX/Card_Whiff".play()
+	await player_message(message,color)
+	
 
-func player_message(message):
+func player_message(message,color):
 	label.text = message
 	var rise = Vector2(0,5)
 	label.position = position+rise
 	get_tree().create_tween()\
-			.tween_property(label,"modulate",Color(1, 1, 1,1),.25)\
+			.tween_property(label,"modulate",color,.25)\
 			.set_ease(Tween.EASE_IN_OUT)
 	await get_tree().create_tween()\
 			.tween_property(label,"position",position,.25)\
 			.set_ease(Tween.EASE_OUT).finished
+	color.a = 0
 	get_tree().create_tween()\
 			.tween_property(label,"position",position-rise,.35)\
 			.set_ease(Tween.EASE_IN)\
 			.set_delay(.4)	
 	await get_tree().create_tween()\
-			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
+			.tween_property(label,"modulate",color,.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
 			.set_delay(.4).finished
 

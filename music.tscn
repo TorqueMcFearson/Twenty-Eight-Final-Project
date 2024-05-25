@@ -1,13 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://bcf7dnkwv1co5"]
 
-[ext_resource type="AudioStream" uid="uid://bo42466ow8dy5" path="res://Assets/trap-story-SBA-346746122.mp3" id="1_cdusq"]
+[ext_resource type="AudioStream" uid="uid://cvkg4itmmny1i" path="res://Assets/SFX & Music/Music/mental-loneliness-SBA-348372222.mp3" id="1_ygusg"]
 [ext_resource type="Script" path="res://Scripts/music.gd" id="2_3cuy8"]
 
 [node name="Music" type="AudioStreamPlayer"]
 process_mode = 3
-stream = ExtResource("1_cdusq")
-volume_db = -15.038
-autoplay = true
+stream = ExtResource("1_ygusg")
+volume_db = -20.05
 script = ExtResource("2_3cuy8")
 
 [connection signal="finished" from="." to="." method="_on_finished"]

@@ -69,6 +69,8 @@ func match_start():
 		#each.trump_check()					# Enable to highlight trumps when player wins
 	get_tree().call_group("Players", "ready_bid")
 	await game_stage()
+	await timer(3)
+	get_tree().reload_current_scene()
 	
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
@@ -79,14 +81,17 @@ func betting_stage():
 	while true:		# Endless true Loop until there is a winner, then breaks out.
 		round +=1
 		print ('\n *****Round ',round, '******\n')
+		$SFX/Card_PopUp.play(.25)
 		await call_bet_window()					# Calls Human betting screen
 		await get_tree().create_timer(1).timeout
 		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
 		for player in playerpool:
 			await player.ai_bid()
+		
 		# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
 		if pass_count == 3:							# If 3 pass in a row, break loop.
 			break									# Last bid and bidder locked in.
+	$SFX/Card_Ding.pitch_scale = 0.69
 	print("Winner: ", current_better.name, " Bet: ", current_bet)
 	dealer = current_better
 	
@@ -244,7 +249,7 @@ func draw_card(hand):
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
 	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
-	$Card_Fwip.play(.11)		# Card SFX
+	$SFX/Card_Fwip.play(.11)		# Card SFX
 	$DrawDeck/Amount.text = str(drawpile.size()) # Refresh the amount label on drawdeck.
 	if drawpile.size() == 0:					# If that was last card, make drawdeck disappear.
 		butt_off()
@@ -254,16 +259,16 @@ func draw_card(hand):
 func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deals 4 cards to ALL.
 	butt_off()						# Disabled buttons til end of function.
 	var time=0.40					# Time between each card.
-	$Card_Fwip.pitch_scale = .69	# Card SFX
+	$SFX/Card_Fwip.pitch_scale = .69	# Card SFX
 	for n in 4:						# For 4 cards
 		for hand in handpool:		# For each hand
 			if not draw_card(hand):	# Run Draw_card(), if return 0, empty draw deck.
 				butt_check()
 				return
 			await get_tree().create_timer(time).timeout # wait 'time' before next card
-			$Card_Fwip.pitch_scale += .01 # Raise SFX pitch a little each card
+			$SFX/Card_Fwip.pitch_scale += .01 # Raise SFX pitch a little each card
 			time = time+.005-(time*time) # Decrease time between cards for speed up
-	$Card_Fwip.pitch_scale = .69		# Reset SFX pitch when done.
+	$SFX/Card_Fwip.pitch_scale = .69		# Reset SFX pitch when done.
 	butt_check()					# Reset buttons when done.
 
 
@@ -272,7 +277,7 @@ func _on_discard_button_pressed(): # Discards all hands to discard pile.
 	## So I need to retool this into 4 player-trick decks.. or 2 team-trick decks
 	butt_off()						# Disabled buttons til end of function.
 	var time=0.40					# Time between each card.
-	$Card_Fwip.pitch_scale = .69	# Card SFX
+	$SFX/Card_Fwip.pitch_scale = .69	# Card SFX
 	$Discard_Deck.visible = true	# Show  sprite
 	for hand in handpool:			# For each hand.
 		for card in hand.get_children():	# For each card in each hand
@@ -281,16 +286,16 @@ func _on_discard_button_pressed(): # Discards all hands to discard pile.
 			card.go_and_die()				# tween from position to discard_deck.
 			await get_tree().create_timer(time).timeout #wait 'time' before next card 
 			$Discard_Deck/Amount.text = str(discardpile.size()) # Update discarddeck label
-			$Card_Fwip.play()				# SFX
-			$Card_Fwip.pitch_scale += .01	# Raise SFX pitch a little each card
+			$SFX/Card_Fwip.play()				# SFX
+			$SFX/Card_Fwip.pitch_scale += .01	# Raise SFX pitch a little each card
 			time = time+.005-(time*time)	# Decrease time between cards for speed up
-	$Card_Fwip.pitch_scale = .69			# Reset SFX pitch when done.
+	$SFX/Card_Fwip.pitch_scale = .69			# Reset SFX pitch when done.
 	butt_check()					# Reset buttons when done.
 
 
 ## Trigger for $flip_cards button
 func _on_flip_cards_pressed(): # Useless button for flipping cards for fun.
-	$Card_Fwip.play(.07)		# SFX
+	$SFX/Card_Fwip.play(.07)		# SFX
 	var cards = $Player1/Hand.get_children()	# Get cards in Player1 hand.
 	for card in cards:			# For each card 
 		card.face_toggle()		# run their face_toggle() inside their Player.gd
@@ -323,7 +328,7 @@ func reset_off():
 func _on_shuffle_pressed(): # Move IDs from Discardpile to Drawpile
 	drawpile.append_array(discardpile)	# Copy IDs to drawpile.
 	discardpile = []					# Delete IDs from discardpile
-	$Card_Shuffle.play()		# SFX
+	$SFX/Card_Shuffle.play()		# SFX
 	drawpile.shuffle()			# Shuffle IDs in drawpile
 	deck_refresh()				# Visually referesh onscreen decks
 
@@ -376,7 +381,7 @@ func playcard(card): # Click cards are moved to their assigned playslot
 	card.go()								# Tweens to playslot's base position (0,0)
 	card.inplay = true						# Set flag in objects variables.
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
-	$Card_Fwip.play()						# SFX
+	$SFX/Card_Fwip.play()						# SFX
 	for each in hand.get_children():		# For each card still in hand
 		each.slot = slot					# Update card with new spot in hand.
 		each.go()							# Tween them there.
@@ -401,7 +406,7 @@ func take_card(card): # An inversion of playcard() move playslot card back to ha
 	card.slot = Vector2(0,0) + Vector2(children*40,0)
 	#card.global_position = card.slot
 	card.go()
-	$Card_Fwip.play(.11)
+	$SFX/Card_Fwip.play(.11)
 	card.inplay = false
 	return 1
 

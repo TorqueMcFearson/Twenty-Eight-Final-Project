@@ -1,13 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7ysejifbpiyt"]
+[gd_scene load_steps=8 format=3 uid="uid://b7ysejifbpiyt"]
 
 [ext_resource type="Script" path="res://Scripts/title_menu.gd" id="1_65ybi"]
 [ext_resource type="Texture2D" uid="uid://lmops2oruyf4" path="res://Assets/Background/casino bakground.jpg" id="1_bfqo5"]
+[ext_resource type="AudioStream" uid="uid://cv4oqocfrgwx" path="res://Assets/SFX & Music/clean-pop-up-interface-notification-5-SBA-300463463.wav" id="2_7mfm6"]
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="3_2w1h0"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="4_110fr"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="5_6xoau"]
 
+[sub_resource type="GDScript" id="GDScript_3l07d"]
+resource_name = "Title SFX Player"
+script/source = "extends AudioStreamPlayer
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+func _on_any_pressed():
+	play()
+	pass # Replace with function body.
+"
+
 [node name="Title Menu" type="Node2D"]
 script = ExtResource("1_65ybi")
+
+[node name="Menu SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7mfm6")
+volume_db = -17.542
+pitch_scale = 0.42
+script = SubResource("GDScript_3l07d")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(-57, 0)
@@ -205,8 +231,11 @@ offset_bottom = 37.0
 [connection signal="mouse_entered" from="Control/Buttons/New_Game" to="." method="_on_new_game_mouse_entered" binds= ["New_Game"]]
 [connection signal="mouse_exited" from="Control/Buttons/New_Game" to="." method="_on_mouse_exited" binds= ["New_Game"]]
 [connection signal="pressed" from="Control/Buttons/New_Game" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="Control/Buttons/New_Game" to="Menu SFX" method="_on_any_pressed"]
 [connection signal="mouse_entered" from="Control/Buttons/Setting" to="." method="_on_new_game_mouse_entered" binds= ["Setting"]]
 [connection signal="mouse_exited" from="Control/Buttons/Setting" to="." method="_on_mouse_exited" binds= ["Setting"]]
+[connection signal="pressed" from="Control/Buttons/Setting" to="Menu SFX" method="_on_any_pressed"]
 [connection signal="mouse_entered" from="Control/Buttons/Exit" to="." method="_on_new_game_mouse_entered" binds= ["Exit"]]
 [connection signal="mouse_exited" from="Control/Buttons/Exit" to="." method="_on_mouse_exited" binds= ["Exit"]]
 [connection signal="pressed" from="Control/Buttons/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Control/Buttons/Exit" to="Menu SFX" method="_on_any_pressed"]

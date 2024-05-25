@@ -42,6 +42,8 @@ func _on_bet_pressed():
 	$Pass.disabled = true
 	$Bet.disabled = true
 	current_bid = $HSlider.value
+	$"/root/Director/SFX/Card_Ding".pitch_scale = current_bid*.02+.41
+	$"/root/Director/SFX/Card_Ding".play()
 	emit_signal("bet_or_pass",current_bid)
 	fade_out()
 
@@ -49,6 +51,7 @@ func _on_bet_pressed():
 func _on_pass_pressed():
 		$Bet.disabled = true
 		$Pass.disabled = true
+		$"/root/Director/SFX/Card_Whiff".play()
 		emit_signal("bet_or_pass",0)
 		fade_out()
 
