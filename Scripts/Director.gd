@@ -24,6 +24,7 @@ var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
 var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
+var betting_team : String
 
 # The Trick Data
 var trick_suit : String
@@ -83,19 +84,44 @@ func betting_stage():
 		print ('\n *****Round ',round, '******\n')
 		$SFX/Card_PopUp.play(.25)
 		await call_bet_window()					# Calls Human betting screen
+		bet_label()
+		await get_tree().create_tween().tween_property($"UI/Bet Node/Bet Label","modulate",Color(1,1,1,1),.75).finished
+		
+		
 		await get_tree().create_timer(1).timeout
 		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
 		for player in playerpool:
 			await player.ai_bid()
+			
 		
 		# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
 		if pass_count == 3:							# If 3 pass in a row, break loop.
 			break									# Last bid and bidder locked in.
 	$SFX/Card_Ding.pitch_scale = 0.69
-	print("Winner: ", current_better.name, " Bet: ", current_bet)
+	bet_label()
+	if current_better.name in team1:
+		betting_team = "Team 1"
+	else:
+		betting_team = "Team 2"
+	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
+	round_message(message,3)
+	await timer(3)
 	dealer = current_better
 	
 	# Once loop breaks, this function completes and _ready() continues from await.
+
+func bet_label():
+	$"UI/Bet Node/Bet Label".text = str("Bet:\n",current_bet)
+	if current_better.name in team1:
+		$"UI/Bet Node".modulate = Color.hex(0xff9203c4)
+		$"UI/Bet Node/Bet Label/Arrow Team 1".visible = true
+		$"UI/Bet Node/Bet Label/Arrow Team 2".visible = false
+	else:
+		$"UI/Bet Node".modulate = Color(0.01, 0.57, 1, 0.77)
+		$"UI/Bet Node/Bet Label/Arrow Team 1".visible = false
+		$"UI/Bet Node/Bet Label/Arrow Team 2".visible = true
+	$"UI/Bet Node/Bet Label".visible = true
+		
 
 
 func trump_stage():
@@ -132,16 +158,16 @@ func game_stage(): # A loop of 8 tricks is played.
 		betting_team = team1
 	else:
 		betting_team = team2
-		
 	for player in playerpool:
 		print(player, " has ",player.points)
 		if player.name in betting_team:
 			team_points += player.points 
+	var message
 	if team_points >= current_bet:
-		print(betting_team, ' WINS with ',team_points,'/',current_bet)
+		message = str(betting_team, ' WINS with ',team_points,'/',current_bet)
 	else:
-		print(betting_team, ' LOSES with ',team_points,'/',current_bet)
-	
+		message = str(betting_team, ' LOSES with ',team_points,'/',current_bet)
+	round_message(message,4)
 func play_trick():
 	# *** Play the trick *** #
 	for hand in handpool:					

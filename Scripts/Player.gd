@@ -47,6 +47,7 @@ func ai_bid():
 		Director.current_bet  = ai_bet
 		Director.pass_count = 0
 		Director.current_better = $"."
+		Director.bet_label()
 		message = "Player Bet %s" %ai_bet
 		$"../SFX/Card_Ding".pitch_scale = ai_bet*.02+.41
 		$"../SFX/Card_Ding".play()
