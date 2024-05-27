@@ -25,7 +25,8 @@ var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
 var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
-var betting_team 
+var betting_team
+var team_points = 0
 
 # The Trick Data
 var trick_suit : String
@@ -40,6 +41,7 @@ var team2_pips := 0
 func timer(x): # Shortcut for a wait timer because the code below is too long.
 	return get_tree().create_timer(x).timeout
 
+
 func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
@@ -51,6 +53,7 @@ func _ready():
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
 	$"UI/Bet Node/Bet Label".modulate = 0xffffff00
 	$Player1.human = true
+	$"Round Message".modulate = 0xffffff00
 	print('dealer: ',dealer)
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
 	match_start()
@@ -63,7 +66,9 @@ func _ready():
 		#print(each)
 	#print("^Drawpile in reverse order^")
 
+
 func initialize():
+	print("\n*`*`*`* INITIALIZING GAME *`*`*`*`*")
 	var trump_sprite = $"UI/Trump Card/Trump Sprite"
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
 	tween.tween_property(trump_sprite,'position',Vector2(0,-390),.75)\
@@ -79,8 +84,9 @@ func initialize():
 	betting_team = null
 	trick_suit = ""
 	trick_winner = ["Null",0]
-	dealer_match += 1
+	dealer_match = (dealer_match+1) % 4
 	dealer = playerpool[dealer_match]
+	team_points = 0
 	current_better = dealer 		# Who bet they could win. 
 	drawpile = range(32)
 	$SFX/Card_Shuffle.play()		# SFX
@@ -90,15 +96,14 @@ func initialize():
 	deck_refresh()				# Visually referesh onscreen decks
 	match_start()
 
-	
 
 ## ------------------Round Calling Starts-------------------------- ## 
 func match_start(): 
-		 #<---- uncomment 'return' to start main without auto-director.
+	#return				 #<---- uncomment 'return' to start main without auto-director.
 	await timer(1.5) # Typical pause. For 1 sec.
 	await round_message("Match Begins!",1.5)
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
-	#return
+	#return				#<---- uncomment 'return' to start main without auto-director.
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_stage() 					# Calls and waits for the Betting round.
@@ -111,16 +116,12 @@ func match_start():
 	get_tree().call_group("Players", "ready_bid")
 	await timer(1)
 	await game_stage()
-	await timer(3)
-	initialize()
+	await pip_stage()
+	
 	
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
-
-
-
-
 
 
 func betting_stage():
@@ -156,6 +157,7 @@ func betting_stage():
 	
 	# Once loop breaks, this function completes and _ready() continues from await.
 
+
 func bet_label():
 	$"UI/Bet Node/Bet Label".text = str("Bet:\n",current_bet)
 	if current_better.name in team1:
@@ -167,7 +169,6 @@ func bet_label():
 		$"UI/Bet Node/Bet Label/Arrow Team 1".visible = false
 		$"UI/Bet Node/Bet Label/Arrow Team 2".visible = true
 	$"UI/Bet Node/Bet Label".visible = true
-		
 
 
 func trump_stage():
@@ -201,8 +202,11 @@ func second_deal():
 func game_stage(): # A loop of 8 tricks is played.
 	for n in 8:									# 8 cards per hand, 8 rounds per game.
 		await play_trick()
+	
+	
+func pip_stage():
 	##*** SCOREING TIME ***##
-	var team_points = 0
+	team_points = 0
 	for player in playerpool:
 		print(player, " has ",player.points)
 		if player.team == betting_team:
@@ -221,35 +225,62 @@ func game_stage(): # A loop of 8 tricks is played.
 			
 		else:
 			team2_pips -=1	
-	print(team1_pips, ' to ', team2_pips)
-	pip_update()
-	round_message(message,4)
+	var pip_scene = load("res://pip_score.tscn").instantiate()
+	$PopUp.add_child(pip_scene)
+	await $"PopUp".child_exiting_tree
 	
-	if team1_pips == 6 or team2_pips == -6:
-		round_message("TEAM 1 WINS THE MATCH",2)
+	pip_update()
+	await round_message(message,3)
+	
+	if team1_pips >= 6 or team2_pips <= -6:
+		$"Team 1".z_index += 4
+		$"Team 2".z_index += 4
+		get_tree().create_tween().tween_property($"Team 1","position",Vector2(409,265),.35).set_trans(Tween.TRANS_BACK)
+		await get_tree().create_tween().tween_property($"Team 2","position",Vector2(47,308),.35).set_trans(Tween.TRANS_BACK).finished
+		await round_message("TEAM 1 WINS THE MATCH",4)
+		$"SFX/Match Win Lose".play()
 		get_tree().reload_current_scene()
-	elif team2_pips == 6 or team1_pips == -6:
-		round_message("TEAM 1 WINS THE MATCH",2)
+		return
+	
+	elif team2_pips >= 6 or team1_pips <= -6:
+		$"Team 1".z_index += 4
+		$"Team 2".z_index += 4	
+		var goal_spot1 = $"Team 1".position+Vector2(380,-330)
+		var goal_spot2 = $"Team 2".position+Vector2(380,-330)
+		$"SFX/Match Win Lose".stream = load("res://Assets/SFX & Music/match failure.wav")
+		get_tree().create_tween().tween_property($"Team 1","position",goal_spot1,.35).set_trans(Tween.TRANS_BACK)
+		await get_tree().create_tween().tween_property($"Team 2","position",goal_spot2,.35).set_trans(Tween.TRANS_BACK).finished
+		$"SFX/Match Win Lose".play()
+		await round_message("TEAM 2 WINS THE MATCH",4)
 		get_tree().reload_current_scene()
-	await timer(.6)
+		return
+	else:
+		initialize()
 	
 	
 	
 func pip_update():
-	var element
+	$"Team 1".z_index += 4
+	$"Team 2".z_index += 4
+	get_tree().create_tween().tween_property($"Team 1","scale",Vector2(1.5,1.5),.35).set_trans(Tween.TRANS_BACK)
+	await get_tree().create_tween().tween_property($"Team 2","scale",Vector2(1.5,1.5),.35).set_trans(Tween.TRANS_BACK).finished
+	await timer(.45)
+	$SFX/Pip_Pop.play()
 	$"Team 1".value = abs(team1_pips)
 	if team1_pips < 0:
-		$"Team 1".modulate = Color(0, 0, 0)
+		$"Team 1".self_modulate = Color(0, 0, 0)
 	else:
-		$"Team 1".modulate = Color(1,1,1)
-		
+		$"Team 1".self_modulate = Color(1,1,1)
 	$"Team 2".value = abs(team2_pips)
 	if team2_pips < 0:
-		$"Team 2".modulate = Color(0, 0, 0)
+		$"Team 2".self_modulate = Color(0, 0, 0)
 	else:
-		$"Team 2".modulate = Color(1,1,1)
-			
-	pass
+		$"Team 2".self_modulate = Color(1,1,1)
+	await timer(1)
+	get_tree().create_tween().tween_property($"Team 1","scale",Vector2(1,1),.35).set_trans(Tween.TRANS_BACK)
+	await get_tree().create_tween().tween_property($"Team 2","scale",Vector2(1,1),.35).set_trans(Tween.TRANS_BACK).finished
+	$"Team 1".z_index += 4
+	$"Team 2".z_index += 4
 
 
 func play_trick():
@@ -263,7 +294,7 @@ func play_trick():
 		var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
 		print('\n',player,"'s turn!")
 		await player.play_turn()			# Calls to the current player to to play a card.
-		print(player,"'s turn finished!")	
+		print(player,"'s turn finished!\n")	
 		await timer(1.5)
 	print('\n*** Trick Complete ***\nStarting scoring..')
 	
@@ -278,7 +309,6 @@ func play_trick():
 			else:
 				pass										# No, it's garbage.
 		elif card.suit == trump_suit and trump_revealed:	# If not in suit, is it a trump? 
-			print("Trump discovered during score")			# ^NOTE: Won't fire again, because 1st IF now catches suit
 			trick_suit = trump_suit 						# Yes, Suit changes to trump now.
 			trick_winner = [player,card.rank]				# Player is new leader.
 		else:
@@ -328,8 +358,6 @@ func call_bet_window(): # Human betting window called.
 	$Player1/Hand.z_index = 0								# Return cards to normal layer.
 	bet_scene.queue_free()									# Kill the betting window.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
-
-
 
 
 func round_message(message : String,duration):	# Template for making a message fade in center of screen.
@@ -551,7 +579,6 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 	pass # Replace with function body
 
 
-
 func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inpatience.
 	print ('engine timescale: ',Engine.time_scale)
 	if toggled_on:
@@ -561,6 +588,7 @@ func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inp
 		Engine.time_scale = 1
 
 	pass # Replace with function body. # Replace with function body.
+
 
 func sort_hand(children,new_card):
 	var i = 0
@@ -575,12 +603,8 @@ func sort_hand(children,new_card):
 	return j	
 	
 
-
 func _pip_update():
 	team1_pips +=1
 	pip_update()
 	print(team1_pips)
-	team2_pips -=1
-	pip_update()
-	print(team2_pips)
 	pass # Replace with function body.

@@ -66,7 +66,6 @@ func grow_and_go():
 
 func select_and_go():
 	selected = true
-	print('selected: ',selected)
 	tweening = true
 	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.20)
 	#var tween = get_tree().create_tween()
@@ -82,6 +81,7 @@ func deselect_and_go():
 	Director.take_card(self)
 
 func go():
+
 	tweening = true
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
@@ -172,6 +172,7 @@ func _on_reference_rect_gui_input(event): # A click event
 				click_delay.start(.5)
 			elif selected and not tweening:
 				Director.play_card(self)
+				z_index -=2
 				inplay = true
 				click_delay.start(.5)
 		pass # Replace with function body.
@@ -186,18 +187,3 @@ func disable_card():
 	if face_show:
 		modulate = Color(0.80, 0.80, 0.80)
 	
-####### Was just me testing dragging the cards #####
-#var lifted = false
-#var offset = 0
-#func _input_event(viewport, event, shape_idx):
-	#pass
-#func _on_reference_rect_gui_input(event):
-	#if event is InputEventMouseButton and event.pressed and not lifted:
-		#offset = get_global_mouse_position() - global_position
-		#lifted = true # Replace with function body.
-	 #
-#func _input(event):
-	#if event is InputEventMouseButton and event.pressed and lifted:
-		#print('_input recieve')
-		#lifted = false
-		#get_viewport().set_input_as_handled()

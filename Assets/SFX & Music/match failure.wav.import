@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bmcx4x2aqdph1"
+path="res://.godot/imported/match failure.wav-1d4cd3310ad31a7871ae122998d97d60.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/match failure.wav"
+dest_files=["res://.godot/imported/match failure.wav-1d4cd3310ad31a7871ae122998d97d60.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

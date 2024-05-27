@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b0nxblpb60cw2"
+path="res://.godot/imported/mouth-pop-1-SBA-300025080.wav-8126dafdf7c98d07e4b95f600c1e607e.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/mouth-pop-1-SBA-300025080.wav"
+dest_files=["res://.godot/imported/mouth-pop-1-SBA-300025080.wav-8126dafdf7c98d07e4b95f600c1e607e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

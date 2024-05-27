@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=43 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://Scripts/Background.gd" id="7_4cs5p"]
 [ext_resource type="AudioStream" uid="uid://b48px1hjnuhte" path="res://Assets/SFX & Music/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav" id="7_sblwi"]
 [ext_resource type="Texture2D" uid="uid://cbme8xc1w4dge" path="res://Assets/Cards/PNG/red-deck-3.png" id="8_aq1nh"]
+[ext_resource type="AudioStream" uid="uid://b0nxblpb60cw2" path="res://Assets/SFX & Music/mouth-pop-1-SBA-300025080.wav" id="8_t1p8p"]
+[ext_resource type="AudioStream" uid="uid://bbit7jq4vjcb4" path="res://Assets/SFX & Music/Match Success.wav" id="9_2a7v3"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="9_rqqrw"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="10_10vqy"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="11_exjj8"]
@@ -19,10 +21,9 @@
 [ext_resource type="Theme" uid="uid://cu4nqki4gmltt" path="res://Assets/Themes and Styleboxes/Working_Theme.tres" id="13_ejbv2"]
 [ext_resource type="Texture2D" uid="uid://dkcjqc1g4wmv2" path="res://Assets/Cards/PNG/Cards/cardBack_red4.png" id="13_r0gnh"]
 [ext_resource type="Theme" uid="uid://dst0ncp4oxp56" path="res://Assets/Themes and Styleboxes/Draft_theme.tres" id="15_3otkc"]
-[ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="15_e71xe"]
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
-[ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="16_us5jq"]
 [ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
+[ext_resource type="LabelSettings" uid="uid://bagr541kktq7r" path="res://Round Label.tres" id="19_6hsui"]
 [ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
 [ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 
@@ -58,13 +59,16 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ih1gm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pi238"]
+bg_color = Color(0, 0, 0, 0.262745)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ai1i"]
 bg_color = Color(0, 0, 0, 0.105882)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0705882, 0.0705882, 0.0705882, 0.4)
+border_color = Color(0.92, 0.471347, 0.2116, 0.564706)
 corner_radius_top_left = 8
 corner_radius_bottom_left = 8
 expand_margin_left = 2.0
@@ -89,6 +93,23 @@ corner_radius_bottom_left = 7
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5aqi"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60b1t"]
+
+[sub_resource type="SystemFont" id="SystemFont_pulsn"]
+font_names = PackedStringArray("Fantasy")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ih1gm"]
+bg_color = Color(0, 0, 0, 0.105882)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.00789999, 0.45109, 0.79, 0.6)
+corner_radius_top_left = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbgu2"]
 content_margin_left = 3.0
@@ -137,6 +158,18 @@ max_polyphony = 6
 stream = ExtResource("7_sblwi")
 volume_db = -15.646
 pitch_scale = 1.1
+max_polyphony = 6
+
+[node name="Pip_Pop" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("8_t1p8p")
+volume_db = -11.26
+pitch_scale = 0.34
+max_polyphony = 6
+
+[node name="Match Win Lose" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("9_2a7v3")
+volume_db = -11.26
+pitch_scale = 0.34
 max_polyphony = 6
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
@@ -521,51 +554,9 @@ position = Vector2(231, 135)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
-[node name="Play Card" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 646.0
-offset_top = 395.0
-offset_right = 886.0
-offset_bottom = 476.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-theme = ExtResource("15_e71xe")
-theme_type_variation = &"FlatButton"
-
-[node name="ColorRect3" type="ColorRect" parent="Play Card"]
-show_behind_parent = true
-layout_mode = 0
-offset_left = 5.50013
-offset_top = 7.00006
-offset_right = 235.5
-offset_bottom = 79.0001
-pivot_offset = Vector2(275, 78)
-mouse_filter = 2
-color = Color(0, 0, 0, 0.478431)
-
-[node name="Label2" type="Label" parent="Play Card"]
-layout_mode = 0
-offset_left = 19.0716
-offset_top = 15.7857
-offset_right = 221.072
-offset_bottom = 63.7857
-theme = ExtResource("16_us5jq")
-theme_override_font_sizes/font_size = 33
-text = "Play Card"
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
-
 [node name="PopUp" type="Node" parent="."]
 
 [node name="Round Message" type="Label" parent="."]
-modulate = Color(1, 1, 1, 0)
 z_index = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -581,9 +572,19 @@ size_flags_vertical = 1
 theme = ExtResource("15_3otkc")
 theme_override_font_sizes/font_size = 30
 text = "Null Text"
+label_settings = ExtResource("19_6hsui")
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
+
+[node name="Panel" type="Panel" parent="Round Message"]
+visible = false
+show_behind_parent = true
+layout_mode = 0
+offset_left = -79.0
+offset_top = 194.0
+offset_right = 846.0
+offset_bottom = 222.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pi238")
 
 [node name="Player Message" type="Label" parent="."]
 z_index = 3
@@ -606,7 +607,7 @@ vertical_alignment = 1
 
 [node name="Pause slot" type="Control" parent="."]
 process_mode = 3
-top_level = true
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -635,11 +636,9 @@ metadata/_edit_lock_ = true
 
 [node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
 visible = false
-top_level = true
 layout_mode = 1
 
 [node name="Music_Slider" parent="Pause slot" instance=ExtResource("11_exjj8")]
-top_level = true
 layout_mode = 0
 offset_left = 40.0
 offset_top = 10.0
@@ -647,7 +646,6 @@ offset_right = 152.0
 offset_bottom = 40.0
 
 [node name="TextureButton" type="TextureButton" parent="Pause slot"]
-top_level = true
 layout_mode = 0
 offset_left = 1095.0
 offset_top = 15.0
@@ -669,35 +667,20 @@ texture_pressed = ExtResource("19_m4own")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Black Fade" type="ColorRect" parent="."]
-visible = false
-top_level = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -87.0
-offset_top = -59.0
-offset_right = 67.0
-offset_bottom = 38.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.01024, 1.02017)
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
 [node name="Button" type="Button" parent="."]
-offset_left = 866.0
-offset_top = 729.0
-offset_right = 1012.0
-offset_bottom = 801.0
-text = "sort Cards"
+offset_left = 54.0
+offset_top = 447.0
+offset_right = 105.0
+offset_bottom = 478.0
+text = "Cheat!"
 
 [node name="Team 1" type="ProgressBar" parent="."]
 offset_left = 28.0
 offset_top = 596.0
 offset_right = 187.0
 offset_bottom = 621.0
-theme_override_styles/background = SubResource("StyleBoxFlat_ih1gm")
+pivot_offset = Vector2(-13, 34)
+theme_override_styles/background = SubResource("StyleBoxFlat_4ai1i")
 theme_override_styles/fill = SubResource("StyleBoxFlat_t8fno")
 max_value = 6.0
 step = 1.0
@@ -723,12 +706,41 @@ editable = false
 scrollable = false
 tick_count = 7
 
+[node name="Label" type="Label" parent="Team 1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -153.5
+offset_top = -45.5
+offset_right = 121.5
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+size_flags_vertical = 1
+theme = ExtResource("15_3otkc")
+theme_override_colors/font_color = Color(1, 0.664167, 0.35, 0.623529)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.47451)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_pulsn")
+theme_override_font_sizes/font_size = 40
+text = "Team 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Team 2" type="ProgressBar" parent="."]
-offset_left = 348.0
-offset_top = 621.0
-offset_right = 507.0
-offset_bottom = 646.0
+offset_left = -333.923
+offset_top = 639.535
+offset_right = -174.923
+offset_bottom = 664.535
 rotation = 3.14159
+pivot_offset = Vector2(348.962, -9.26709)
 theme_override_styles/background = SubResource("StyleBoxFlat_ih1gm")
 theme_override_styles/fill = SubResource("StyleBoxFlat_rbgu2")
 max_value = 6.0
@@ -754,12 +766,56 @@ editable = false
 scrollable = false
 tick_count = 7
 
+[node name="Label" type="Label" parent="Team 2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 55.5
+offset_top = 45.5
+offset_right = 330.5
+offset_bottom = 100.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+size_flags_vertical = 1
+theme = ExtResource("15_3otkc")
+theme_override_colors/font_color = Color(0.35, 0.74, 1, 0.623529)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.47451)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_pulsn")
+theme_override_font_sizes/font_size = 40
+text = "Team 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Black Fade" type="ColorRect" parent="."]
+visible = false
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -87.0
+offset_top = -59.0
+offset_right = 67.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
 [connection signal="pressed" from="Discard_Button" to="." method="_on_discard_button_pressed"]
 [connection signal="pressed" from="Shuffle" to="." method="_on_shuffle_pressed"]
-[connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
 [connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]
 [connection signal="pressed" from="Button" to="." method="_pip_update"]

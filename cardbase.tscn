@@ -80,9 +80,11 @@ text = "2 Points"
 horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="."]
-offset_left = -92.0
-offset_right = 47.0
-offset_bottom = 55.0
+visible = false
+offset_left = -75.0
+offset_top = -36.0
+offset_right = 64.0
+offset_bottom = 19.0
 pivot_offset = Vector2(70, 17)
 theme_override_font_sizes/font_size = 30
 text = "14"
