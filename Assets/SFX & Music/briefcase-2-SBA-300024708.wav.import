@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://brpg2lnp0aybt"
+path="res://.godot/imported/briefcase-2-SBA-300024708.wav-90524955067d090e8d693537639c6b6e.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/briefcase-2-SBA-300024708.wav"
+dest_files=["res://.godot/imported/briefcase-2-SBA-300024708.wav-90524955067d090e8d693537639c6b6e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

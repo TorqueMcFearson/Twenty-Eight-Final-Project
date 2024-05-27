@@ -8,7 +8,7 @@ var difficulty = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	modulate.a = 0
-	if current_bid:
+	if current_bid > 14:
 		$"Current Bet/Amount".text = str("Current Bet: ", current_bid)
 		$HSlider.min_value = current_bid+1
 		$HSlider.tick_count = 28 - current_bid
@@ -42,6 +42,9 @@ func _on_bet_pressed():
 	$Pass.disabled = true
 	$Bet.disabled = true
 	current_bid = $HSlider.value
+	$"/root/Director/SFX/Card_Ding".pitch_scale = current_bid*.02+.41
+	$"/root/Director/SFX/Card_Ding".play()
+	$"/root/Director/SFX/Card_Whiff".pitch_scale = .65
 	emit_signal("bet_or_pass",current_bid)
 	fade_out()
 
@@ -49,6 +52,8 @@ func _on_bet_pressed():
 func _on_pass_pressed():
 		$Bet.disabled = true
 		$Pass.disabled = true
+		$"/root/Director/SFX/Card_Whiff".pitch_scale += 0.03
+		$"/root/Director/SFX/Card_Whiff".play()
 		emit_signal("bet_or_pass",0)
 		fade_out()
 

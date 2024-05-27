@@ -1,20 +1,31 @@
 extends Node2D
-
+var team : String
 var held_suits := {}
 var points = 0
+var value = 0
 var bet_goal = 0
 var human = false
 var aggression = .5 # Modifies how range of how high they'll bet. 
-@onready var label = $"../Player Message" 
-@onready var Director = $".."
+@onready var label = $"/root/Director/Player Message" 
+@onready var Director = $"/root/Director"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	aggression = randf_range(.5,1)
+	aggression = randf_range(.5,.8)
+	if name == "Player1" or name == "Player3":
+		team = "Team 1"
+	else:
+		team = "Team 2"
 	pass # Replace with function body.
+	#var click_delay = create_timer()
 
-
+func initialize():
+	held_suits = {}
+	points = 0
+	value = 0
+	bet_goal = 0
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
@@ -24,11 +35,11 @@ func ready_bid():
 	held_suits.clear()
 	for card in $Hand.get_children():
 		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
-		points += card.value
+		value += card.value
 	if human:
 		return
 	var suit_match = held_suits.values().max()
-	bet_goal = (suit_match * 2) + (points/2) + 14
+	bet_goal = (suit_match * 2) + (value/2) + 14 - (4-Global.difficulty)
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
 	
 	
@@ -37,40 +48,50 @@ func ai_bid():
 		return
 	var current_bet = Director.current_bet
 	var message : String
-	if current_bet < bet_goal:
+	var min_bet = current_bet+1
+	var color = Color(1, 1, 1,1)
+	if current_bet < bet_goal or current_bet == 13:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
-		var ai_bet = randi_range(current_bet+1,(bet_goal-current_bet)*aggression+current_bet)
-		print(self.name,' bets:', ai_bet)
+		var ai_bet = randi_range(min_bet,(bet_goal-min_bet)*aggression+min_bet)
+		print(self.name,' bets:', ai_bet, ' for bet range of ', range(min_bet,(bet_goal-min_bet)*aggression+min_bet+1))
 		Director.current_bet  = ai_bet
 		Director.pass_count = 0
 		Director.current_better = $"."
-		message = "Player Bet %s" %ai_bet 
+		Director.bet_label()
+		message = "Player Bet %s" %ai_bet
+		$"../SFX/Card_Whiff".pitch_scale = .65
+		$"../SFX/Card_Ding".pitch_scale = ai_bet*.02+.41
+		$"../SFX/Card_Ding".play()
 	else:
+		color = Color(1, 1, 1,.65)
 		Director.pass_count += 1
 		print(self.name,' AI PASSED! Count:', Director.pass_count)
 		message = "Player Passed"
-	await player_message(message)
-		
+		$"../SFX/Card_Whiff".pitch_scale += .03
+		$"../SFX/Card_Whiff".play()
+	await player_message(message,color,0.4)
+	
 
-func player_message(message):
+func player_message(message,color,duration):
 	label.text = message
 	var rise = Vector2(0,5)
-	label.position = position+rise
+	label.position = position + rise
 	get_tree().create_tween()\
-			.tween_property(label,"modulate",Color(1, 1, 1,1),.25)\
+			.tween_property(label,"modulate",color,.25)\
 			.set_ease(Tween.EASE_IN_OUT)
 	await get_tree().create_tween()\
-			.tween_property(label,"position",position,.25)\
+			.tween_property(label,"position",label.position-rise,.25)\
 			.set_ease(Tween.EASE_OUT).finished
+	color.a = 0
 	get_tree().create_tween()\
-			.tween_property(label,"position",position-rise,.35)\
+			.tween_property(label,"position",label.position-rise,.35)\
 			.set_ease(Tween.EASE_IN)\
-			.set_delay(.4)	
+			.set_delay(duration)	
 	await get_tree().create_tween()\
-			.tween_property(label,"modulate",Color(1, 1, 1,0),.35)\
+			.tween_property(label,"modulate",color,.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
-			.set_delay(.4).finished
+			.set_delay(duration).finished
 
 func pick_trump():
 	if human:
@@ -95,11 +116,11 @@ func pick_trump():
 # 
 func play_turn():
 	if human:
-		await Director.round_message("Your Turn", 2)
+		Director.round_message("Your Turn", 2)
 		Global.cards_playable = true
 		if self != Director.dealer:
 			await disable_cards()
-		await $"../Play Card".pressed
+		await Director.card_played
 		var card = $Playslot.get_child(0)
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
@@ -109,17 +130,16 @@ func play_turn():
 			
 	else:
 		if self != Director.dealer:
-			print(self," disabling cards")
-			disable_cards()
+			await disable_cards()
 		var cards = get_node("Hand").get_children()
 		var playable_cards = []
 		for card in cards:
 			if not card.disabled:
 				playable_cards.append(card)
-		playable_cards.shuffle()
-		var card = playable_cards.front()
+		var card = playable_cards.pick_random()
 		card.face_up()
-		await Director.playcard(card)
+		card.trump_check()
+		await Director.play_card(card)
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
 			Director.trick_suit = $Playslot.get_child(0).suit
@@ -127,7 +147,6 @@ func play_turn():
 func disable_cards():
 	var cards = get_node("Hand").get_children()
 	print("Looking for: ",Director.trick_suit, " in: ", held_suits)
-	print("Looking for: ",Director.trump_suit, " in: ", held_suits) if Director.trump_revealed else 1
 	if held_suits.get(Director.trick_suit):
 		print("Trick found")
 		for card in cards:
@@ -137,18 +156,18 @@ func disable_cards():
 				card.disable_card()
 	elif Director.trump_revealed and held_suits.get(Director.trump_suit):
 		print("Trump found")
-		for card in cards:
-			if card.suit == Director.trump_suit:
-				pass
-			else:
-				card.disable_card()
+		#for card in cards:
+			#if card.suit == Director.trump_suit:
+				#pass
+			#else:
+				#card.disable_card()
 	elif Director.trump_revealed:
 		pass
 	else:
 		print("I need to see the trump")
 		Director.trump_reveal()
-		Director.round_message(str("Trump Requested by", self.name),1.35)
-		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 0.60)
+		await player_message(str("I need to \nsee the trump"),Color(1,1,1),2)
+		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 1)
 		$"../UI/Trump Card/Label".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		disable_cards()

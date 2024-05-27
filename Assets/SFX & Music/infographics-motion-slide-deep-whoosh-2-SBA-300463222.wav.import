@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b48px1hjnuhte"
+path="res://.godot/imported/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav-2ca7a87b1c18f9f201d2d4c0bcb150ce.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav"
+dest_files=["res://.godot/imported/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav-2ca7a87b1c18f9f201d2d4c0bcb150ce.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

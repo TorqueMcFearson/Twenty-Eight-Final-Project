@@ -1,4 +1,7 @@
 extends Node2D
+@onready var Director = $"/root/Director"
+@onready var click_delay = $"/root/Director/Click Delay"
+#signal 
 
 
 
@@ -14,7 +17,8 @@ var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
 var slot := Vector2(0,0)
 var trump := false
-var disabled := false
+var disabled := true
+var selected := false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +34,7 @@ func _ready():
 	else:
 		var hue_adjust = (3-value) * -0.15
 		$Label.modulate = Color.from_hsv(0.300+hue_adjust,.9,1)
+	$Label2.text = str(rank)
 
 
 func _process(_delta):
@@ -38,6 +43,13 @@ func _process(_delta):
 		#global_position = get_global_mouse_position() - offset
 	pass
 	
+	
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if Global.cards_playable and not tweening and selected:
+			deselect_and_go()
+			
+				
 func grow_and_go():
 	tweening = true
 	scale = Vector2(0,0)
@@ -51,9 +63,25 @@ func grow_and_go():
 	tween2.tween_property(self,'position',slot,.5)\
 			.set_ease(Tween.EASE_IN_OUT)\
 			.set_trans(Tween.TRANS_BACK)
-			
+
+func select_and_go():
+	selected = true
+	tweening = true
+	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.20)
+	#var tween = get_tree().create_tween()
+	#tween.tween_property(self,'scale',Vector2(1.25,1.25),.20).set_trans(Tween.TRANS_ELASTIC)
+	var tween2 = get_tree().create_tween()
+	tween2.finished.connect(_tween_end)
+	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR)
+
+
+func deselect_and_go():	
+	selected = false
+	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-6,3),.20)
+	Director.take_card(self)
 
 func go():
+
 	tweening = true
 	var tween = create_tween()
 	tween.finished.connect(_tween_end)
@@ -98,13 +126,14 @@ func face_up():
 	var cardasssemble = "res://Assets/Cards/PNG/Cards/card" + suit + face + ".png"
 	get_node("CardBack").texture = load(cardasssemble)
 	face_show = true
+	
 	pass
 	
 	
 func trump_check():
-	if suit == $"/root/Director".trump_suit:
-		#modulate = Color(1, 0.989, 0.95)
-		$CardBack/Panel.visible = true
+	if suit == Director.trump_suit and Director.trump_revealed:
+		$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+		$CardBack/Panel.visible = false
 		trump = true
 		
 		
@@ -115,8 +144,9 @@ func _on_reference_rect_mouse_entered():
 			$Label.visible = true
 			if trump:
 				$"Trump Label".visible = true
-				$CardBack.set_self_modulate(Color(1, 0.96000003814697, 0.75999999046326))
-		if not inplay:
+				$CardBack.set_self_modulate(Color(0.78400003910065, 1, 0.75999999046326))
+				$CardBack/Panel.visible = true
+		if not inplay and not selected:
 			if disabled and face_show:
 				position.y = -10
 			else:
@@ -128,21 +158,23 @@ func _on_reference_rect_mouse_exited():
 			$Label.visible = false
 			if trump:
 				$"Trump Label".visible = false
-				$CardBack.set_self_modulate(Color(1, 1, 1))
-		if not inplay:
+				$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+				$CardBack/Panel.visible = false
+		if not inplay and not selected:
 			position.y = 0
 	
 
-
-
 func _on_reference_rect_gui_input(event): # A click event
-	if Global.cards_playable and not tweening and not disabled and $"../..".human:
-		if event is InputEventMouseButton and event.pressed :
-			if inplay == false:
-				get_node('/root/Director').playcard(self)
-			else:
-				get_node('/root/Director').take_card(self)
-			
+	if Global.cards_playable and not tweening and not disabled and $"../..".human and not click_delay.get_time_left():
+		if event is InputEventMouseButton and event.pressed:
+			if not inplay and not selected:
+				Director.select_card(self)
+				click_delay.start(.5)
+			elif selected and not tweening:
+				Director.play_card(self)
+				z_index -=2
+				inplay = true
+				click_delay.start(.5)
 		pass # Replace with function body.
 
 
@@ -155,18 +187,3 @@ func disable_card():
 	if face_show:
 		modulate = Color(0.80, 0.80, 0.80)
 	
-####### Was just me testing dragging the cards #####
-#var lifted = false
-#var offset = 0
-#func _input_event(viewport, event, shape_idx):
-	#pass
-#func _on_reference_rect_gui_input(event):
-	#if event is InputEventMouseButton and event.pressed and not lifted:
-		#offset = get_global_mouse_position() - global_position
-		#lifted = true # Replace with function body.
-	 #
-#func _input(event):
-	#if event is InputEventMouseButton and event.pressed and lifted:
-		#print('_input recieve')
-		#lifted = false
-		#get_viewport().set_input_as_handled()

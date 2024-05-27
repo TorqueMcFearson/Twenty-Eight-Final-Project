@@ -32,18 +32,16 @@ texture = ExtResource("2_bj37g")
 centered = false
 
 [node name="CardBack" type="Sprite2D" parent="."]
-position = Vector2(37, 26)
+z_index = 1
 texture = ExtResource("2_bj37g")
 centered = false
-offset = Vector2(-37.0151, -26)
 
 [node name="Panel" type="Panel" parent="CardBack"]
 visible = false
 texture_filter = 4
-offset_left = -37.0
-offset_top = -26.0
-offset_right = 103.0
-offset_bottom = 164.0
+offset_left = 1.0
+offset_right = 141.0
+offset_bottom = 190.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5r0r3")
 
 [node name="ReferenceRect" type="ReferenceRect" parent="."]
@@ -71,14 +69,25 @@ text = "Trump"
 horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="."]
-visible = false
 modulate = Color(0.085, 0.5, 0.201, 1)
 offset_left = 1.0
 offset_top = -28.0
 offset_right = 140.0
 offset_bottom = 27.0
+pivot_offset = Vector2(70, 17)
 theme_override_font_sizes/font_size = 20
 text = "2 Points"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+visible = false
+offset_left = -75.0
+offset_top = -36.0
+offset_right = 64.0
+offset_bottom = 19.0
+pivot_offset = Vector2(70, 17)
+theme_override_font_sizes/font_size = 30
+text = "14"
 horizontal_alignment = 1
 
 [connection signal="gui_input" from="ReferenceRect" to="." method="_on_reference_rect_gui_input"]

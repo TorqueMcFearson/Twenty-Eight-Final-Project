@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c766l3ry55sdd"
+path="res://.godot/imported/hit-flutter-SBA-300131408.wav-339da1e31c295f63c03227a4d0c63e17.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/hit-flutter-SBA-300131408.wav"
+dest_files=["res://.godot/imported/hit-flutter-SBA-300131408.wav-339da1e31c295f63c03227a4d0c63e17.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
