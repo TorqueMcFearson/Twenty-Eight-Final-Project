@@ -9,12 +9,26 @@ var cards = {} # Declare array, for use in functions
 var cards_playable = true
 
 func database_constructor(x):
+	#var id = 0 # Unique Id for every suit/face
+	#var rank = 0 # Rising rank value for every face.
+	#for face in FACES:
+		#rank += 1
+		#for suit in SUITS:
+			## id, Face, Suit, Rank, value 
+			#x[id] = {
+				#'id': id, 
+				#'face':face, 
+				#'suit':suit,
+				#'rank':rank,
+				#'value':POINTS.get(face,0)} # Searches POINTS with face, returns value if found 0 is default. 
+			#id +=1
 	var id = 0 # Unique Id for every suit/face
 	var rank = 0 # Rising rank value for every face.
-	for face in FACES:
-		rank += 1
-		for suit in SUITS:
+	for suit in SUITS:
+		rank = 0
+		for face in FACES:
 			# id, Face, Suit, Rank, value 
+			rank += 1
 			x[id] = {
 				'id': id, 
 				'face':face, 

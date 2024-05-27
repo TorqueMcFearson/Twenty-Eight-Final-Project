@@ -44,16 +44,17 @@ func _ready():
 	$Shuffle.disabled = true # Shuffle starts disabled because drawpile full
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
 	$Player1.human = true
+	var cardlist = [] 
+	for each in drawpile: 
+		var data = Global.cards.get(each)
+		cardlist.append(data.face + " of " + data.suit)
+	for each in cardlist:
+		print(each)
+	print("^Drawpile in reverse order^")
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
 	match_start()
 	## Debug tool: Just prints to console the draw cards in order ##
-	#var cardlist = [] 
-	#for each in drawpile: 
-		#var data = Global.cards.get(each)
-		#cardlist.append(data.face + " of " + data.suit)
-	#for each in cardlist:
-		#print(each)
-	#print("^Drawpile in reverse order^")
+	
 
 
 ## ------------------Round Calling Starts-------------------------- ## 
@@ -65,10 +66,14 @@ func match_start():
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_stage() 					# Calls and waits for the Betting round.
+	await timer(1)
 	await trump_stage()						# Calls and waits the Trump choosing round.
-	#for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
-		#each.trump_check()					# Enable to highlight trumps when player wins
+	if current_better == $Player1:
+		print("trump check cause player 1 is better")
+		for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
+			each.trump_check()					# Enable to highlight trumps when player wins
 	get_tree().call_group("Players", "ready_bid")
+	await timer(1)
 	await game_stage()
 	await timer(3)
 	get_tree().reload_current_scene()
@@ -104,8 +109,8 @@ func betting_stage():
 	else:
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
-	round_message(message,3)
-	await timer(3)
+	round_message(message,2)
+	await timer(2)
 	dealer = current_better
 	
 	# Once loop breaks, this function completes and _ready() continues from await.
@@ -143,6 +148,9 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 	var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
 	$"UI/Trump Card/Trump Sprite".texture = load(assemble)
 	trump_revealed = true
+	await timer(1)
+	for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
+		each.trump_check()					# Enable to highlight trumps when player wins
 	pass
 
 
@@ -168,6 +176,8 @@ func game_stage(): # A loop of 8 tricks is played.
 	else:
 		message = str(betting_team, ' LOSES with ',team_points,'/',current_bet)
 	round_message(message,4)
+
+
 func play_trick():
 	# *** Play the trick *** #
 	for hand in handpool:					
@@ -265,16 +275,24 @@ func draw_card(hand):
 		print('Draw pile empty, dumbass')
 		return 0							# False value for error, stop draws.
 	var face_show = true if hand.get_parent().human else false #if human, card faceup
-	var children = hand.get_child_count()	# How many cards already in hand.
+	var children = hand.get_children()	# How many cards already in hand.
 	# Requests card object from constructor script, configured using an ID from top of drawpile.
-	if children == MAX_HANDSIZE:			# Skip hand if hand is full.
+	if children.size() == MAX_HANDSIZE:			# Skip hand if hand is full.
 		('Hands full, greedy pig boy!')
 		return 1							# return true because we skip, not stop.
-	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show) 
-	new_card.slot = Vector2(children*40,0) # Position stored relative to amount of cards in hand.
+	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
+	var j
+	if hand.get_parent().human:
+		j = sort_hand(children,new_card)
+	else:
+		j = children.size() 
+		new_card.slot = Vector2(j*40,0)
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
 	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
+	for each in children:		# For each card still in hand
+		each.go()							# Tween them there.
+	$Player1/Hand.move_child(new_card,j)
 	$SFX/Card_Fwip.play(.11)		# Card SFX
 	$DrawDeck/Amount.text = str(drawpile.size()) # Refresh the amount label on drawdeck.
 	if drawpile.size() == 0:					# If that was last card, make drawdeck disappear.
@@ -393,8 +411,23 @@ func fade_out(delta): # Same as fade_in.. actually might just merge the two..
 		print("DONE")
 		set_process(false)
 
+func select_card(card):
+	var old_card = $Player1/Selected.get_child(0)
+	card.reparent($Player1/Selected)
+	var slot = Vector2(0,0)
+	card.slot = Vector2(0,0)
+	card.select_and_go()					# stores a base position.
+	for each in $Player1/Hand.get_children():		# For each card still in hand
+		each.slot = slot					# Update card with new spot in hand.
+		each.go()							# Tween them there.
+		slot += Vector2(40,0)				# Increase for next card.
+	await timer(.05)
+	if old_card:
+		await take_card(old_card)
+	pass
 
-func playcard(card): # Click cards are moved to their assigned playslot
+
+func play_card(card): # Click cards are moved to their assigned playslot
 	var player = card.get_node("../..") 		# "../.." means parent of my parent.
 	var playslot = player.get_node("Playslot")  # store playslot object
 	if playslot.get_child_count():				# If playslot has card, cancel function.
@@ -404,36 +437,27 @@ func playcard(card): # Click cards are moved to their assigned playslot
 	var slot = Vector2(0,0)					# stores a base position.
 	card.slot = slot						# Updates the card's variable for upcoming tween.
 	card.reparent(playslot)					# Moves card object from hand to playslot
+	if playslot == $Player3/Playslot:
+		card.get_node("Label").set_rotation_degrees(180)
 	card.go()								# Tweens to playslot's base position (0,0)
 	card.inplay = true						# Set flag in objects variables.
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
 	$SFX/Card_Fwip.play()						# SFX
-	for each in hand.get_children():		# For each card still in hand
-		each.slot = slot					# Update card with new spot in hand.
-		each.go()							# Tween them there.
-		slot += Vector2(40,0)				# Increase for next card.
-	
-func show_play_button():
-	await get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,1),.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO).set_delay(.25)
-	$"Play Card".set_disabled(false)	# ^This fades in a Play Card button I'm working on.. to lock in your decision. ##
+	#emit_signal() card_played 
 
-func remove_play_button():
-	get_tree().create_tween().tween_property($"Play Card",'modulate', Color(1,1,1,0),.2).set_ease(Tween.EASE_IN)
-	$"Play Card".set_disabled(true)
 	
-func take_card(card): # An inversion of playcard() move playslot card back to hand.
-	card.get_node("shadow").visible = true
-	var to_hand = card.get_node("../../Hand")
-	var children = to_hand.get_child_count()
-	if children > 7:
-		print('Hand is full, dumbass')
-		return 0
-	card.reparent(to_hand,true)
-	card.slot = Vector2(0,0) + Vector2(children*40,0)
-	#card.global_position = card.slot
-	card.go()
+func take_card(card): # An inversion of play_card() move playslot card back to hand.
+	var hand = $Player1/Hand
+	var children = hand.get_children()
+	var j = sort_hand(children,card)
+	card.selected = false
+	get_tree().create_tween().tween_property(card.get_node("shadow"),"position",Vector2(-6,3),.20)
+	card.reparent(hand,true)
+	await timer(.25)
+	for each in hand.get_children():
+		each.go()
+	hand.move_child(card,j)
 	$SFX/Card_Fwip.play(.11)
-	card.inplay = false
 	return 1
 
 
@@ -446,10 +470,6 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 	pass # Replace with function body
 
 
-func _on_play_card_pressed(): # Play card in play slot..
-	remove_play_button()
-	pass # Replace with function body.
-
 
 func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inpatience.
 	print ('engine timescale: ',Engine.time_scale)
@@ -460,3 +480,16 @@ func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inp
 		Engine.time_scale = 1
 
 	pass # Replace with function body. # Replace with function body.
+
+func sort_hand(children,new_card):
+	var i = 0
+	var j = 0
+	for old_card in children:				# Position stored relative to amount of cards in hand.
+		if new_card.id > old_card.id:
+			new_card.slot = Vector2((i+1)*40,0)
+			j += 1
+		else:
+			old_card.slot = Vector2((i+1)*40,0)
+		i += 1
+	return j	
+	

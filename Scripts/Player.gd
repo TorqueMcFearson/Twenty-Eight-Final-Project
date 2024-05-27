@@ -5,7 +5,7 @@ var value = 0
 var bet_goal = 0
 var human = false
 var aggression = .5 # Modifies how range of how high they'll bet. 
-@onready var label = $"../Player Message" 
+@onready var label = $"/root/Director/Player Message" 
 @onready var Director = $"/root/Director"
 
 # Called when the node enters the scene tree for the first time.
@@ -13,6 +13,7 @@ func _ready():
 	randomize()
 	aggression = randf_range(.5,.8)
 	pass # Replace with function body.
+	var click_delay = create_timer()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -57,28 +58,28 @@ func ai_bid():
 		print(self.name,' AI PASSED! Count:', Director.pass_count)
 		message = "Player Passed"
 		$"../SFX/Card_Whiff".play()
-	await player_message(message,color)
+	await player_message(message,color,0.4)
 	
 
-func player_message(message,color):
+func player_message(message,color,duration):
 	label.text = message
 	var rise = Vector2(0,5)
-	label.position = position+rise
+	label.position = position + rise
 	get_tree().create_tween()\
 			.tween_property(label,"modulate",color,.25)\
 			.set_ease(Tween.EASE_IN_OUT)
 	await get_tree().create_tween()\
-			.tween_property(label,"position",position,.25)\
+			.tween_property(label,"position",label.position-rise,.25)\
 			.set_ease(Tween.EASE_OUT).finished
 	color.a = 0
 	get_tree().create_tween()\
-			.tween_property(label,"position",position-rise,.35)\
+			.tween_property(label,"position",label.position-rise,.35)\
 			.set_ease(Tween.EASE_IN)\
-			.set_delay(.4)	
+			.set_delay(duration)	
 	await get_tree().create_tween()\
 			.tween_property(label,"modulate",color,.35)\
 			.set_ease(Tween.EASE_IN_OUT)\
-			.set_delay(.4).finished
+			.set_delay(duration).finished
 
 func pick_trump():
 	if human:
@@ -118,16 +119,16 @@ func play_turn():
 	else:
 		if self != Director.dealer:
 			print(self," disabling cards")
-			disable_cards()
+			await disable_cards()
 		var cards = get_node("Hand").get_children()
 		var playable_cards = []
 		for card in cards:
 			if not card.disabled:
 				playable_cards.append(card)
-		playable_cards.shuffle()
-		var card = playable_cards.front()
+		var card = playable_cards.pick_random()
 		card.face_up()
-		await Director.playcard(card)
+		card.trump_check()
+		await Director.play_card(card)
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
 			Director.trick_suit = $Playslot.get_child(0).suit
@@ -145,17 +146,17 @@ func disable_cards():
 				card.disable_card()
 	elif Director.trump_revealed and held_suits.get(Director.trump_suit):
 		print("Trump found")
-		for card in cards:
-			if card.suit == Director.trump_suit:
-				pass
-			else:
-				card.disable_card()
+		#for card in cards:
+			#if card.suit == Director.trump_suit:
+				#pass
+			#else:
+				#card.disable_card()
 	elif Director.trump_revealed:
 		pass
 	else:
 		print("I need to see the trump")
 		Director.trump_reveal()
-		Director.round_message(str("Trump Requested by ", self.name),1.35)
+		await player_message(str("I need to \nsee the trump", self.name),Color(1,1,1),4)
 		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 1)
 		$"../UI/Trump Card/Label".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))

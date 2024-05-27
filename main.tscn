@@ -98,6 +98,7 @@ max_polyphony = 6
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
 modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -1
 position = Vector2(579, 326)
 scale = Vector2(0.766667, 0.5168)
 texture = ExtResource("5_oe1mm")
@@ -120,199 +121,6 @@ scale = Vector2(1.14642, 1.17701)
 texture = ExtResource("9_rqqrw")
 offset = Vector2(636.687, 508.163)
 region_rect = Rect2(0, 0, 100, 1260)
-
-[node name="Deal_One_Card" type="Button" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 502.0
-offset_top = 273.0
-offset_right = 646.0
-offset_bottom = 342.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-text = "Deal 1 card"
-
-[node name="Deal_ALL" type="Button" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 368.0
-offset_top = 175.0
-offset_right = 512.0
-offset_bottom = 244.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-text = "Deal All
-4 cards"
-
-[node name="flip_cards" type="Button" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 368.0
-offset_top = 372.0
-offset_right = 512.0
-offset_bottom = 441.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-text = "Hand 1 flip cards"
-
-[node name="Discard_Button" type="Button" parent="."]
-visible = false
-offset_left = 640.0
-offset_top = 372.0
-offset_right = 784.0
-offset_bottom = 441.0
-disabled = true
-text = "Discard Hands"
-
-[node name="Shuffle" type="Button" parent="."]
-visible = false
-offset_left = 640.0
-offset_top = 175.0
-offset_right = 784.0
-offset_bottom = 244.0
-disabled = true
-text = "Shuffle"
-
-[node name="DrawDeck" type="Sprite2D" parent="."]
-position = Vector2(1011, 490)
-scale = Vector2(0.63, 0.63)
-texture = ExtResource("8_aq1nh")
-centered = false
-
-[node name="Deck Label" type="Label" parent="DrawDeck"]
-visible = false
-offset_left = 54.3492
-offset_top = 159.302
-offset_right = 206.35
-offset_bottom = 233.301
-scale = Vector2(0.690244, 0.690244)
-theme_override_font_sizes/font_size = 25
-text = "Draw Deck "
-metadata/_edit_use_anchors_ = true
-
-[node name="Amount" type="Label" parent="DrawDeck"]
-offset_left = 42.8571
-offset_top = 55.5556
-offset_right = 158.857
-offset_bottom = 129.556
-theme_override_font_sizes/font_size = 50
-text = "32"
-horizontal_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Discard_Deck" type="Sprite2D" parent="."]
-texture_repeat = 1
-position = Vector2(14, 490)
-scale = Vector2(0.63, 0.63)
-texture = ExtResource("8_aq1nh")
-centered = false
-
-[node name="Deck Label" type="Label" parent="Discard_Deck"]
-offset_left = 44.4444
-offset_top = 158.73
-offset_right = 200.444
-offset_bottom = 232.729
-scale = Vector2(0.690244, 0.690244)
-theme_override_font_sizes/font_size = 25
-text = "Discard Deck"
-metadata/_edit_use_anchors_ = true
-
-[node name="Amount" type="Label" parent="Discard_Deck"]
-offset_left = 41.2698
-offset_top = 61.9047
-offset_right = 157.27
-offset_bottom = 135.905
-theme_override_font_sizes/font_size = 50
-text = "31"
-horizontal_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Player1" type="Node2D" parent="." groups=["Players"]]
-position = Vector2(470, 471)
-script = ExtResource("10_10vqy")
-
-[node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
-offset_left = 54.0
-offset_top = -103.0
-offset_right = 194.0
-offset_bottom = 88.0
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = ExtResource("11_wkpfp")
-
-[node name="Hand" type="Node2D" parent="Player1"]
-position = Vector2(-95, 72)
-
-[node name="Player2" type="Node2D" parent="." groups=["Players"]]
-position = Vector2(97, 284)
-script = ExtResource("10_10vqy")
-
-[node name="Playslot" type="Panel" parent="Player2" groups=["Playslots"]]
-offset_left = 419.0
-offset_top = -28.0
-offset_right = 559.0
-offset_bottom = 163.0
-rotation = 1.5708
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = ExtResource("12_u1og8")
-
-[node name="Hand" type="Node2D" parent="Player2"]
-position = Vector2(-21, -121)
-rotation = 1.5708
-scale = Vector2(0.75, 0.75)
-
-[node name="Player3" type="Node2D" parent="." groups=["Players"]]
-position = Vector2(470, 115)
-script = ExtResource("10_10vqy")
-
-[node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
-offset_left = 158.0
-offset_top = 133.0
-offset_right = 298.0
-offset_bottom = 324.0
-rotation = 3.14159
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = ExtResource("11_wkpfp")
-
-[node name="Hand" type="Node2D" parent="Player3"]
-position = Vector2(258, -34)
-rotation = 3.14159
-scale = Vector2(0.75, 0.75)
-
-[node name="Player4" type="Node2D" parent="." groups=["Players"]]
-position = Vector2(842, 284)
-script = ExtResource("10_10vqy")
-
-[node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
-offset_left = -206.0
-offset_top = 76.0
-offset_right = -66.0
-offset_bottom = 267.0
-rotation = -1.5708
-scale = Vector2(0.75, 0.75)
-theme_override_styles/panel = ExtResource("12_u1og8")
-
-[node name="Hand" type="Node2D" parent="Player4"]
-position = Vector2(231, 135)
-rotation = -1.5708
-scale = Vector2(0.75, 0.75)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -464,6 +272,225 @@ text = "🠝
 🠟"
 horizontal_alignment = 1
 
+[node name="Deal_One_Card" type="Button" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 502.0
+offset_top = 273.0
+offset_right = 646.0
+offset_bottom = 342.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Deal 1 card"
+
+[node name="Deal_ALL" type="Button" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 368.0
+offset_top = 175.0
+offset_right = 512.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Deal All
+4 cards"
+
+[node name="flip_cards" type="Button" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 368.0
+offset_top = 372.0
+offset_right = 512.0
+offset_bottom = 441.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Hand 1 flip cards"
+
+[node name="Discard_Button" type="Button" parent="."]
+visible = false
+offset_left = 640.0
+offset_top = 372.0
+offset_right = 784.0
+offset_bottom = 441.0
+disabled = true
+text = "Discard Hands"
+
+[node name="Shuffle" type="Button" parent="."]
+visible = false
+offset_left = 640.0
+offset_top = 175.0
+offset_right = 784.0
+offset_bottom = 244.0
+disabled = true
+text = "Shuffle"
+
+[node name="DrawDeck" type="Sprite2D" parent="."]
+position = Vector2(1011, 490)
+scale = Vector2(0.63, 0.63)
+texture = ExtResource("8_aq1nh")
+centered = false
+
+[node name="Deck Label" type="Label" parent="DrawDeck"]
+visible = false
+offset_left = 54.3492
+offset_top = 159.302
+offset_right = 206.35
+offset_bottom = 233.301
+scale = Vector2(0.690244, 0.690244)
+theme_override_font_sizes/font_size = 25
+text = "Draw Deck "
+metadata/_edit_use_anchors_ = true
+
+[node name="Amount" type="Label" parent="DrawDeck"]
+offset_left = 42.8571
+offset_top = 55.5556
+offset_right = 158.857
+offset_bottom = 129.556
+theme_override_font_sizes/font_size = 50
+text = "32"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Discard_Deck" type="Sprite2D" parent="."]
+texture_repeat = 1
+position = Vector2(14, 490)
+scale = Vector2(0.63, 0.63)
+texture = ExtResource("8_aq1nh")
+centered = false
+
+[node name="Deck Label" type="Label" parent="Discard_Deck"]
+offset_left = 44.4444
+offset_top = 158.73
+offset_right = 200.444
+offset_bottom = 232.729
+scale = Vector2(0.690244, 0.690244)
+theme_override_font_sizes/font_size = 25
+text = "Discard Deck"
+metadata/_edit_use_anchors_ = true
+
+[node name="Amount" type="Label" parent="Discard_Deck"]
+offset_left = 41.2698
+offset_top = 61.9047
+offset_right = 157.27
+offset_bottom = 135.905
+theme_override_font_sizes/font_size = 50
+text = "31"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Player1" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(470, 471)
+script = ExtResource("10_10vqy")
+
+[node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
+offset_left = 54.0
+offset_top = -103.0
+offset_right = 194.0
+offset_bottom = 88.0
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = ExtResource("11_wkpfp")
+
+[node name="Selected" type="Node2D" parent="Player1"]
+position = Vector2(32, -128)
+
+[node name="Hand" type="Node2D" parent="Player1"]
+position = Vector2(-95, 72)
+
+[node name="Player2" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(97, 284)
+script = ExtResource("10_10vqy")
+
+[node name="Playslot" type="Panel" parent="Player2" groups=["Playslots"]]
+z_index = -1
+offset_left = 419.0
+offset_top = -28.0
+offset_right = 559.0
+offset_bottom = 163.0
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = ExtResource("12_u1og8")
+
+[node name="Hand" type="Node2D" parent="Player2"]
+position = Vector2(-21, -121)
+rotation = 1.5708
+scale = Vector2(0.75, 0.75)
+
+[node name="Player Message2" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 97.0
+offset_top = 284.0
+offset_right = 372.0
+offset_bottom = 397.0
+scale = Vector2(0.75, 0.75)
+size_flags_vertical = 1
+theme = ExtResource("15_3otkc")
+theme_override_font_sizes/font_size = 40
+text = "\"I need to see the trump\""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Player3" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(470, 115)
+script = ExtResource("10_10vqy")
+
+[node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
+z_index = -1
+offset_left = 158.0
+offset_top = 133.0
+offset_right = 298.0
+offset_bottom = 324.0
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = ExtResource("11_wkpfp")
+
+[node name="Hand" type="Node2D" parent="Player3"]
+position = Vector2(258, -34)
+rotation = 3.14159
+scale = Vector2(0.75, 0.75)
+
+[node name="Player4" type="Node2D" parent="." groups=["Players"]]
+position = Vector2(842, 284)
+script = ExtResource("10_10vqy")
+
+[node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
+z_index = -1
+offset_left = -206.0
+offset_top = 76.0
+offset_right = -66.0
+offset_bottom = 267.0
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = ExtResource("12_u1og8")
+
+[node name="Hand" type="Node2D" parent="Player4"]
+position = Vector2(231, 135)
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+
 [node name="Play Card" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
@@ -537,8 +564,6 @@ offset_left = 470.0
 offset_top = 701.0
 offset_right = 745.0
 offset_bottom = 756.0
-grow_horizontal = 2
-grow_vertical = 2
 scale = Vector2(0.75, 0.75)
 size_flags_vertical = 1
 theme = ExtResource("15_3otkc")
@@ -628,6 +653,13 @@ scale = Vector2(1.01024, 1.02017)
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="Button" type="Button" parent="."]
+offset_left = 784.0
+offset_top = 511.0
+offset_right = 930.0
+offset_bottom = 583.0
+text = "sort Cards"
+
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
 [connection signal="pressed" from="flip_cards" to="." method="_on_flip_cards_pressed"]
@@ -636,3 +668,4 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
 [connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]
+[connection signal="pressed" from="Button" to="." method="sort_cards"]
