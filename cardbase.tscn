@@ -32,6 +32,7 @@ texture = ExtResource("2_bj37g")
 centered = false
 
 [node name="CardBack" type="Sprite2D" parent="."]
+z_index = 1
 texture = ExtResource("2_bj37g")
 centered = false
 

@@ -1,4 +1,5 @@
 extends Node2D
+var team : String
 var held_suits := {}
 var points = 0
 var value = 0
@@ -12,8 +13,12 @@ var aggression = .5 # Modifies how range of how high they'll bet.
 func _ready():
 	randomize()
 	aggression = randf_range(.5,.8)
+	if name == "Player1" or name == "Player3":
+		team = "Team 1"
+	else:
+		team = "Team 2"
 	pass # Replace with function body.
-	var click_delay = create_timer()
+	#var click_delay = create_timer()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -40,7 +45,7 @@ func ai_bid():
 	var message : String
 	var min_bet = current_bet+1
 	var color = Color(1, 1, 1,1)
-	if current_bet < bet_goal:
+	if current_bet < bet_goal or current_bet == 13:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
 		randomize()
 		var ai_bet = randi_range(min_bet,(bet_goal-min_bet)*aggression+min_bet)
@@ -50,6 +55,7 @@ func ai_bid():
 		Director.current_better = $"."
 		Director.bet_label()
 		message = "Player Bet %s" %ai_bet
+		$"../SFX/Card_Whiff".pitch_scale = .65
 		$"../SFX/Card_Ding".pitch_scale = ai_bet*.02+.41
 		$"../SFX/Card_Ding".play()
 	else:
@@ -57,6 +63,7 @@ func ai_bid():
 		Director.pass_count += 1
 		print(self.name,' AI PASSED! Count:', Director.pass_count)
 		message = "Player Passed"
+		$"../SFX/Card_Whiff".pitch_scale += .03
 		$"../SFX/Card_Whiff".play()
 	await player_message(message,color,0.4)
 	
@@ -108,7 +115,7 @@ func play_turn():
 		Global.cards_playable = true
 		if self != Director.dealer:
 			await disable_cards()
-		await $"../Play Card".pressed
+		await Director.card_played
 		var card = $Playslot.get_child(0)
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
@@ -156,7 +163,7 @@ func disable_cards():
 	else:
 		print("I need to see the trump")
 		Director.trump_reveal()
-		await player_message(str("I need to \nsee the trump", self.name),Color(1,1,1),4)
+		await player_message(str("I need to \nsee the trump"),Color(1,1,1),2)
 		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 1)
 		$"../UI/Trump Card/Label".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))

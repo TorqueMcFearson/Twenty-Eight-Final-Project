@@ -9,9 +9,10 @@ var drawpile = range(32) # Drawpile is a stack of Integer IDs 0-31 (32 cards)
 var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
 @onready var team1 = ["Player1","Player3"]
 @onready var team2 = ["Player2","Player4"]
-@onready var dealer = $Player1
+var dealer_match = 0
 @onready var playerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
+@onready var dealer = $Player1
 
 ## Tween globals
 var fade_goal = Color(1,1,1,0) # Used for tween and lerp fading.
@@ -19,16 +20,21 @@ var fade_rate = .01 # Used for tween and lerp fading.
 
 # The Bid_Stage Data
 @onready var current_better = $Player1 		# Who bet they could win. 
-var current_bet: int = 0 			  		# How many tricks they bet they could win.
+var current_bet: int = 13 			  		# How many tricks they bet they could win.
 var round: int = 0 							# Typical round counter for bidding and play stage.
 var pass_count: int = 0						# Typical pass counter for bidding and play stage.
 var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
-var betting_team : String
+var betting_team 
 
 # The Trick Data
 var trick_suit : String
 var trick_winner = ["Null",0]
+signal card_played
+
+# The Match Data
+var team1_pips := 0
+var team2_pips := 0
 
 
 func timer(x): # Shortcut for a wait timer because the code below is too long.
@@ -43,26 +49,54 @@ func _ready():
 	$Discard_Deck/Amount.text = '' # Discard Deck starts empty.
 	$Shuffle.disabled = true # Shuffle starts disabled because drawpile full
 	$Discard_Button.disabled = true # Discard pile starts disabled, No cards in hands.
+	$"UI/Bet Node/Bet Label".modulate = 0xffffff00
 	$Player1.human = true
-	var cardlist = [] 
-	for each in drawpile: 
-		var data = Global.cards.get(each)
-		cardlist.append(data.face + " of " + data.suit)
-	for each in cardlist:
-		print(each)
-	print("^Drawpile in reverse order^")
+	print('dealer: ',dealer)
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
 	match_start()
 	## Debug tool: Just prints to console the draw cards in order ##
-	
+	#var cardlist = [] 
+	#for each in drawpile: 
+		#var data = Global.cards.get(each)
+		#cardlist.append(data.face + " of " + data.suit)
+	#for each in cardlist:
+		#print(each)
+	#print("^Drawpile in reverse order^")
 
+func initialize():
+	var trump_sprite = $"UI/Trump Card/Trump Sprite"
+	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
+	tween.tween_property(trump_sprite,'position',Vector2(0,0),.75)\
+			.set_ease(Tween.EASE_OUT)\
+			.set_trans(Tween.TRANS_SPRING)
+	trump_sprite.texture = load("res://Assets/Cards/PNG/Cards/cardBack_red4.png")
+	$"UI/Bet Node/Bet Label".modulate = Color(0, 0, 0, 0)
+	current_bet = 13 			  		# How many tricks they bet they could win.
+	round= 0 							# Typical round counter for bidding and play stage.
+	pass_count= 0						# Typical pass counter for bidding and play stage.
+	trump_revealed = false 				# Trump revealed to field true/false
+	trump_suit 					# What suit the bid-winning player picked.
+	betting_team
+	trick_suit
+	trick_winner = ["Null",0]
+	dealer_match += 1
+	dealer = playerpool[dealer_match]
+	current_better = dealer 		# Who bet they could win. 
+	drawpile = range(32)
+	$SFX/Card_Shuffle.play()		# SFX
+	drawpile.shuffle()			# Shuffle IDs in drawpile
+	deck_refresh()				# Visually referesh onscreen decks
+	match_start()
+
+	
 
 ## ------------------Round Calling Starts-------------------------- ## 
 func match_start(): 
-	#return     #<---- uncomment 'return' to start main without auto-director.
+		 #<---- uncomment 'return' to start main without auto-director.
 	await timer(1.5) # Typical pause. For 1 sec.
 	await round_message("Match Begins!",1.5)
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
+	#return
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_stage() 					# Calls and waits for the Betting round.
@@ -76,35 +110,40 @@ func match_start():
 	await timer(1)
 	await game_stage()
 	await timer(3)
-	get_tree().reload_current_scene()
+	initialize()
 	
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
 
 
+
+
+
+
 func betting_stage():
 	while true:		# Endless true Loop until there is a winner, then breaks out.
 		round +=1
 		print ('\n *****Round ',round, '******\n')
-		$SFX/Card_PopUp.play(.25)
-		await call_bet_window()					# Calls Human betting screen
-		bet_label()
 		await get_tree().create_tween().tween_property($"UI/Bet Node/Bet Label","modulate",Color(1,1,1,1),.75).finished
-		
-		
-		await get_tree().create_timer(1).timeout
-		#get_tree().call_group("Players", "ai_bid")  # Calls each AIs ai_bid() from Player.gd 
-		for player in playerpool:
-			await player.ai_bid()
-			
-		
-		# NOTE: All Player Objects are in a group called "players", see node tab on right panel.
-		if pass_count == 3:							# If 3 pass in a row, break loop.
-			break									# Last bid and bidder locked in.
+		var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
+		for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
+			var player = playerpool[index%4]
+			if pass_count == 3:							# If 3 pass in a row, break loop.
+				break
+			if player.human:
+				$SFX/Card_PopUp.play(.25)
+				await call_bet_window()					# Calls Human betting screen
+				bet_label()
+				await get_tree().create_timer(1).timeout
+			else:
+				await player.ai_bid()
+		if pass_count == 3:
+			break
 	$SFX/Card_Ding.pitch_scale = 0.69
+	$SFX/Card_Whiff.pitch_scale = 0.62
 	bet_label()
-	if current_better.name in team1:
+	if current_better.name in team1: # @onready var team1 = ["Player1","Player3"]
 		betting_team = "Team 1"
 	else:
 		betting_team = "Team 2"
@@ -160,22 +199,55 @@ func second_deal():
 func game_stage(): # A loop of 8 tricks is played.
 	for n in 8:									# 8 cards per hand, 8 rounds per game.
 		await play_trick()
-	var betting_team
+	##*** SCOREING TIME ***##
 	var team_points = 0
-	if current_better.name in team1:
-		betting_team = team1
-	else:
-		betting_team = team2
 	for player in playerpool:
 		print(player, " has ",player.points)
-		if player.name in betting_team:
+		if player.team == betting_team:
 			team_points += player.points 
 	var message
 	if team_points >= current_bet:
 		message = str(betting_team, ' WINS with ',team_points,'/',current_bet)
+		if betting_team == "Team 1":
+			team1_pips +=1
+		else:
+			team2_pips +=1
 	else:
 		message = str(betting_team, ' LOSES with ',team_points,'/',current_bet)
+		if betting_team == "Team 1":
+			team1_pips -= 1
+			
+		else:
+			team2_pips -=1	
+	print(team1_pips, ' to ', team2_pips)
+	pip_update()
 	round_message(message,4)
+	
+	if team1_pips == 6 or team2_pips == -6:
+		round_message("TEAM 1 WINS THE MATCH",2)
+		get_tree().reload_current_scene()
+	elif team2_pips == 6 or team1_pips == -6:
+		round_message("TEAM 1 WINS THE MATCH",2)
+		get_tree().reload_current_scene()
+	await timer(.6)
+	
+	
+	
+func pip_update():
+	var element
+	$"Team 1".value = abs(team1_pips)
+	if team1_pips < 0:
+		$"Team 1".modulate = Color(0, 0, 0)
+	else:
+		$"Team 1".modulate = Color(1,1,1)
+		
+	$"Team 2".value = abs(team2_pips)
+	if team2_pips < 0:
+		$"Team 2".modulate = Color(0, 0, 0)
+	else:
+		$"Team 2".modulate = Color(1,1,1)
+			
+	pass
 
 
 func play_trick():
@@ -416,12 +488,12 @@ func select_card(card):
 	card.reparent($Player1/Selected)
 	var slot = Vector2(0,0)
 	card.slot = Vector2(0,0)
+	card.z_index +=2
 	card.select_and_go()					# stores a base position.
 	for each in $Player1/Hand.get_children():		# For each card still in hand
 		each.slot = slot					# Update card with new spot in hand.
 		each.go()							# Tween them there.
 		slot += Vector2(40,0)				# Increase for next card.
-	await timer(.05)
 	if old_card:
 		await take_card(old_card)
 	pass
@@ -443,10 +515,16 @@ func play_card(card): # Click cards are moved to their assigned playslot
 	card.inplay = true						# Set flag in objects variables.
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
 	$SFX/Card_Fwip.play()						# SFX
-	#emit_signal() card_played 
+	if not player.human:
+		for each in hand.get_children():		# For each card still in hand
+			each.slot = slot					# Update card with new spot in hand.
+			each.go()							# Tween them there.
+			slot += Vector2(40,0)				# Increase for next card.
+	card_played.emit()
 
 	
 func take_card(card): # An inversion of play_card() move playslot card back to hand.
+	card.z_index -=2
 	var hand = $Player1/Hand
 	var children = hand.get_children()
 	var j = sort_hand(children,card)
@@ -493,3 +571,13 @@ func sort_hand(children,new_card):
 		i += 1
 	return j	
 	
+
+
+func _pip_update():
+	team1_pips +=1
+	pip_update()
+	print(team1_pips)
+	team2_pips -=1
+	pip_update()
+	print(team2_pips)
+	pass # Replace with function body.

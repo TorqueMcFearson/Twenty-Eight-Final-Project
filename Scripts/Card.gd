@@ -1,5 +1,6 @@
 extends Node2D
 @onready var Director = $"/root/Director"
+@onready var click_delay = $"/root/Director/Click Delay"
 #signal 
 
 
@@ -162,16 +163,16 @@ func _on_reference_rect_mouse_exited():
 			position.y = 0
 	
 
-
-
 func _on_reference_rect_gui_input(event): # A click event
-	if Global.cards_playable and not tweening and not disabled and $"../..".human:
-		if event is InputEventMouseButton and event.pressed :
+	if Global.cards_playable and not tweening and not disabled and $"../..".human and not click_delay.get_time_left():
+		if event is InputEventMouseButton and event.pressed:
 			if not inplay and not selected:
 				Director.select_card(self)
+				click_delay.start(.5)
 			elif selected and not tweening:
 				Director.play_card(self)
 				inplay = true
+				click_delay.start(.5)
 		pass # Replace with function body.
 
 

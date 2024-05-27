@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=39 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -58,9 +58,52 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ih1gm"]
+bg_color = Color(0, 0, 0, 0.105882)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0705882, 0.0705882, 0.0705882, 0.4)
+corner_radius_top_left = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8fno"]
+content_margin_left = 3.0
+bg_color = Color(1, 0.372549, 0.0117647, 0.470588)
+corner_radius_top_left = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_wwrou"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_7mge0"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_c6kx0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ovtyc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5aqi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60b1t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbgu2"]
+content_margin_left = 3.0
+bg_color = Color(0.17, 0.521333, 0.85, 0.329412)
+corner_radius_top_left = 7
+corner_radius_bottom_left = 7
+
 [node name="Director" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_04n5t")
+
+[node name="Click Delay" type="Timer" parent="."]
+wait_time = 0.295
+one_shot = true
+autostart = true
 
 [node name="CardConstructor" type="Node" parent="."]
 script = ExtResource("2_rcgu6")
@@ -98,7 +141,7 @@ max_polyphony = 6
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
 modulate = Color(0.74, 0.74, 0.74, 1)
-z_index = -1
+z_index = -2
 position = Vector2(579, 326)
 scale = Vector2(0.766667, 0.5168)
 texture = ExtResource("5_oe1mm")
@@ -177,9 +220,10 @@ offset_left = 516.0
 offset_top = 247.0
 offset_right = 636.0
 offset_bottom = 367.0
+metadata/_edit_lock_ = true
 
 [node name="Bet Label" type="Label" parent="UI/Bet Node"]
-modulate = Color(1, 1, 1, 0)
+z_index = -2
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -204,9 +248,9 @@ text = "Bet:
 14"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="Arrow Team 1" type="Label" parent="UI/Bet Node/Bet Label"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -237,9 +281,9 @@ text = "🠝
 
 🠟"
 horizontal_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="Arrow Team 2" type="Label" parent="UI/Bet Node/Bet Label"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -271,6 +315,9 @@ text = "🠝
 
 🠟"
 horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Pips" type="Node2D" parent="UI"]
 
 [node name="Deal_One_Card" type="Button" parent="."]
 visible = false
@@ -371,7 +418,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Discard_Deck" type="Sprite2D" parent="."]
 texture_repeat = 1
-position = Vector2(14, 490)
+position = Vector2(-268, 543)
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("8_aq1nh")
 centered = false
@@ -401,6 +448,7 @@ position = Vector2(470, 471)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
+z_index = -1
 offset_left = 54.0
 offset_top = -103.0
 offset_right = 194.0
@@ -433,32 +481,13 @@ position = Vector2(-21, -121)
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 
-[node name="Player Message2" type="Label" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 97.0
-offset_top = 284.0
-offset_right = 372.0
-offset_bottom = 397.0
-scale = Vector2(0.75, 0.75)
-size_flags_vertical = 1
-theme = ExtResource("15_3otkc")
-theme_override_font_sizes/font_size = 40
-text = "\"I need to see the trump\""
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
 [node name="Player3" type="Node2D" parent="." groups=["Players"]]
 position = Vector2(470, 115)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
 z_index = -1
+z_as_relative = false
 offset_left = 158.0
 offset_top = 133.0
 offset_right = 298.0
@@ -478,6 +507,7 @@ script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
 z_index = -1
+z_as_relative = false
 offset_left = -206.0
 offset_top = 76.0
 offset_right = -66.0
@@ -536,6 +566,7 @@ uppercase = true
 
 [node name="Round Message" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)
+z_index = 3
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -555,6 +586,7 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="Player Message" type="Label" parent="."]
+z_index = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -654,11 +686,73 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Button" type="Button" parent="."]
-offset_left = 784.0
-offset_top = 511.0
-offset_right = 930.0
-offset_bottom = 583.0
+offset_left = 866.0
+offset_top = 729.0
+offset_right = 1012.0
+offset_bottom = 801.0
 text = "sort Cards"
+
+[node name="Team 1" type="ProgressBar" parent="."]
+offset_left = 28.0
+offset_top = 596.0
+offset_right = 187.0
+offset_bottom = 621.0
+theme_override_styles/background = SubResource("StyleBoxFlat_ih1gm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_t8fno")
+max_value = 6.0
+step = 1.0
+show_percentage = false
+
+[node name="HSlider" type="HSlider" parent="Team 1"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 35.0
+offset_top = -15.0
+offset_right = 116.0
+offset_bottom = 23.0
+scale = Vector2(1.90195, 1.59054)
+pivot_offset = Vector2(33.0325, 27.939)
+theme_override_icons/grabber = SubResource("CanvasTexture_wwrou")
+theme_override_icons/grabber_highlight = SubResource("CanvasTexture_7mge0")
+theme_override_icons/grabber_disabled = SubResource("ImageTexture_c6kx0")
+theme_override_styles/slider = SubResource("StyleBoxEmpty_ovtyc")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_p5aqi")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_60b1t")
+value = 3.0
+editable = false
+scrollable = false
+tick_count = 7
+
+[node name="Team 2" type="ProgressBar" parent="."]
+offset_left = 348.0
+offset_top = 621.0
+offset_right = 507.0
+offset_bottom = 646.0
+rotation = 3.14159
+theme_override_styles/background = SubResource("StyleBoxFlat_ih1gm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_rbgu2")
+max_value = 6.0
+step = 1.0
+show_percentage = false
+
+[node name="HSlider" type="HSlider" parent="Team 2"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 35.0
+offset_top = -15.0
+offset_right = 116.0
+offset_bottom = 23.0
+scale = Vector2(1.90195, 1.59054)
+pivot_offset = Vector2(33.0325, 27.939)
+theme_override_icons/grabber = SubResource("CanvasTexture_wwrou")
+theme_override_icons/grabber_highlight = SubResource("CanvasTexture_7mge0")
+theme_override_icons/grabber_disabled = SubResource("ImageTexture_c6kx0")
+theme_override_styles/slider = SubResource("StyleBoxEmpty_ovtyc")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_p5aqi")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_60b1t")
+editable = false
+scrollable = false
+tick_count = 7
 
 [connection signal="pressed" from="Deal_One_Card" to="." method="_on_deal_one_card_pressed"]
 [connection signal="pressed" from="Deal_ALL" to="." method="_on_deal_all_pressed"]
@@ -668,4 +762,4 @@ text = "sort Cards"
 [connection signal="pressed" from="Play Card" to="." method="_on_play_card_pressed"]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
 [connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]
-[connection signal="pressed" from="Button" to="." method="sort_cards"]
+[connection signal="pressed" from="Button" to="." method="_pip_update"]
