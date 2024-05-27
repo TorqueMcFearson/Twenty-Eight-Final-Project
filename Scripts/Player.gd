@@ -20,7 +20,12 @@ func _ready():
 	pass # Replace with function body.
 	#var click_delay = create_timer()
 
-
+func initialize():
+	held_suits = {}
+	points = 0
+	value = 0
+	bet_goal = 0
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
@@ -34,7 +39,7 @@ func ready_bid():
 	if human:
 		return
 	var suit_match = held_suits.values().max()
-	bet_goal = (suit_match * 2) + (value/2) + 14
+	bet_goal = (suit_match * 2) + (value/2) + 14 - (4-Global.difficulty)
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
 	
 	
@@ -125,7 +130,6 @@ func play_turn():
 			
 	else:
 		if self != Director.dealer:
-			print(self," disabling cards")
 			await disable_cards()
 		var cards = get_node("Hand").get_children()
 		var playable_cards = []
@@ -143,7 +147,6 @@ func play_turn():
 func disable_cards():
 	var cards = get_node("Hand").get_children()
 	print("Looking for: ",Director.trick_suit, " in: ", held_suits)
-	print("Looking for: ",Director.trump_suit, " in: ", held_suits) if Director.trump_revealed else 1
 	if held_suits.get(Director.trick_suit):
 		print("Trick found")
 		for card in cards:

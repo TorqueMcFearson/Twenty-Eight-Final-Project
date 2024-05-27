@@ -66,7 +66,7 @@ func _ready():
 func initialize():
 	var trump_sprite = $"UI/Trump Card/Trump Sprite"
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
-	tween.tween_property(trump_sprite,'position',Vector2(0,0),.75)\
+	tween.tween_property(trump_sprite,'position',Vector2(0,-390),.75)\
 			.set_ease(Tween.EASE_OUT)\
 			.set_trans(Tween.TRANS_SPRING)
 	trump_sprite.texture = load("res://Assets/Cards/PNG/Cards/cardBack_red4.png")
@@ -75,9 +75,9 @@ func initialize():
 	round= 0 							# Typical round counter for bidding and play stage.
 	pass_count= 0						# Typical pass counter for bidding and play stage.
 	trump_revealed = false 				# Trump revealed to field true/false
-	trump_suit 					# What suit the bid-winning player picked.
-	betting_team
-	trick_suit
+	trump_suit = ""					# What suit the bid-winning player picked.
+	betting_team = null
+	trick_suit = ""
 	trick_winner = ["Null",0]
 	dealer_match += 1
 	dealer = playerpool[dealer_match]
@@ -85,6 +85,8 @@ func initialize():
 	drawpile = range(32)
 	$SFX/Card_Shuffle.play()		# SFX
 	drawpile.shuffle()			# Shuffle IDs in drawpile
+	for player in playerpool:
+		await player.initialize()
 	deck_refresh()				# Visually referesh onscreen decks
 	match_start()
 
@@ -263,7 +265,7 @@ func play_trick():
 		await player.play_turn()			# Calls to the current player to to play a card.
 		print(player,"'s turn finished!")	
 		await timer(1.5)
-	print('*** Trick Complete ***\nStarting scoring..')
+	print('\n*** Trick Complete ***\nStarting scoring..')
 	
 	# *** Decide the Winner *** #
 	for playslot in get_tree().get_nodes_in_group('Playslots'): # Array of all playslots
@@ -304,6 +306,7 @@ func play_trick():
 	trick_winner[0].points += sum							# Give the player his points.
 	print(trick_winner," won trick worth ", sum,' points!')
 	dealer = trick_winner[0]
+	trick_winner = ["null",0]
 	await timer(.6)
 
 
@@ -364,7 +367,7 @@ func draw_card(hand):
 	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
 	for each in children:		# For each card still in hand
 		each.go()							# Tween them there.
-	$Player1/Hand.move_child(new_card,j)
+	hand.move_child(new_card,j)
 	$SFX/Card_Fwip.play(.11)		# Card SFX
 	$DrawDeck/Amount.text = str(drawpile.size()) # Refresh the amount label on drawdeck.
 	if drawpile.size() == 0:					# If that was last card, make drawdeck disappear.

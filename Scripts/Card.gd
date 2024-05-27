@@ -34,6 +34,7 @@ func _ready():
 	else:
 		var hue_adjust = (3-value) * -0.15
 		$Label.modulate = Color.from_hsv(0.300+hue_adjust,.9,1)
+	$Label2.text = str(rank)
 
 
 func _process(_delta):

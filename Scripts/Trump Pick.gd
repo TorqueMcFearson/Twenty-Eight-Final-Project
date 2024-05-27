@@ -25,9 +25,6 @@ func fade_out():
 #
 
 
-
-
-
 func _on_button_mouse_entered(suit):
 	$"Bet Please".get_node(suit).scale = Vector2(.75,.75)
 
