@@ -39,7 +39,7 @@ func ready_bid():
 	if human:
 		return
 	var suit_match = held_suits.values().max()
-	bet_goal = (suit_match * 2) + (value/2) + 14 - (4-Global.difficulty)
+	bet_goal = clampi((suit_match * 2) + (value/2) + 14 - (4-Global.difficulty),14,28)
 	print(self.name,': BID IS READY.',' Bet goal: ',bet_goal,' Aggression :',aggression)
 	
 	
@@ -47,6 +47,9 @@ func ai_bid():
 	if human or Director.pass_count == 3:
 		return
 	var current_bet = Director.current_bet
+	if current_bet == 13:
+		if await check_redeal():
+			await redeal()
 	var message : String
 	var min_bet = current_bet+1
 	var color = Color(1, 1, 1,1)
@@ -116,17 +119,21 @@ func pick_trump():
 # 
 func play_turn():
 	if human:
-		Director.round_message("Your Turn", 2)
-		Global.cards_playable = true
+		Director.round_message("Your Turn", 1)
 		if self != Director.dealer:
 			await disable_cards()
+		Global.cards_playable = true
+		print("***Human cards UNLOCKED****")
 		await Director.card_played
+		Global.cards_playable = false
+		print("***Human cards LOCKED****")
 		var card = $Playslot.get_child(0)
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
 			Director.trick_suit = $Playslot.get_child(0).suit
 			print('trick-suit set to: ',Director.trick_suit)
-		Global.cards_playable = false
+		
+		print(name, " played %s of %s" %[card.face,card.suit])
 			
 	else:
 		if self != Director.dealer:
@@ -143,28 +150,24 @@ func play_turn():
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
 			Director.trick_suit = $Playslot.get_child(0).suit
+		if card.suit != Director.trick_suit and (card.suit != Director.trump_suit or not Director.trump_revealed):
+			card.get_node('CardBack').modulate = Color(0.85, 0.85, 0.85)
+		print(name, " played %s of %s" %[card.face,card.suit])
+	
 
 func disable_cards():
 	var cards = get_node("Hand").get_children()
-	print("Looking for: ",Director.trick_suit, " in: ", held_suits)
 	if held_suits.get(Director.trick_suit):
-		print("Trick found")
 		for card in cards:
 			if card.suit == Director.trick_suit:
 				pass
 			else:
 				card.disable_card()
 	elif Director.trump_revealed and held_suits.get(Director.trump_suit):
-		print("Trump found")
-		#for card in cards:
-			#if card.suit == Director.trump_suit:
-				#pass
-			#else:
-				#card.disable_card()
+		pass
 	elif Director.trump_revealed:
 		pass
 	else:
-		print("I need to see the trump")
 		Director.trump_reveal()
 		await player_message(str("I need to \nsee the trump"),Color(1,1,1),2)
 		$"../UI/Trump Card/Trump Sprite".modulate = Color(1, 1, 1)
@@ -172,7 +175,23 @@ func disable_cards():
 		$"../UI/Trump Card/Label2".add_theme_color_override("font_color", Color(1, 1, 1,.16))
 		disable_cards()
 
-
+func check_redeal():
+	var cards = $Hand.get_children()
+	for card in cards:
+		print("redeal value: ", card.value)
+		if card.value:
+			return 0
+	print("no values found")
+	return 1
+	
+func redeal():
+	await player_message("Requesting redeal.",Color(1, 1, 1),1)
+	await Director._on_discard_button_pressed()
+	await get_tree().create_timer(.75).timeout
+	await Director._on_deal_all_pressed()
+	await Director.timer(.5)
+	get_tree().call_group("Players", "ready_bid")
+	
 #DEPRECATED: Director now calls for this directly (pun unintended).
 #func enable_cards(): 
 	#var active_suits = [Director.trick_suit]

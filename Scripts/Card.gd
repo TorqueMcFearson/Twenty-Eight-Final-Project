@@ -107,6 +107,18 @@ func go_and_die():
 	get_parent().remove_child(self)
 	queue_free()
 	
+func go_and_redeal():
+	tweening = true
+	var tween = create_tween()
+	tween.finished.connect(_tween_end)
+	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(Tween.TRANS_ELASTIC)
+	
+	var tween2 = create_tween()
+	tween2.tween_property(self,'global_position',Vector2(1101,490),.56).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	await tween2.finished
+	get_parent().remove_child(self)
+	queue_free()
+	
 	
 func _tween_end():
 	tweening = false

@@ -3,15 +3,27 @@ extends Control
 signal bet_or_pass(which)
 var current_bid = 0
 var difficulty = 0
+var redeal := false
+@onready var Director = $"/root/Director"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	modulate.a = 0
-	if current_bid > 14:
-		$"Current Bet/Amount".text = str("Current Bet: ", current_bid)
+	if current_bid > 13:
+		if Director.current_better == Director.get_node("Player3"):
+			$"Current Bet/Amount".add_theme_color_override("font_color",Color(1, 0.48235294222832, 0))
+			$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(1, 0.48235294222832, 0))
+			$"Current Bet/Amount".text = str("Teammate Bet: ", current_bid)
+		else:
+			$"Current Bet/Amount".add_theme_color_override("font_color",Color(0, 0.59999990463257, 1))
+			$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(0, 0.59999990463257, 1))
+			$"Current Bet/Amount".text = str("Opponent Bet: ", current_bid)
 		$HSlider.min_value = current_bid+1
 		$HSlider.tick_count = 28 - current_bid
+	elif redeal:
+		$Pass.text = "Redeal"
+		$Redeal.visible = true
 	else:
 		$Pass.visible = false
 		$Bet.position.x += 71
@@ -50,6 +62,10 @@ func _on_bet_pressed():
 
 
 func _on_pass_pressed():
+	if redeal:
+		$"/root/Director/Player1".redeal()
+		$Pass.disabled = true
+	else:
 		$Bet.disabled = true
 		$Pass.disabled = true
 		$"/root/Director/SFX/Card_Whiff".pitch_scale += 0.03
