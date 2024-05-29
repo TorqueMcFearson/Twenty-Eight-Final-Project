@@ -146,11 +146,13 @@ func face_up():
 	
 func trump_check():
 	if suit == Director.trump_suit and Director.trump_revealed:
-		$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
-		$CardBack/Panel.visible = false
+		if face_up:
+			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+			$CardBack/Panel.visible = false
+		if rank <99:
+			rank +=100
 		trump = true
-		
-		
+		return trump
 		
 func _on_reference_rect_mouse_entered():
 	if not tweening:

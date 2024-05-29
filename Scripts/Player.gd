@@ -5,7 +5,8 @@ var points = 0
 var value = 0
 var bet_goal = 0
 var human = false
-var aggression = .5 # Modifies how range of how high they'll bet. 
+var aggression = .5 # Modifies how range of how high they'll bet.
+var trick_choice = "any" #trick, trump, trash, or any
 @onready var label = $"/root/Director/Player Message" 
 @onready var Director = $"/root/Director"
 
@@ -118,6 +119,7 @@ func pick_trump():
 # Then we adjust cards as disabled.
 # 
 func play_turn():
+	var card
 	if human:
 		Director.round_message("Your Turn", 1)
 		if self != Director.dealer:
@@ -127,33 +129,51 @@ func play_turn():
 		await Director.card_played
 		Global.cards_playable = false
 		print("***Human cards LOCKED****")
-		var card = $Playslot.get_child(0)
-		held_suits[card.suit] -= 1
-		if self == Director.dealer:
-			Director.trick_suit = $Playslot.get_child(0).suit
-			print('trick-suit set to: ',Director.trick_suit)
-		
-		print(name, " played %s of %s" %[card.face,card.suit])
+		card = $Playslot.get_child(0)
 			
-	else:
+	else: #AI Turn
 		if self != Director.dealer:
 			await disable_cards()
+		else:
+			trick_choice = "any"
 		var cards = get_node("Hand").get_children()
 		var playable_cards = []
-		for card in cards:
-			if not card.disabled:
-				playable_cards.append(card)
-		var card = playable_cards.pick_random()
+		for each in cards:
+			if not each.disabled:
+				playable_cards.append(each)
+		if trick_choice == "trick":
+			if playable_cards.any(func(x): return x.rank > Director.leading_card):
+				print("Has suit and can beat. Playing best card.")
+				card = playable_cards.back()
+			else:
+				print("Has suit but can't beat. Playing worst card.")
+				card = playable_cards.front()
+		elif trick_choice == "trump":
+			var playable_trump = playable_cards.filter(func(x): return (x.trump and x.rank > Director.leading_card))
+			if playable_trump.is_empty():
+				print("Has trump but can't beat. Playing worst trash card.")
+				card = playable_cards.filter(func(x): return (not x.trump))
+			else:
+				print("Has trump and can beat. Playing best trump card.")
+				card = playable_trump.back()
+		elif trick_choice == "trash":
+			print("Has Trash, playing worst card.")
+			card = playable_cards.front()
+		elif trick_choice == "any":
+			print("Is Dealer, playing any card.")
+			card = playable_cards.pick_random()
 		card.face_up()
 		card.trump_check()
 		Director.play_card(card)
 		await Director.card_played
-		held_suits[card.suit] -= 1
-		if self == Director.dealer:
-			Director.trick_suit = $Playslot.get_child(0).suit
-		if card.suit != Director.trick_suit and (card.suit != Director.trump_suit or not Director.trump_revealed):
-			card.get_node('CardBack').modulate = Color(0.85, 0.85, 0.85)
-		print(name, " played %s of %s" %[card.face,card.suit])
+	held_suits[card.suit] -= 1
+	if self == Director.dealer:
+		Director.trick_suit = $Playslot.get_child(0).suit
+	if card.suit != Director.trick_suit and (card.suit != Director.trump_suit or not Director.trump_revealed):
+		card.get_node('CardBack').modulate = Color(0.85, 0.85, 0.85)
+	if card.rank > Director.leading_card and (card.suit == Director.trick_suit or (card.suit == Director.trump_suit and Director.trump_revealed)):
+		Director.leading_card = card.rank
+	print(name, " played %s of %s worth %s" %[card.face,card.suit,card.rank])
 	
 
 func disable_cards():
@@ -161,13 +181,13 @@ func disable_cards():
 	if held_suits.get(Director.trick_suit):
 		for card in cards:
 			if card.suit == Director.trick_suit:
-				pass
+				trick_choice = "trick"
 			else:
 				card.disable_card()
 	elif Director.trump_revealed and held_suits.get(Director.trump_suit):
-		pass
+		trick_choice = "trump"
 	elif Director.trump_revealed:
-		pass
+		trick_choice = "trash"
 	else:
 		Director.trump_reveal()
 		await player_message(str("I need to \nsee the trump"),Color(1,1,1),2)

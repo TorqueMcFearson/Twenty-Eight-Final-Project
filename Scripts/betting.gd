@@ -65,6 +65,7 @@ func _on_pass_pressed():
 	if redeal:
 		$"/root/Director/Player1".redeal()
 		$Pass.disabled = true
+		$Redeal.visible = false
 	else:
 		$Bet.disabled = true
 		$Pass.disabled = true

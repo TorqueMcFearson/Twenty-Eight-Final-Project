@@ -27,6 +27,7 @@ var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
 var betting_team
 var team_points = 0
+var leading_card = 0
 
 # The Trick Data
 var trick_suit : String
@@ -86,6 +87,7 @@ func initialize():
 	dealer_match = (dealer_match+1) % 4
 	dealer = playerpool[dealer_match]
 	team_points = 0
+	leading_card = 0
 	current_better = dealer 		# Who bet they could win. 
 	drawpile = range(32)
 	$SFX/Card_Shuffle.play()		# SFX
@@ -99,8 +101,9 @@ func initialize():
 ## ------------------Round Calling Starts-------------------------- ## 
 func match_start(): 
 	#return				 #<---- uncomment 'return' to start main without auto-director.
-	await timer(1.5) # Typical pause. For 1 sec.
+	await timer(.75) # Typical pause. For 1 sec.
 	round_message("Match Begins!",1.5)
+	await timer(.75)
 	await _on_deal_all_pressed()					 # 4 cards delt to each player.
 	#return				#<---- uncomment 'return' to start main without auto-director.
 	await timer(.5)
@@ -191,8 +194,16 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 	$"UI/Trump Card/Trump Sprite".texture = load(assemble)
 	trump_revealed = true
 	await timer(1)
-	for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
-		each.trump_check()					# Enable to highlight trumps when player wins
+	for hand in handpool:
+		for card in hand.get_children():	#@TEST for trump outline mechanic. 
+			card.trump_check()					# Enable to highlight trumps when player wins
+	for playslot in get_tree().get_nodes_in_group("Playslots"):
+		var card = playslot.get_child(0)
+		if not card:
+			continue
+		if card.trump_check():
+			if card.rank > leading_card:
+				leading_card = card.rank
 	pass
 
 
@@ -289,6 +300,7 @@ func pip_update():
 
 func play_trick():
 	# *** Play the trick *** #
+	leading_card = 0
 	for hand in handpool:					
 		for card in hand.get_children():
 			card.enable_card()				# Re-enable all cards for next trick.
@@ -297,6 +309,7 @@ func play_trick():
 		var player = playerpool[index%4]	# Sets the player by index using mods 4 to wrap around to 0. Like 3,0,1,2
 		print('\n',player.name,"'s turn!")
 		await player.play_turn()			# Calls to the current player to to play a card.
+		print("Leading card value: ",leading_card)
 		await timer(.75)
 	print('\n*** Trick Complete ***\nStarting scoring..')
 	
@@ -339,6 +352,7 @@ func play_trick():
 	print(trick_winner," won trick worth ", sum,' points!')
 	dealer = trick_winner[0]
 	trick_winner = ["null",0]
+	leading_card = 0
 	await timer(1)
 
 
@@ -383,7 +397,7 @@ func draw_card(hand):
 	if not drawpile.size():					# If drawpile array is empty
 		print('Draw pile empty, dumbass')
 		return 0							# False value for error, stop draws.
-	var face_show = true if hand.get_parent().human else false #if human, card faceup
+	var face_show = true #####@TESTING#####if hand.get_parent().human else false #if human, card faceup
 	var children = hand.get_children()	# How many cards already in hand.
 	# Requests card object from constructor script, configured using an ID from top of drawpile.
 	if children.size() == MAX_HANDSIZE:			# Skip hand if hand is full.
@@ -391,11 +405,11 @@ func draw_card(hand):
 		return 1							# return true because we skip, not stop.
 	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
 	var j
-	if hand.get_parent().human:
-		j = sort_hand(children,new_card)
-	else:
-		j = children.size() 
-		new_card.slot = Vector2(j*40,0)
+	#if hand.get_parent().human:
+	j = sort_hand(children,new_card)
+	#else:
+		#j = children.size() 
+		#new_card.slot = Vector2(j*40,0)
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
 	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
@@ -465,7 +479,6 @@ func deck_refresh():	# Update labels and deck sprites. DEBUG TOOL
 	$DrawDeck/Amount.text = str(drawpile_size)
 	$DrawDeck.visible = drawpile_size		#if 0 false, else true (truthy value)
 	$Discard_Deck.visible = discardpile_size
-	$Shuffle.disabled = true
 
 
 func fade_in(delta): # Simple screen fading using lerp on "Black Fade" node.
@@ -510,21 +523,17 @@ func select_card(card):
 
 
 func play_card(card): # Click cards are moved to their assigned playslot
-	
 	var player = card.get_node("../..") 		# "../.." means parent of my parent.
-	print(player," playing card.")
 	var playslot = player.get_node("Playslot")  # store playslot object
 	if playslot.get_child_count():				# If playslot has card, cancel function.
 		return
 	var hand = card.get_parent()				# store hand object
- 							# checks if Player is human.
 	var slot = Vector2(0,0)					# stores a base position.
 	card.slot = slot						# Updates the card's variable for upcoming tween.
 	card.reparent(playslot)					# Moves card object from hand to playslot
 	if playslot == $Player3/Playslot:
 		card.get_node("Label").set_rotation_degrees(180)
 	card.go()								# Tweens to playslot's base position (0,0)
-	print("card_go done")
 	card.inplay = true						# Set flag in objects variables.
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
 	$SFX/Card_Fwip.play()						# SFX
@@ -533,7 +542,6 @@ func play_card(card): # Click cards are moved to their assigned playslot
 			each.slot = slot					# Update card with new spot in hand.
 			each.go()							# Tween them there.
 			slot += Vector2(40,0)				# Increase for next card.
-	print("end of playcard reached")
 	await timer(.5)
 	card_played.emit()
 
