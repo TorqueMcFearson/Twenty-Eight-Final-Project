@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://sq8ubb0pnw31"]
+[gd_scene load_steps=11 format=3 uid="uid://sq8ubb0pnw31"]
 
 [ext_resource type="Script" path="res://Scripts/betting.gd" id="1_31kr4"]
-
-[sub_resource type="SystemFont" id="SystemFont_4aj7e"]
-font_names = PackedStringArray("Courier New")
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="2_7irv5"]
+[ext_resource type="FontFile" uid="uid://o1cc5lq5fclw" path="res://Assets/Fonts/INKFREE.TTF" id="3_sja10"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onpiw"]
 bg_color = Color(0.259925, 0.37, 0.2405, 1)
@@ -29,13 +28,6 @@ fill_to = Vector2(1, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t71eg"]
 texture = SubResource("GradientTexture2D_mq5un")
-
-[sub_resource type="SystemFont" id="SystemFont_ia3h7"]
-font_names = PackedStringArray("Ink Free", "Fantasy")
-
-[sub_resource type="SystemFont" id="SystemFont_byqum"]
-font_names = PackedStringArray("Ink Free")
-font_italic = true
 
 [sub_resource type="Gradient" id="Gradient_0ogbq"]
 interpolation_mode = 1
@@ -85,7 +77,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7irv5")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_onpiw")
 text = "Current Bet: 99"
@@ -119,7 +111,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_ia3h7")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 60
 text = "99"
 horizontal_alignment = 1
@@ -136,7 +128,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "Impossible!"
 horizontal_alignment = 1
@@ -154,7 +146,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
 theme_override_constants/line_spacing = -8
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "1 pip"
 horizontal_alignment = 1
@@ -172,7 +164,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
 theme_override_constants/line_spacing = -8
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "-1 pip"
 horizontal_alignment = 1
@@ -188,7 +180,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7irv5")
 theme_override_font_sizes/font_size = 31
 text = "Raise or Pass:"
 horizontal_alignment = 1
@@ -206,7 +198,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
 theme_override_constants/line_spacing = -8
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "Win:"
 horizontal_alignment = 1
@@ -224,7 +216,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
 theme_override_constants/line_spacing = -8
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "Lose:"
 horizontal_alignment = 1
@@ -273,7 +265,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
 theme_override_constants/line_spacing = -7
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7irv5")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_ucsmk")
 text = "Tip: You can re-deal if none of the cards in your hands are worth points"

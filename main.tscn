@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bkoutyesd3bli"]
+[gd_scene load_steps=43 format=3 uid="uid://bkoutyesd3bli"]
 
 [ext_resource type="Script" path="res://Scripts/Director.gd" id="1_04n5t"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="2_7opyx"]
@@ -27,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
 [ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 [ext_resource type="Theme" uid="uid://dnoloj2nweqwj" path="res://Assets/FlatUI/kenneyUI-green.tres" id="27_d6853"]
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="28_g8nlv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxo3h"]
 bg_color = Color(0, 0, 0, 0.0470588)
@@ -43,9 +44,6 @@ corner_radius_bottom_left = 6
 [sub_resource type="SystemFont" id="SystemFont_6atd5"]
 font_names = PackedStringArray("Antique Olive CompactPS")
 font_weight = 950
-
-[sub_resource type="SystemFont" id="SystemFont_wagmi"]
-font_names = PackedStringArray("Fantasy")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6jefq"]
 content_margin_top = 4.0
@@ -94,9 +92,6 @@ corner_radius_bottom_left = 7
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5aqi"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60b1t"]
-
-[sub_resource type="SystemFont" id="SystemFont_pulsn"]
-font_names = PackedStringArray("Fantasy")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ih1gm"]
 bg_color = Color(0, 0, 0, 0.105882)
@@ -275,7 +270,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
 theme_override_constants/outline_size = 5
 theme_override_constants/line_spacing = -17
-theme_override_fonts/font = SubResource("SystemFont_wagmi")
+theme_override_fonts/font = ExtResource("28_g8nlv")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_6jefq")
 text = "Bet:
@@ -303,7 +298,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
 theme_override_constants/outline_size = 5
 theme_override_constants/line_spacing = -15
-theme_override_fonts/font = SubResource("SystemFont_wagmi")
+theme_override_fonts/font = ExtResource("28_g8nlv")
 theme_override_font_sizes/font_size = 25
 text = "🠝
 
@@ -337,7 +332,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.054902)
 theme_override_constants/outline_size = 5
 theme_override_constants/line_spacing = -15
-theme_override_fonts/font = SubResource("SystemFont_wagmi")
+theme_override_fonts/font = ExtResource("28_g8nlv")
 theme_override_font_sizes/font_size = 25
 text = "🠝
 
@@ -667,7 +662,7 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 0
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_pulsn")
+theme_override_fonts/font = ExtResource("28_g8nlv")
 theme_override_font_sizes/font_size = 40
 text = "Team 1"
 horizontal_alignment = 1
@@ -728,7 +723,7 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 0
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_pulsn")
+theme_override_fonts/font = ExtResource("28_g8nlv")
 theme_override_font_sizes/font_size = 40
 text = "Team 2"
 horizontal_alignment = 1

@@ -115,7 +115,7 @@ func match_start():
 	await betting_stage() 					# Calls and waits for the Betting round.
 	await timer(.25)
 	await trump_stage()						# Calls and waits the Trump choosing round.
-	#await _on_deal_all_pressed()
+	await _on_deal_all_pressed()
 	await get_tree().create_timer(1.5).timeout
 	if current_better == $Player1:
 		print("trump check cause player 1 is better")
