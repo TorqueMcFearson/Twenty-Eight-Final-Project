@@ -18,7 +18,7 @@ var dealer_match = 0
 var fade_goal = Color(1,1,1,0) # Used for tween and lerp fading.
 var fade_rate = .01 # Used for tween and lerp fading.
 
-# The Bid_Stage Data
+# The Bet Data
 @onready var current_better = $Player1 		# Who bet they could win. 
 var current_bet: int = 13 			  		# How many tricks they bet they could win.
 var round: int = 0 							# Typical round counter for bidding and play stage.
@@ -27,7 +27,9 @@ var trump_revealed := false 				# Trump revealed to field true/false
 var trump_suit : String 					# What suit the bid-winning player picked.
 var betting_team
 var team_points = 0
+var bet_won : bool
 var leading_card = 0
+var pip_change = 1
 
 # The Trick Data
 var trick_suit : String
@@ -89,6 +91,7 @@ func initialize():
 	dealer = playerpool[dealer_match]
 	team_points = 0
 	leading_card = 0
+	pip_change = 1
 	current_better = dealer 		# Who bet they could win. 
 	drawpile = range(32)
 	$SFX/Card_Shuffle.play()		# SFX
@@ -112,7 +115,7 @@ func match_start():
 	await betting_stage() 					# Calls and waits for the Betting round.
 	await timer(.25)
 	await trump_stage()						# Calls and waits the Trump choosing round.
-	await _on_deal_all_pressed()
+	#await _on_deal_all_pressed()
 	await get_tree().create_timer(1.5).timeout
 	if current_better == $Player1:
 		print("trump check cause player 1 is better")
@@ -156,6 +159,10 @@ func betting_stage():
 	else:
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
+	if current_bet > 25:
+		pip_change = 3
+	elif current_bet > 20:
+		pip_change = 2
 	round_message(message,2)
 	await timer(.5)
 	dealer = current_better						#Bet winner starts the 1st hand.
@@ -226,17 +233,20 @@ func pip_stage():
 	var message
 	if team_points >= current_bet:
 		message = str(betting_team, ' WINS the round.')
-		if betting_team == "Team 1":
-			team1_pips +=1
-		else:
-			team2_pips +=1
+		bet_won = true
+		#if betting_team == "Team 1":
+			#team1_pips += pip_change
+		#else:
+			#team2_pips += pip_change
 	else:
 		message = str(betting_team, ' LOSES the round.')
-		if betting_team == "Team 1":
-			team1_pips -= 1
-			
-		else:
-			team2_pips -=1	
+		pip_change +=1
+		bet_won = false
+		#if betting_team == "Team 1":
+			#team1_pips -= pip_change+1
+			#
+		#else:
+			#team2_pips -= pip_change+1
 	var pip_scene = load("res://pip_score.tscn").instantiate()
 	$PopUp.add_child(pip_scene)
 	await $"PopUp".child_exiting_tree
@@ -280,18 +290,30 @@ func pip_update():
 	$"Team 2".z_index += 4
 	get_tree().create_tween().tween_property($"Team 1","scale",Vector2(1.5,1.5),.35).set_trans(Tween.TRANS_BACK)
 	await get_tree().create_tween().tween_property($"Team 2","scale",Vector2(1.5,1.5),.35).set_trans(Tween.TRANS_BACK).finished
-	await timer(.45)
-	$SFX/Pip_Pop.play()
-	$"Team 1".value = abs(team1_pips)
-	if team1_pips < 0:
-		$"Team 1".self_modulate = Color(0, 0, 0)
-	else:
-		$"Team 1".self_modulate = Color(1,1,1)
-	$"Team 2".value = abs(team2_pips)
-	if team2_pips < 0:
-		$"Team 2".self_modulate = Color(0, 0, 0)
-	else:
-		$"Team 2".self_modulate = Color(1,1,1)
+	for n in pip_change:
+		await timer(.45)
+		$SFX/Pip_Pop.play()
+		var node = get_node(betting_team)
+		if betting_team == "Team 1":
+			if bet_won:
+				team1_pips +=1
+			else:
+				team1_pips -=1
+		else:
+			if bet_won:
+				team2_pips +=1
+			else:
+				team2_pips -=1
+		$"Team 1".value = abs(team1_pips)
+		if team1_pips < 0:
+			$"Team 1".self_modulate = Color(0, 0, 0)
+		else:
+			$"Team 1".self_modulate = Color(1,1,1)
+		$"Team 2".value = abs(team2_pips)
+		if team2_pips < 0:
+			$"Team 2".self_modulate = Color(0, 0, 0)
+		else:
+			$"Team 2".self_modulate = Color(1,1,1)
 	await timer(1)
 	get_tree().create_tween().tween_property($"Team 1","scale",Vector2(1,1),.35).set_trans(Tween.TRANS_BACK)
 	await get_tree().create_tween().tween_property($"Team 2","scale",Vector2(1,1),.35).set_trans(Tween.TRANS_BACK).finished
