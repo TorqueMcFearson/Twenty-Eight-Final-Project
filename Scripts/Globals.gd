@@ -10,7 +10,7 @@ enum {BABYMODE, EASY, NORMAL, HARD}
 ##---------Global Variables---------##
 var cards_playable = false
 var difficulty = BABYMODE
-var american_mode = true
+var american_mode = false
 
 func database_constructor(x):
 	if not american_mode:

@@ -57,7 +57,8 @@ func _ready():
 	print('dealer: ',dealer)
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
 	match_start()
-	## Debug tool: Just prints to console the draw cards in order ##
+	
+	## Debug tool: Uncomment to activate ## Just prints to console the draw cards in order ##
 	#var cardlist = [] 
 	#for each in drawpile: 
 		#var data = Global.cards.get(each)
@@ -135,29 +136,29 @@ func betting_stage():
 		await get_tree().create_tween().tween_property($"UI/Bet Node/Bet Label","modulate",Color(1,1,1,1),.75).finished
 		var i = playerpool.find(dealer) 		# Gets the index of the dealer in player pool. Like 3
 		for index in range(i,(i+4)):			# For a 4 count range from the index.. Like [3,4,5,6]
-			var player = playerpool[index%4]
+			var player = playerpool[index%4]	# %4 loops back to 0 for indexes..  Like [3,0,1,2]
 			if pass_count == 3:							# If 3 pass in a row, break loop.
 				break
-			if player.human:
+			if player.human:					# Calls window of human bet
 				$SFX/Card_PopUp.play(.25)
 				await call_bet_window()					# Calls Human betting screen
-				bet_label()
+				bet_label()								# Updates bet label in center of mat.
 				await get_tree().create_timer(1).timeout
 			else:
-				await player.ai_bid()
+				await player.ai_bid()			# Calls function for AI bet.
 		if pass_count == 3:
 			break
 	$SFX/Card_Ding.pitch_scale = 0.69
 	$SFX/Card_Whiff.pitch_scale = 0.62
-	bet_label()
-	if current_better.name in team1: # @onready var team1 = ["Player1","Player3"]
+	bet_label()									# Updates bet label, redundancy.
+	if current_better.name in team1: # team1 = ["Player1","Player3"], set's bet winning team.
 		betting_team = "Team 1"
 	else:
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
 	round_message(message,2)
 	await timer(.5)
-	dealer = current_better
+	dealer = current_better						#Bet winner starts the 1st hand.
 	
 	# Once loop breaks, this function completes and _ready() continues from await.
 
@@ -397,19 +398,14 @@ func draw_card(hand):
 	if not drawpile.size():					# If drawpile array is empty
 		print('Draw pile empty, dumbass')
 		return 0							# False value for error, stop draws.
-	var face_show = true #####@TESTING#####if hand.get_parent().human else false #if human, card faceup
+	var face_show = true if hand.get_parent().human else false #if human, card faceup
 	var children = hand.get_children()	# How many cards already in hand.
 	# Requests card object from constructor script, configured using an ID from top of drawpile.
 	if children.size() == MAX_HANDSIZE:			# Skip hand if hand is full.
 		('Hands full, greedy pig boy!')
 		return 1							# return true because we skip, not stop.
 	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
-	var j
-	#if hand.get_parent().human:
-	j = sort_hand(children,new_card)
-	#else:
-		#j = children.size() 
-		#new_card.slot = Vector2(j*40,0)
+	var j = sort_hand(children,new_card)
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
 	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
