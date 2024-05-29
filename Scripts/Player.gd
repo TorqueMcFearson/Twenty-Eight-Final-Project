@@ -146,7 +146,8 @@ func play_turn():
 		var card = playable_cards.pick_random()
 		card.face_up()
 		card.trump_check()
-		await Director.play_card(card)
+		Director.play_card(card)
+		await Director.card_played
 		held_suits[card.suit] -= 1
 		if self == Director.dealer:
 			Director.trick_suit = $Playslot.get_child(0).suit

@@ -108,6 +108,7 @@ modulate_color = Color(0.98, 0.947987, 0.4998, 1)
 
 [node name="Trump Pick" type="Control"]
 process_mode = 1
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

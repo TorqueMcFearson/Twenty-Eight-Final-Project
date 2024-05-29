@@ -12,7 +12,7 @@ var discardpile = [] # Empty array. IDs are shuffled back into drawpile.
 var dealer_match = 0
 @onready var playerpool = [$Player1,$Player2,$Player3,$Player4] # Order of players clockwise
 @onready var handpool = [$Player1/Hand, $Player2/Hand, $Player3/Hand, $Player4/Hand]
-@onready var dealer = $Player2
+@onready var dealer = $Player1
 
 ## Tween globals
 var fade_goal = Color(1,1,1,0) # Used for tween and lerp fading.
@@ -108,8 +108,8 @@ func match_start():
 	await betting_stage() 					# Calls and waits for the Betting round.
 	await timer(.25)
 	await trump_stage()						# Calls and waits the Trump choosing round.
-	#await _on_deal_all_pressed()
-	await get_tree().create_timer(3).timeout
+	await _on_deal_all_pressed()
+	await get_tree().create_timer(1.5).timeout
 	if current_better == $Player1:
 		print("trump check cause player 1 is better")
 		for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
@@ -339,7 +339,7 @@ func play_trick():
 	print(trick_winner," won trick worth ", sum,' points!')
 	dealer = trick_winner[0]
 	trick_winner = ["null",0]
-	await timer(.6)
+	await timer(1)
 
 
 func call_bet_window(): # Human betting window called.
@@ -492,7 +492,9 @@ func fade_out(delta): # Same as fade_in.. actually might just merge the two..
 		set_process(false)
 
 func select_card(card):
-	var old_card = $Player1/Selected.get_child(0)
+	var old_card
+	if $Player1/Selected.get_child_count():
+		old_card = $Player1/Selected.get_child(0)
 	card.reparent($Player1/Selected)
 	var slot = Vector2(0,0)
 	card.slot = Vector2(0,0)
@@ -508,10 +510,12 @@ func select_card(card):
 
 
 func play_card(card): # Click cards are moved to their assigned playslot
+	
 	var player = card.get_node("../..") 		# "../.." means parent of my parent.
+	print(player," playing card.")
 	var playslot = player.get_node("Playslot")  # store playslot object
 	if playslot.get_child_count():				# If playslot has card, cancel function.
-		return 
+		return
 	var hand = card.get_parent()				# store hand object
  							# checks if Player is human.
 	var slot = Vector2(0,0)					# stores a base position.
@@ -519,7 +523,8 @@ func play_card(card): # Click cards are moved to their assigned playslot
 	card.reparent(playslot)					# Moves card object from hand to playslot
 	if playslot == $Player3/Playslot:
 		card.get_node("Label").set_rotation_degrees(180)
-	await card.go()								# Tweens to playslot's base position (0,0)
+	card.go()								# Tweens to playslot's base position (0,0)
+	print("card_go done")
 	card.inplay = true						# Set flag in objects variables.
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
 	$SFX/Card_Fwip.play()						# SFX
@@ -528,6 +533,8 @@ func play_card(card): # Click cards are moved to their assigned playslot
 			each.slot = slot					# Update card with new spot in hand.
 			each.go()							# Tween them there.
 			slot += Vector2(40,0)				# Increase for next card.
+	print("end of playcard reached")
+	await timer(.5)
 	card_played.emit()
 
 	

@@ -84,10 +84,12 @@ func go():
 
 	tweening = true
 	var tween = create_tween()
-	tween.finished.connect(_tween_end)
+
 	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
 	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
+	tween2.finished.connect(_tween_end)
+	await tween2.finished
 
 func go_and_die():
 	tweening = true
