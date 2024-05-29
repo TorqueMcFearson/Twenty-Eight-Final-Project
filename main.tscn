@@ -459,6 +459,7 @@ scale = Vector2(0.75, 0.75)
 [node name="PopUp" type="Node2D" parent="."]
 
 [node name="Round Message" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
 z_index = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -570,6 +571,7 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="Cheat Button" type="Button" parent="."]
+visible = false
 offset_left = 28.0
 offset_top = 502.0
 offset_right = 86.0
