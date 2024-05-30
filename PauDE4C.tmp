@@ -1,17 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://cekuxfe6x47bw"]
-
-[ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="1_q58ua"]
+[gd_scene load_steps=2 format=3 uid="uid://cekuxfe6x47bw"]
 
 [sub_resource type="GDScript" id="GDScript_0nqtg"]
 resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
-var title_menu = \"res://title_menu.tscn\"
-var main = \"res://main.tscn\"
-@onready var game_options = $\"MarginContainer/VBoxContainer/Game Difficulty\"
-@onready var music_audio_options = $MarginContainer/VBoxContainer/Music_Slider
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,8 +30,6 @@ func pause_game():
 		Engine.time_scale = 0
 		get_tree().paused = true
 		visible = true
-		game_options.visible = false
-		music_audio_options.visible = false
 		print('paused')
 	else:
 		dark.visible = false
@@ -49,36 +40,25 @@ func pause_game():
 	paused = !paused
 	
 
-func _on_restart_game_pressed():
-	pause_game()
-	get_tree().reload_current_scene()
-	
+func _on_game_options_pressed():
+	pass # Replace with function body.
+
 
 func _on_audio_options_pressed():
-	music_audio_options.visible = !music_audio_options.visible
 	pass # Replace with function body.
 
 
 func _on_return_to_title_pressed():
-	pause_game()
-	get_tree().change_scene_to_packed(load(title_menu))
+	var dark = $\"../Pause Fade\"
+	dark.visible = false
+	get_tree().change_scene_to_file(\"res://title_menu.tscn\")
 
 
 func _on_quit_to_desktop_pressed():
 	get_tree().quit()
-
-
-func _on_game_options_pressed():
-	game_options.visible = !game_options.visible
-	pass # Replace with function body.
-
-
-func _on_game_audio_slider_value_changed(value):
-	
-	pass # Replace with function body.
 "
 
-[node name="Pause Menu" type="Control"]
+[node name="Settings Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -122,65 +102,19 @@ layout_mode = 0
 offset_left = 480.0
 offset_top = 127.0
 offset_right = 610.0
-offset_bottom = 318.0
+offset_bottom = 263.0
 scale = Vector2(1.5, 1.5)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Restart Game" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Restart Game"
-
 [node name="Game Options" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Game Options"
 
-[node name="Game Difficulty" type="HSlider" parent="MarginContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
-scrollable = false
-tick_count = 3
-ticks_on_borders = true
-
-[node name="Easy" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_top = 12.0
-offset_right = 40.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Easy"
-
-[node name="Medium" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 12.0
-offset_right = 114.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Medium"
-
-[node name="Hard" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_left = 110.0
-offset_top = 12.0
-offset_right = 150.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Hard
-"
-
 [node name="Audio Options" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Audio Options"
-
-[node name="Music_Slider" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_q58ua")]
-visible = false
-layout_mode = 2
-
-[node name="Game_Audio_Slider" type="HSlider" parent="MarginContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
 
 [node name="Return to Title" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -190,10 +124,7 @@ text = "Return to Title"
 layout_mode = 2
 text = "Quit to Desktop"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Restart Game" to="." method="_on_restart_game_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Game Options" to="." method="_on_game_options_pressed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/Game Options" to="." method="_on_game_options_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Audio Options" to="." method="_on_audio_options_pressed"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/Game_Audio_Slider" to="." method="_on_game_audio_slider_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Return to Title" to="." method="_on_return_to_title_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Quit to Desktop" to="." method="_on_quit_to_desktop_pressed"]
