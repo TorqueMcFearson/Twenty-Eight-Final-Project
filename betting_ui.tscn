@@ -89,9 +89,8 @@ layout_mode = 0
 offset_left = 332.0
 offset_top = 191.0
 offset_right = 820.0
-mouse_filter = 2
 offset_bottom = 446.0
-
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_onpiw")
 
 [node name="Gradient" type="Panel" parent="Bet Please"]

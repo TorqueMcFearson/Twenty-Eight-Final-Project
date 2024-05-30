@@ -180,6 +180,8 @@ func _on_reference_rect_mouse_exited():
 			position.y = 0
 	
 
+
+
 func _on_reference_rect_gui_input(event): # A click event
 	if Global.cards_playable and not tweening and not disabled and $"../..".human and not click_delay.get_time_left():
 		if event is InputEventMouseButton and event.pressed:
@@ -201,7 +203,6 @@ func _on_reference_rect_gui_input(event): # A click event
 				z_index -=2
 				inplay = true
 				click_delay.start(.5)
-		pass # Replace with function body.
 
 
 func enable_card():
@@ -219,3 +220,4 @@ func label_off():
 			$"Trump Label".visible = false
 			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
 			$CardBack/Panel.visible = false
+

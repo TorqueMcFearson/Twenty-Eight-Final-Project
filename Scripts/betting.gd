@@ -21,12 +21,14 @@ func _ready():
 			$"Current Bet/Amount".text = str("Opponent Bet: ", current_bid)
 		$HSlider.min_value = current_bid+1
 		$HSlider.tick_count = 28 - current_bid
-	elif redeal:
-		$Pass.text = "Redeal"
-		$Redeal.visible = true
+
 	else:
-		$Pass.visible = false
-		$Bet.position.x += 71
+		if redeal:
+			$Pass.text = "Redeal"
+			$Redeal.visible = true
+		else:
+			$Pass.visible = false
+			$Bet.position.x += 71
 		$HSlider.min_value = 14
 		$"Current Bet".visible = false
 		$"Bet Please/Label".text = "Starting Bet:"
