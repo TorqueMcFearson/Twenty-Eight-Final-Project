@@ -1,9 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://sq8ubb0pnw31"]
 
 [ext_resource type="Script" path="res://Scripts/betting.gd" id="1_31kr4"]
-
-[sub_resource type="SystemFont" id="SystemFont_4aj7e"]
-font_names = PackedStringArray("Courier New")
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="2_7irv5"]
+[ext_resource type="FontFile" uid="uid://o1cc5lq5fclw" path="res://Assets/Fonts/INKFREE.TTF" id="3_sja10"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onpiw"]
 bg_color = Color(0.259925, 0.37, 0.2405, 1)
@@ -30,13 +29,6 @@ fill_to = Vector2(1, 1)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t71eg"]
 texture = SubResource("GradientTexture2D_mq5un")
 
-[sub_resource type="SystemFont" id="SystemFont_ia3h7"]
-font_names = PackedStringArray("Ink Free", "Fantasy")
-
-[sub_resource type="SystemFont" id="SystemFont_byqum"]
-font_names = PackedStringArray("Ink Free")
-font_italic = true
-
 [sub_resource type="Gradient" id="Gradient_0ogbq"]
 interpolation_mode = 1
 offsets = PackedFloat32Array(0)
@@ -48,8 +40,12 @@ width = 2
 height = 8
 fill_from = Vector2(1, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucsmk"]
+bg_color = Color(0.2, 0.2, 0.2, 0.243137)
+
 [node name="BettingUI" type="Control"]
 process_mode = 1
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,13 +70,14 @@ layout_mode = 2
 offset_left = -5.0
 offset_right = 314.0
 offset_bottom = 51.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.35, 0.74, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_constants/outline_size = 1
+theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7irv5")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_onpiw")
 text = "Current Bet: 99"
@@ -116,7 +113,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_ia3h7")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 60
 text = "99"
 horizontal_alignment = 1
@@ -133,9 +130,45 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_fonts/font = ExtResource("3_sja10")
 theme_override_font_sizes/font_size = 23
 text = "Impossible!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = -136.0
+offset_top = 34.0
+offset_right = -52.0
+offset_bottom = 63.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_sja10")
+theme_override_font_sizes/font_size = 23
+text = "1 pip"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = 143.0
+offset_top = 34.0
+offset_right = 227.0
+offset_bottom = 63.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_sja10")
+theme_override_font_sizes/font_size = 23
+text = "-1 pip"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -149,9 +182,45 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7irv5")
 theme_override_font_sizes/font_size = 31
 text = "Raise or Pass:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 395.0
+offset_top = 272.0
+offset_right = 479.0
+offset_bottom = 301.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_sja10")
+theme_override_font_sizes/font_size = 23
+text = "Win:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 674.0
+offset_top = 272.0
+offset_right = 758.0
+offset_bottom = 301.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_sja10")
+theme_override_font_sizes/font_size = 23
+text = "Lose:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -184,6 +253,27 @@ offset_top = 380.0
 offset_right = 681.0
 offset_bottom = 427.25
 text = "Pass"
+
+[node name="Redeal" type="Label" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 332.0
+offset_top = 450.0
+offset_right = 820.0
+offset_bottom = 501.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/line_spacing = -7
+theme_override_fonts/font = ExtResource("2_7irv5")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_ucsmk")
+text = "Tip: You can re-deal if none of the cards in your hands are worth points"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="Bet" to="." method="_on_bet_pressed"]

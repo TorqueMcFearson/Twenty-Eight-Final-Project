@@ -1,13 +1,11 @@
 [gd_scene load_steps=23 format=3 uid="uid://sdorxyjo20iq"]
 
 [ext_resource type="Script" path="res://Scripts/Trump Pick.gd" id="1_4fq8m"]
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="2_7dkpi"]
 [ext_resource type="Texture2D" uid="uid://clk1hj7m3efn3" path="res://Assets/Cards/PNG/Cards/Spades_trump.png" id="2_pw46y"]
 [ext_resource type="Texture2D" uid="uid://uv5gnwhg2i0t" path="res://Assets/Cards/PNG/Cards/Hearts_trump.png" id="3_76cql"]
 [ext_resource type="Texture2D" uid="uid://b66sq5xgdop7o" path="res://Assets/Cards/PNG/Cards/Diamonds_trump.png" id="4_x2tma"]
 [ext_resource type="Texture2D" uid="uid://bn3nc238ex8ey" path="res://Assets/Cards/PNG/Cards/Clubs_trump.png" id="5_pd37e"]
-
-[sub_resource type="SystemFont" id="SystemFont_4aj7e"]
-font_names = PackedStringArray("Courier New")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onpiw"]
 bg_color = Color(0.259925, 0.37, 0.2405, 1)
@@ -108,6 +106,7 @@ modulate_color = Color(0.98, 0.947987, 0.4998, 1)
 
 [node name="Trump Pick" type="Control"]
 process_mode = 1
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -137,7 +136,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 1
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7dkpi")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_onpiw")
 text = "You won the bid."
@@ -170,7 +169,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
-theme_override_fonts/font = SubResource("SystemFont_4aj7e")
+theme_override_fonts/font = ExtResource("2_7dkpi")
 theme_override_font_sizes/font_size = 31
 text = "Choose a Trump Card"
 horizontal_alignment = 1

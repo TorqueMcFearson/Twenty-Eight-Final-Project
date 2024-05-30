@@ -84,10 +84,12 @@ func go():
 
 	tweening = true
 	var tween = create_tween()
-	tween.finished.connect(_tween_end)
+
 	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
 	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
+	tween2.finished.connect(_tween_end)
+	await tween2.finished
 
 func go_and_die():
 	tweening = true
@@ -103,6 +105,18 @@ func go_and_die():
 	
 	var tween2 = create_tween()
 	tween2.tween_property(self,'global_position',slot,.56).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	await tween2.finished
+	get_parent().remove_child(self)
+	queue_free()
+	
+func go_and_redeal():
+	tweening = true
+	var tween = create_tween()
+	tween.finished.connect(_tween_end)
+	tween.tween_property(self,'scale',Vector2(.25,.25),1).set_trans(Tween.TRANS_ELASTIC)
+	
+	var tween2 = create_tween()
+	tween2.tween_property(self,'global_position',Vector2(1101,490),.56).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	await tween2.finished
 	get_parent().remove_child(self)
 	queue_free()
@@ -132,11 +146,13 @@ func face_up():
 	
 func trump_check():
 	if suit == Director.trump_suit and Director.trump_revealed:
-		$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
-		$CardBack/Panel.visible = false
+		if face_up:
+			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+			$CardBack/Panel.visible = false
+		if rank <99:
+			rank +=100
 		trump = true
-		
-		
+		return trump
 		
 func _on_reference_rect_mouse_entered():
 	if not tweening:

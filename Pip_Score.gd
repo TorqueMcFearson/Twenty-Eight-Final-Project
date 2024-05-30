@@ -29,7 +29,6 @@ func _process(delta):
 
 func time_loop():
 	counter = lerp(counter, lerp_goal,lerp_factor)
-	print(counter, ' / ',lerp_goal)
 
 
 	if counter > team_score -0.45:
