@@ -572,7 +572,7 @@ func take_card(card): # An inversion of play_card() move playslot card back to h
 	card.selected = false
 	get_tree().create_tween().tween_property(card.get_node("shadow"),"position",Vector2(-6,3),.20)
 	card.reparent(hand,true)
-	await timer(.25)
+	#await timer(.25)
 	for each in hand.get_children():
 		each.go()
 	hand.move_child(card,j)
