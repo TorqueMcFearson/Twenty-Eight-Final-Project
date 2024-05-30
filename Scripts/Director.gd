@@ -566,6 +566,7 @@ func play_card(card): # Click cards are moved to their assigned playslot
 	
 func take_card(card): # An inversion of play_card() move playslot card back to hand.
 	card.z_index -=2
+	card.label_off()
 	var hand = $Player1/Hand
 	var children = hand.get_children()
 	var j = sort_hand(children,card)

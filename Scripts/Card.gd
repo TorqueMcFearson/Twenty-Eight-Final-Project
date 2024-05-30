@@ -155,7 +155,7 @@ func trump_check():
 		return trump
 		
 func _on_reference_rect_mouse_entered():
-	if not tweening:
+	if not tweening and not selected:
 		if face_show:
 			$Label.visible = true
 			if trump:
@@ -169,7 +169,7 @@ func _on_reference_rect_mouse_entered():
 				position.y = -20
 		
 func _on_reference_rect_mouse_exited():
-	if not tweening:
+	if not tweening and not selected:
 		if face_show:
 			$Label.visible = false
 			if trump:
@@ -186,8 +186,18 @@ func _on_reference_rect_gui_input(event): # A click event
 			if not inplay and not selected:
 				Director.select_card(self)
 				click_delay.start(.5)
+				$Label.visible = true
+				if trump:
+					$"Trump Label".visible = true
+					$CardBack.set_self_modulate(Color(0.78400003910065, 1, 0.75999999046326))
+					$CardBack/Panel.visible = true
 			elif selected and not tweening:
 				Director.play_card(self)
+				$Label.visible = false
+				if trump:
+					$"Trump Label".visible = false
+					$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+					$CardBack/Panel.visible = false
 				z_index -=2
 				inplay = true
 				click_delay.start(.5)
@@ -203,3 +213,9 @@ func disable_card():
 	if face_show:
 		modulate = Color(0.80, 0.80, 0.80)
 	
+func label_off():
+		$Label.visible = false
+		if trump:
+			$"Trump Label".visible = false
+			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+			$CardBack/Panel.visible = false

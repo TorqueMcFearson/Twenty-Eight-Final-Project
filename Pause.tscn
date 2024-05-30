@@ -7,7 +7,7 @@ resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
-
+var music_recall
 var title_menu = \"res://title_menu.tscn\"
 var main = \"res://main.tscn\"
 @onready var game_options = $\"MarginContainer/VBoxContainer/Game Difficulty\"
