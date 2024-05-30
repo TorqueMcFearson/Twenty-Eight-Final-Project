@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bnte7adm1hwgn"
+path="res://.godot/imported/tennis-racket-swing-airy-whoosh-SBA-300119956.wav-a081354afc61029e0fa218b8f1e55671.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/tennis-racket-swing-airy-whoosh-SBA-300119956.wav"
+dest_files=["res://.godot/imported/tennis-racket-swing-airy-whoosh-SBA-300119956.wav-a081354afc61029e0fa218b8f1e55671.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

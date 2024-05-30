@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://sq8ubb0pnw31"]
+[gd_scene load_steps=11 format=3 uid="uid://sq8ubb0pnw31"]
 
 [ext_resource type="Script" path="res://Scripts/betting.gd" id="1_31kr4"]
 
@@ -11,13 +11,42 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0.40745, 0.58, 0.377, 1)
+border_color = Color(0.301835, 0.53, 0.1961, 1)
+border_blend = true
 shadow_color = Color(0, 0, 0, 0.262745)
 shadow_size = 7
 shadow_offset = Vector2(-5, 7)
 
+[sub_resource type="Gradient" id="Gradient_kjl4k"]
+offsets = PackedFloat32Array(0.86087, 0.956522, 1)
+colors = PackedColorArray(0.2236, 0.251507, 0.26, 0, 0.165575, 0.277971, 0.214964, 0.407108, 0.0705882, 0.14902, 0.101961, 0.454902)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mq5un"]
+gradient = SubResource("Gradient_kjl4k")
+fill = 2
+fill_from = Vector2(0.51, 0.51)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t71eg"]
+texture = SubResource("GradientTexture2D_mq5un")
+
 [sub_resource type="SystemFont" id="SystemFont_ia3h7"]
+font_names = PackedStringArray("Ink Free", "Fantasy")
+
+[sub_resource type="SystemFont" id="SystemFont_byqum"]
 font_names = PackedStringArray("Ink Free")
+font_italic = true
+
+[sub_resource type="Gradient" id="Gradient_0ogbq"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.95, 0.95, 0.95, 0.0901961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mlm7t"]
+gradient = SubResource("Gradient_0ogbq")
+width = 2
+height = 8
+fill_from = Vector2(1, 0)
 
 [node name="BettingUI" type="Control"]
 process_mode = 1
@@ -35,9 +64,9 @@ metadata/_edit_lock_ = true
 modulate = Color(0.86, 0.86, 0.86, 0.976471)
 layout_mode = 0
 offset_left = 454.0
-offset_top = 162.0
+offset_top = 140.0
 offset_right = 768.0
-offset_bottom = 213.0
+offset_bottom = 191.0
 scale = Vector2(0.782695, 0.782695)
 
 [node name="Amount" type="Label" parent="Current Bet"]
@@ -61,34 +90,60 @@ vertical_alignment = 1
 [node name="Bet Please" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 332.0
-offset_top = 213.0
+offset_top = 191.0
 offset_right = 820.0
-offset_bottom = 468.0
 mouse_filter = 2
+offset_bottom = 446.0
+
 theme_override_styles/panel = SubResource("StyleBoxFlat_onpiw")
 
+[node name="Gradient" type="Panel" parent="Bet Please"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 483.0
+offset_bottom = 250.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_t71eg")
+
 [node name="Amount" type="Label" parent="Bet Please"]
+modulate = Color(0.81, 0, 0, 1)
 layout_mode = 2
 offset_left = 199.0
-offset_top = 59.0
+offset_top = 66.0
 offset_right = 288.0
-offset_bottom = 141.0
+offset_bottom = 148.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
-theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("SystemFont_ia3h7")
 theme_override_font_sizes/font_size = 60
-text = "14"
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Difficult" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = -194.0
+offset_top = -15.0
+offset_right = 284.0
+offset_bottom = 21.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = SubResource("SystemFont_byqum")
+theme_override_font_sizes/font_size = 23
+text = "Impossible!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Label" type="Label" parent="Bet Please"]
 layout_mode = 2
-offset_left = 127.0
-offset_top = 17.0
-offset_right = 360.0
-offset_bottom = 68.0
+offset_top = 9.0
+offset_right = 488.0
+offset_bottom = 60.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
@@ -96,40 +151,40 @@ theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 1
 theme_override_fonts/font = SubResource("SystemFont_4aj7e")
 theme_override_font_sizes/font_size = 31
-text = "BET PLEASE"
+text = "Raise or Pass:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HSlider" type="HSlider" parent="."]
 layout_mode = 2
 offset_left = 395.0
-offset_top = 346.0
+offset_top = 332.0
 offset_right = 658.0
-offset_bottom = 371.0
+offset_bottom = 357.0
 scale = Vector2(1.425, 1.425)
+theme_override_icons/tick = SubResource("GradientTexture2D_mlm7t")
 min_value = 14.0
 max_value = 28.0
 value = 14.0
-tick_count = 3
+tick_count = 15
 ticks_on_borders = true
 
 [node name="Bet" type="Button" parent="."]
 layout_mode = 2
 offset_left = 459.0
-offset_top = 407.0
+offset_top = 380.0
 offset_right = 546.0
-offset_bottom = 454.25
+offset_bottom = 427.25
 text = "Bet"
 
 [node name="Pass" type="Button" parent="."]
 layout_mode = 2
 offset_left = 594.0
-offset_top = 407.0
+offset_top = 380.0
 offset_right = 681.0
-offset_bottom = 454.25
+offset_bottom = 427.25
 text = "Pass"
 
-[connection signal="drag_started" from="HSlider" to="." method="_on_h_slider_drag_started"]
 [connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="Bet" to="." method="_on_bet_pressed"]
 [connection signal="pressed" from="Pass" to="." method="_on_pass_pressed"]

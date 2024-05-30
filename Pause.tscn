@@ -7,10 +7,12 @@ resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
+
 var title_menu = \"res://title_menu.tscn\"
 var main = \"res://main.tscn\"
 @onready var game_options = $\"MarginContainer/VBoxContainer/Game Difficulty\"
 @onready var music_audio_options = $MarginContainer/VBoxContainer/Music_Slider
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +21,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 func _unhandled_input(event):
@@ -28,19 +30,22 @@ func _unhandled_input(event):
 
 
 func pause_game():
-	
 	var dark = $\"../Pause Fade\"
 	var pause_menu = $\".\"
 	if not paused:
+		music_recall = Music.stream_paused
+		Music.stream_paused = true
 		dark.visible = true
 		pause_menu.visible = true
 		Engine.time_scale = 0
 		get_tree().paused = true
 		visible = true
+
 		game_options.visible = false
 		music_audio_options.visible = false
-		print('paused')
+
 	else:
+		Music.stream_paused = music_recall
 		dark.visible = false
 		Engine.time_scale = 1
 		get_tree().paused = false

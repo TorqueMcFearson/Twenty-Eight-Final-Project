@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://drb5sml5wpaat"
+path="res://.godot/imported/button-stutter-SBA-300098808.wav-7ce1ad78b84039b90bd815ecbdaefbae.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/button-stutter-SBA-300098808.wav"
+dest_files=["res://.godot/imported/button-stutter-SBA-300098808.wav-7ce1ad78b84039b90bd815ecbdaefbae.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

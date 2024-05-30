@@ -1,0 +1,129 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6mk3o3hw86bp"]
+
+[ext_resource type="AudioStream" uid="uid://ptm4m2x8cxp5" path="res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav" id="1_qydrf"]
+
+[sub_resource type="GDScript" id="GDScript_yvhe7"]
+script/source = "extends Node
+
+var testarray : Array
+var team_score3 = 28.00
+var current_bet = 14.00
+var lose = false if team_score3 >= current_bet else true
+var lerp_goal = team_score3 if lose else current_bet
+var counter  = 0.0
+var change = 0.0
+var lerp_factor = 0.08
+
+@onready var label = $\"Round Message\"
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	label.text = \"Match score:\\n%s/%s\" %[round(counter), current_bet]
+	await get_tree().create_timer(1).timeout
+	$Timer.start()
+	pass
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func time_loop():
+	counter = lerp(counter, lerp_goal,lerp_factor)
+	print(counter, ' / ',lerp_goal)
+
+
+	if counter > team_score3 -0.45:
+		print(\"Last BENCHMARK\")
+		counter = team_score3
+		$Timer.paused = true
+		$AudioStreamPlayer.play()
+		$AudioStreamPlayer.pitch_scale += 0.02
+		$AudioStreamPlayer.volume_db += 0.002
+		label.text = \"Match score:\\n%s/%s\" %[round(counter), current_bet]
+		await get_tree().create_timer(.5).timeout
+		if lose:
+			$AudioStreamPlayer.stream = load(\"res://Assets/SFX & Music/scifi-delete-sound-2-program-mobile-computer-SBA-300463331.wav\")
+			label.modulate = Color(0.68999999761581, 0.1104000210762, 0.1104000210762)
+		else:
+			$AudioStreamPlayer.stream = load(\"res://Assets/SFX & Music/magical-video-game-note-hint-4-SBA-300420782.wav\")
+		$AudioStreamPlayer.pitch_scale = 1
+		$AudioStreamPlayer.volume_db += 0
+		$AudioStreamPlayer.play()
+		return
+
+	elif counter > lerp_goal -0.4 and team_score3 >= lerp_goal:
+		print(\"FIRST BENCHMARK\")
+		counter = current_bet
+		#lerp_factor = .10
+	if int(counter) > change:
+		if counter < current_bet:
+			lerp_factor *= .97
+		else:
+			lerp_factor *= 1.07
+		$AudioStreamPlayer.play()
+		$AudioStreamPlayer.pitch_scale += 0.02
+		$AudioStreamPlayer.volume_db += 0.002
+		change = counter
+		label.text = \"Match score:\\n%s/%s\" %[round(counter), current_bet]
+
+	if counter == lerp_goal:
+		print(\"SECOND BENCHMARK\")
+		$Timer.paused = true
+		#$AudioStreamPlayer.stream = load(\"res://Assets/SFX & Music/magical-video-game-note-hint-4-SBA-300420782.wav\")
+		label.modulate = Color(0.28826001286507, 0.87000000476837, 0.27840000391006)
+		$AudioStreamPlayer.play()
+		await get_tree().create_timer(1).timeout
+		$AudioStreamPlayer.stream = load(\"res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav\")
+		$Timer.paused = false
+		lerp_goal = team_score3
+	pass
+#func round_message(message : String,duration):	# Template for making a message fade in center of screen.
+#func pip_scoring():
+	#var label = $\"Round Message\"
+	#label.text = message
+	#await get_tree().create_tween()\\
+			#.tween_property(label,\"modulate\",Color(1, 1, 1,1),.35)\\
+			#.set_ease(Tween.EASE_IN_OUT).finished	# No delay for fade in.
+			#
+	#await get_tree().create_tween()\\
+			#.tween_property(label,\"modulate\",Color(1, 1, 1,0),.35)\\
+			#.set_ease(Tween.EASE_IN_OUT)\\
+			#.set_delay(duration).finished			# Duration delay before fades out.
+"
+
+[node name="Node" type="Node"]
+script = SubResource("GDScript_yvhe7")
+
+[node name="ham1" type="Node2D" parent="." groups=["Ham Squad"]]
+
+[node name="ham2" type="Node2D" parent="." groups=["Ham Squad"]]
+
+[node name="ham3" type="Node2D" parent="." groups=["Ham Squad"]]
+
+[node name="Round Message" type="Label" parent="."]
+offset_left = 61.0
+offset_top = 95.0
+offset_right = 993.0
+offset_bottom = 279.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.121569)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -7
+theme_override_constants/shadow_offset_y = 10
+theme_override_constants/outline_size = 13
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 50
+text = "Match score: 
+0/16
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_qydrf")
+volume_db = -16.554
+pitch_scale = 0.66
+
+[connection signal="timeout" from="Timer" to="." method="time_loop"]

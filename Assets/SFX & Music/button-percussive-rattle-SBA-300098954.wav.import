@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dliippfj53o7"
+path="res://.godot/imported/button-percussive-rattle-SBA-300098954.wav-52d3f40de18f9249c0dd7db385cad751.sample"
+
+[deps]
+
+source_file="res://Assets/SFX & Music/button-percussive-rattle-SBA-300098954.wav"
+dest_files=["res://.godot/imported/button-percussive-rattle-SBA-300098954.wav-52d3f40de18f9249c0dd7db385cad751.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
