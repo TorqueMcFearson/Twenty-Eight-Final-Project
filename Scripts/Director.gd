@@ -160,9 +160,9 @@ func betting_stage():
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
 	if Global.variant_rules.bet_based_pips:
-		if current_bet > 25:
+		if current_bet > 23:
 			pip_change = 3
-		elif current_bet > 20:
+		elif current_bet > 19:
 			pip_change = 2
 	round_message(message,2)
 	await timer(.5)

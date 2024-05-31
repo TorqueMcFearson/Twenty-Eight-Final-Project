@@ -15,7 +15,7 @@ func _ready():
 		for each in bet_based_labels:
 			each.visible = false
 	min_bid = current_bid+1
-	if Global.variant_rules.partner_bid and Director.current_better == Director.get_node("Player3"):
+	if Global.variant_rules.partner_bid and Director.current_better == Director.get_node("Player3") and current_bid <19:
 		print("same team, clamping to 20 min bet.")
 		min_bid= clamp(min_bid,20,99)
 		$Redeal.text = "Patner Bid: If you partner was the last to bid, you must bid a minimum of 20."
