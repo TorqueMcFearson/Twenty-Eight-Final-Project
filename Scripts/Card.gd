@@ -67,12 +67,12 @@ func grow_and_go():
 func select_and_go():
 	selected = true
 	tweening = true
-	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.20)
+	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.12)
 	#var tween = get_tree().create_tween()
 	#tween.tween_property(self,'scale',Vector2(1.25,1.25),.20).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = get_tree().create_tween()
 	tween2.finished.connect(_tween_end)
-	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR)
+	tween2.tween_property(self,'position',slot,.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR)
 
 
 func deselect_and_go():	
@@ -87,7 +87,7 @@ func go():
 
 	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
+	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
 	tween2.finished.connect(_tween_end)
 	await tween2.finished
 

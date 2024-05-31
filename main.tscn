@@ -452,7 +452,7 @@ scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = ExtResource("12_u1og8")
 
 [node name="Hand" type="Node2D" parent="Player4"]
-position = Vector2(231, 135)
+position = Vector2(231, 195)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
@@ -559,6 +559,7 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="TextureButton2" type="TextureButton" parent="Pause slot"]
+process_mode = 1
 layout_mode = 0
 offset_left = 1045.0
 offset_top = 15.0

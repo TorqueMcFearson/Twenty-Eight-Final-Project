@@ -215,9 +215,6 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 	pass
 
 
-func second_deal():
-	_on_deal_all_pressed()
-
 func game_stage(): # A loop of 8 tricks is played.
 	for cards in $Player1/Hand.get_child_count():									# 8 cards per hand, 8 rounds per game.
 		await play_trick()
@@ -428,20 +425,67 @@ func draw_card(hand):
 		return 1							# return true because we skip, not stop.
 	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
 	var j = sort_hand(children,new_card)
+	print("%s %s went to slot %s" % [new_card.face,new_card.suit,j]) if hand == $Player1/Hand else 1
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
-	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
+	var tween = new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
 	for each in children:		# For each card still in hand
 		each.go()							# Tween them there.
-	hand.move_child(new_card,j)
 	$SFX/Card_Fwip.play(.11)		# Card SFX
 	$DrawDeck/Amount.text = str(drawpile.size()) # Refresh the amount label on drawdeck.
 	if drawpile.size() == 0:					# If that was last card, make drawdeck disappear.
 		$DrawDeck.visible = false
+	hand.move_child(new_card,j)
 	return 1									# True value for success
 
+	
+
+func play_card(card): # Click cards are moved to their assigned playslot
+	var player = card.get_node("../..") 		# "../.." means parent of my parent.
+	var playslot = player.get_node("Playslot")  # store playslot object
+	if playslot.get_child_count():				# If playslot has card, cancel function.
+		return
+	var hand = card.get_parent()				# store hand object
+	var slot = Vector2(0,0)					# stores a base position.
+	card.slot = slot						# Updates the card's variable for upcoming tween.
+	card.reparent(playslot)					# Moves card object from hand to playslot
+	if playslot == $Player3/Playslot:
+		card.get_node("Label").set_rotation_degrees(180)
+	card.go()								# Tweens to playslot's base position (0,0)
+	card.inplay = true						# Set flag in objects variables.
+	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
+	$SFX/Card_Fwip.play()						# SFX
+	if not player.human:
+		var cards = player.get_node("Hand").get_children()
+		var offset = Vector2(140-(20*(cards.size()-1)),0)
+		for each in cards:		# For each card still in hand
+			each.slot = offset					# Update card with new spot in hand.
+			each.go()							# Tween them there.
+			offset += Vector2(40,0)				# Increase for next card.
+	await timer(.5)
+	card_played.emit()
+
+	
+func take_card(card): # An inversion of play_card() move playslot card back to hand.
+	card.z_index -=2
+	card.label_off()
+	var hand = $Player1/Hand
+	var children = hand.get_children()
+	var j = sort_hand(children,card)
+	print(j)
+	card.selected = false
+	get_tree().create_tween().tween_property(card.get_node("shadow"),"position",Vector2(-6,3),.20)
+	card.reparent(hand,true)
+	#await timer(.25)
+	for each in hand.get_children():
+		each.go()
+	hand.move_child(card,j)
+	$SFX/Card_Fwip.play(.11)
+	return 1
+	
+	
 func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deals 4 cards to ALL.
-	var time=0.40					# Time between each card.
+	var time=0.45					# Time between each card.
 	$SFX/Card_Fwip.pitch_scale = .69	# Card SFX
 	for n in 4:						# For 4 cards
 		for hand in handpool:		# For each hand
@@ -531,54 +575,23 @@ func select_card(card):
 	card.slot = Vector2(0,0)
 	card.z_index +=2
 	card.select_and_go()					# stores a base position.
-	for each in $Player1/Hand.get_children():		# For each card still in hand
-		each.slot = slot					# Update card with new spot in hand.
+	var cards = $Player1/Hand.get_children()
+	var offset = Vector2(140-(20*(cards.size()-1)),0)
+	for each in cards:		# For each card still in hand
+		each.slot = offset					# Update card with new spot in hand.
 		each.go()							# Tween them there.
-		slot += Vector2(40,0)				# Increase for next card.
+		offset += Vector2(40,0)				# Increase for next card.
 	if old_card:
 		await take_card(old_card)
-	pass
 
+	#for each in cards:		# For each card still in hand
+		#each.slot -= slot					# Update card with new spot in hand.
+		#each.go()							# Tween them there.
+		#slot += Vector2(40,0)				# Increase for next card.
+	#if old_card:
+		#await take_card(old_card)
+	#pass
 
-func play_card(card): # Click cards are moved to their assigned playslot
-	var player = card.get_node("../..") 		# "../.." means parent of my parent.
-	var playslot = player.get_node("Playslot")  # store playslot object
-	if playslot.get_child_count():				# If playslot has card, cancel function.
-		return
-	var hand = card.get_parent()				# store hand object
-	var slot = Vector2(0,0)					# stores a base position.
-	card.slot = slot						# Updates the card's variable for upcoming tween.
-	card.reparent(playslot)					# Moves card object from hand to playslot
-	if playslot == $Player3/Playslot:
-		card.get_node("Label").set_rotation_degrees(180)
-	card.go()								# Tweens to playslot's base position (0,0)
-	card.inplay = true						# Set flag in objects variables.
-	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
-	$SFX/Card_Fwip.play()						# SFX
-	if not player.human:
-		for each in hand.get_children():		# For each card still in hand
-			each.slot = slot					# Update card with new spot in hand.
-			each.go()							# Tween them there.
-			slot += Vector2(40,0)				# Increase for next card.
-	await timer(.5)
-	card_played.emit()
-
-	
-func take_card(card): # An inversion of play_card() move playslot card back to hand.
-	card.z_index -=2
-	card.label_off()
-	var hand = $Player1/Hand
-	var children = hand.get_children()
-	var j = sort_hand(children,card)
-	card.selected = false
-	get_tree().create_tween().tween_property(card.get_node("shadow"),"position",Vector2(-6,3),.20)
-	card.reparent(hand,true)
-	#await timer(.25)
-	for each in hand.get_children():
-		each.go()
-	hand.move_child(card,j)
-	$SFX/Card_Fwip.play(.11)
-	return 1
 
 
 func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
@@ -599,17 +612,38 @@ func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inp
 
 
 func sort_hand(children,new_card):
+	#var i = 0
+	#var j = 0
+	#for old_card in children:				# Position stored relative to amount of cards in hand.
+		#if new_card.id > old_card.id:
+			#new_card.slot = Vector2((i+1)*40,0)
+			#j += 1
+		#else:
+			#old_card.slot = Vector2((i+1)*40,0)
+		#i += 1
+	#return j	
 	var i = 0
 	var j = 0
+	var found = false
+	var cards = children.size()
+	if children.size() == 0:
+		new_card.slot = Vector2(140,0)
+		return j
 	for old_card in children:				# Position stored relative to amount of cards in hand.
 		if new_card.id > old_card.id:
-			new_card.slot = Vector2((i+1)*40,0)
+			old_card.slot = Vector2(i+140-(cards*20),0)
 			j += 1
-		else:
-			old_card.slot = Vector2((i+1)*40,0)
-		i += 1
+		else :
+			if not found:
+				new_card.slot = Vector2(i+140-(cards*20),0)
+				found = true
+				i+=40
+			old_card.slot = Vector2(i+140-(cards*20),0)
+		i += 40
+	if not found:
+		new_card.slot = Vector2(i+140-(cards*20),0)
 	return j	
-	
+
 
 func _pip_update():
 	team1_pips -=1
