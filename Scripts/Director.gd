@@ -159,10 +159,11 @@ func betting_stage():
 	else:
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
-	if current_bet > 25:
-		pip_change = 3
-	elif current_bet > 20:
-		pip_change = 2
+	if Global.variant_rules.bet_based_pips:
+		if current_bet > 25:
+			pip_change = 3
+		elif current_bet > 20:
+			pip_change = 2
 	round_message(message,2)
 	await timer(.5)
 	dealer = current_better						#Bet winner starts the 1st hand.

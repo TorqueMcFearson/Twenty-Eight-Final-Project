@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
 [ext_resource type="Texture2D" uid="uid://incl5nrm6jff" path="res://Assets/arrows.png" id="17_ia5ws"]
-[ext_resource type="LabelSettings" uid="uid://bagr541kktq7r" path="res://Round Label.tres" id="19_6hsui"]
+[ext_resource type="LabelSettings" uid="uid://bagr541kktq7r" path="res://Assets/Themes and Styleboxes/Round Label.tres" id="19_6hsui"]
 [ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
 [ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
 [ext_resource type="Theme" uid="uid://dnoloj2nweqwj" path="res://Assets/FlatUI/kenneyUI-green.tres" id="27_d6853"]

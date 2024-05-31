@@ -1,3 +1,5 @@
+class_name Card
+
 extends Node2D
 @onready var Director = $"/root/Director"
 @onready var click_delay = $"/root/Director/Click Delay"
@@ -11,7 +13,7 @@ var id: int					# Unique Id for database lookup
 ## PROPERTIES FROM DATABASE ARE -- id, face, suit, rank, value
 var rank : int				# Its order in which cards it win/lose over.
 var value : int				# It's point value in trick scoring
-var face_show : bool		# Wether is currently face up or down.
+var face_show := false		# Wether is currently face up or down.
 var inplay := false			# Wether is currently in the play slot.
 var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
@@ -19,7 +21,6 @@ var slot := Vector2(0,0)
 var trump := false
 var disabled := true
 var selected := false
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

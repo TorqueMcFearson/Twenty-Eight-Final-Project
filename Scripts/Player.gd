@@ -53,6 +53,10 @@ func ai_bid():
 			await redeal()
 	var message : String
 	var min_bet = current_bet+1
+	if Global.variant_rules.partner_bid and Director.current_better.team == team:
+		print("same team, clamping to 20 min bet.")
+		min_bet = clamp(min_bet,20,99)
+		pass
 	var color = Color(1, 1, 1,1)
 	if current_bet < bet_goal or current_bet == 13:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)

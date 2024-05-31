@@ -11,6 +11,8 @@ enum {BABYMODE, EASY, NORMAL, HARD}
 var cards_playable = false
 var difficulty = BABYMODE
 var american_mode = false
+var variant_rules : Dictionary = {"honors" : true, "partner_bid": true, "post_trump_bid": true, "bet_based_pips": true, "redeal":true}
+
 
 func database_constructor(x):
 	if not american_mode:
