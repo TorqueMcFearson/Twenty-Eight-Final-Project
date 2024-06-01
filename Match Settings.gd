@@ -1,42 +1,56 @@
 extends Control
 
-const DEFAULT = "Twenty-Eight has many different rules. Customize the ones you are fimilar with or would like to try. These cannot be changed during the match."
-const american = "[b]Filthy American Mode[/b]
+const DEFAULT = "[color=#d9882b][b]Variant Rules[/b][/color]
+Twenty-Eight has many different houses rules. So customize the ones you are fimilar with or would like to try. Choose carefully as these cannot be changed during the match."
+const american = "[color=#d9882b][b]Filthy American Mode[/b][/color]
 This changes the order of value and rank of each card to resemble something that is more fimilar in american card games.
 [font_size=18]
 [color=green]ON[/color] - Cards ranked low-to-high as 7, 8, 9, 10, J, Q, K, A
-[color=orange]OFF[/color] - Cards ranked low-to-high as 7, 8, Q, K, 10, A, 9, J[/font_size]
+[color=#c22710]OFF[/color] - Cards ranked low-to-high as 7, 8, Q, K, 10, A, 9, J[/font_size]
 [center][u]
 
+
 [font_size=22][color=red]For a traditional experience, this mode is not recommened.[/color][/font_size][/u][/center]"
-const partner_bid = "[b]Partner Overbid Minimum[/b] 
+
+
+const partner_bid = "[color=#d9882b][b]Partner Bid Minimum[/b][/color]
 Sets the minimum bid rule for bidding over your partner if they were the last to bid.
 
 [color=green]ON[/color] - minimum of 20.
-[color=orange]OFF[/color] - no minimum"
-const bet_pips = "[b]Bet Based Scoring[/b]
-This rule changes how many pips [i](match points)[/i] are won based on the winning team’s bid.
+[color=#c22710]OFF[/color] - no minimum"
+
+
+const bet_pips = "[color=#d9882b][b]Bet Based Scoring[/b][/color]
+This rule changes how many pips (match points) are won based on the winning team’s bid.
 
 [u]The bids are as follows:[/u]
-[ul][b]14 to 19:[/b] Win [color=green]+1 pip[/color] or Lose [color=orange]-2 pips[/color].
-[b]20 to 24:[/b] Win [color=green]+2 pip[/color] or Lose [color=orange]-3 pips[/color].
-[b]25 to 28:[/b] Win [color=green]+3 pip[/color] or Lose [color=orange]-4 pips[/color].[/ul]
+[ul][b]14 to 19:[/b] Win [color=green]+1 pip[/color] or Lose [color=#c22710]-2 pips[/color].
+[b]20 to 24:[/b] Win [color=green]+2 pip[/color] or Lose [color=#c22710]-3 pips[/color].
+[b]25 to 28:[/b] Win [color=green]+3 pip[/color] or Lose [color=#c22710]-4 pips[/color].[/ul]
 
 [color=green]ON[/color] - Pips scoring uses the bet-based pip system.
-[color=orange]OFF[/color] - Pip scoring uses a standard 1-pip system"
-const final_bet = "[b]Post-Trump Bid[/b]
+[color=#c22710]OFF[/color] - Pip scoring uses a standard 1-pip system"
+
+
+const final_bet = "[color=#d9882b][b]Post-Trump Bid[/b][/color]
 This rule allows the bid winning team a final chance to increase their bid to 24, after everyone has been dealt eight cards. Must include the [b]Bet Based Pips[/b] to make sense.
 
 [color=green]ON[/color] - The final bid is allowed.
-[color=orange]OFF[/color] - The final bid is not allowed."
-const redeal = "[b]First-Hand Redeal[/b]
+[color=#c22710]OFF[/color] - The final bid is not allowed."
+
+
+const redeal = "[color=#d9882b][b]First-Hand Redeal[/b][/color]
 This rule goes into effect when openning bidder's first 4 cards have no point values, at which point only they may request redeal of everyone's cards.
 
 [color=green]ON[/color] - The redeal rule is allowed.
-[color=orange]OFF[/color] - The redeal rule is not allowed."
-const difficulty = "[b]AI Difficulty[/b]
+[color=#c22710]OFF[/color] - The redeal rule is not allowed."
+
+
+const difficulty = "[color=#d9882b][b]AI Difficulty[/b][/color]
 This mainly determines how aggressive the AI is with it's bidding and how likely it is to make mistakes."
-const speed = "[b]Game Speed[/b]
+
+
+const speed = "[color=#d9882b][b]Game Speed[/b][/color]
 This setting will determine the speed of the game engine, affecting animations and wait times."
 
 enum {AMERICAN,PARTNER_BID,FINAL_BET,BET_PIPS,REDEAL,DIFFICULTY,SPEED}
@@ -72,6 +86,7 @@ func _ready():
 		each.set_pressed(Global.variant_rules[rules[i]])
 		i+=1
 	difficulty_group[Global.difficulty].set_pressed(true)
+	print("pressing speed", ((Global.game_speed-1)*2))
 	speed_group[((Global.game_speed-1)*2)].set_pressed(true)
 
 
@@ -100,9 +115,10 @@ func _rule_hover(rule):
 	pass # Replace with function body.
 
 func _rule_hover_exit(rule):
-		$"Margin Container/PanelContainer3/Rule Text".text = ""
+		#$"Margin Container/PanelContainer3/Rule Text".text = ""
 		$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/Label".modulate = Color(1,1,1)
 		$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/Label".modulate = Color(1,1,1)
+		pass
 
 
 func _on_cancel_ready_entered(node):
@@ -140,6 +156,7 @@ func _on_difficulty_button(value):
 
 func _on_game_speed(speed):
 	Global.game_speed = speed
+	Engine.time_scale = speed
 	pass # Replace with function body.
 
 

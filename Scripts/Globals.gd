@@ -9,10 +9,7 @@ var cards = {} # Declare array, for use in functions
 enum {EASY, NORMAL, HARD}
 ##---------Global Variables---------##
 var cards_playable = false
-var game_speed : float = 1 :
-	set(value):
-		print("gamespeed saved as ", value)
-		Engine.time_scale = value
+var game_speed : float = 1
 var difficulty = NORMAL
 var variant_rules : Dictionary = {
 "traditional" : true, 
