@@ -11,12 +11,12 @@ enum {BABYMODE, EASY, NORMAL, HARD}
 var cards_playable = false
 var difficulty = BABYMODE
 var variant_rules : Dictionary = {
-"honors" : false, 
-"partner_bid": false, 
-"final_bet": false, 
-"bet_based_pips": false, 
-"redeal":false, 
-"american_mode" : false}
+"honors" : true, 
+"partner_bid": true, 
+"final_bet": true, 
+"bet_based_pips": true, 
+"redeal":true, 
+"american_mode" : true}
 
 
 func database_constructor(x):

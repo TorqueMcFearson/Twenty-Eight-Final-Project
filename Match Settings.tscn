@@ -18,10 +18,10 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kp2gr"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(0, 0, 0, 0.203922)
 border_width_left = 8
 border_width_top = 8
@@ -143,18 +143,6 @@ theme_override_font_sizes/bold_font_size = 18
 bbcode_enabled = true
 text = "Twenty-Eight has many different rules. Customize the ones you are fimilar with or would like to try."
 
-[node name="Rule Text2" type="Label" parent="Margin Container/PanelContainer3"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 8
-size_flags_stretch_ratio = 9.71
-theme_override_colors/font_color = Color(0.983333, 1, 0, 1)
-theme_override_constants/line_spacing = -6
-theme_override_fonts/font = ExtResource("3_c1oab")
-text = "For a traditional experience, this mode is not recommened."
-horizontal_alignment = 1
-autowrap_mode = 2
-
 [node name="PanelContainer2" type="PanelContainer" parent="Margin Container"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -181,6 +169,16 @@ layout_mode = 2
 size_flags_vertical = 6
 theme_override_constants/separation = 0
 
+[node name="Traditional Rules" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("4_5k4uv")
+button_pressed = true
+text = "Traditional Rules Only"
+
 [node name="American" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
@@ -188,6 +186,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("4_5k4uv")
+disabled = true
 text = "Filthy American Mode"
 
 [node name="Partner Overbid" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -197,6 +196,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("4_5k4uv")
+disabled = true
 text = "Partner Overbid Minimum"
 
 [node name="Final Bet" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -206,6 +206,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("4_5k4uv")
+disabled = true
 text = "Final Post Trump Bet"
 
 [node name="Bet Based Pips" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -215,6 +216,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("4_5k4uv")
+disabled = true
 text = "Bet Based Scoring"
 
 [node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
@@ -356,6 +358,25 @@ texture = ExtResource("7_a35ii")
 offset = Vector2(636.687, 508.163)
 region_rect = Rect2(0, 0, 100, 1260)
 
+[node name="Disclaimer" type="Label" parent="."]
+layout_mode = 2
+offset_left = 165.0
+offset_top = 508.0
+offset_right = 581.0
+offset_bottom = 533.0
+size_flags_vertical = 8
+size_flags_stretch_ratio = 9.71
+theme_override_colors/font_color = Color(0.983333, 1, 0, 1)
+theme_override_constants/line_spacing = -6
+theme_override_fonts/font = ExtResource("3_c1oab")
+theme_override_font_sizes/font_size = 18
+text = "For a traditional experience, this mode is not recommened."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_rule_hover" binds= [0]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_rule_hover_exit" binds= [0]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_on_traditional_rules_toggled"]
 [connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover" binds= [0]]
 [connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover_exit" binds= [0]]
 [connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_on_checkbutton_toggled" binds= ["american"]]
