@@ -66,7 +66,10 @@ func _on_new_game_pressed():
 	$"Control/Black Fade".modulate = Color(1,1,1,.12)
 	fade_rate = .05
 	game_start = true
-	set_process(true)  
+	set_process(true)
+	await Music.fade_out(.75)
+	Music.stream = load("res://Assets/SFX & Music/Music/trap-story-SBA-346746122.mp3")
+	Music.fade_in(2)
 	pass # Replace with function body.
 
 func butts_off():

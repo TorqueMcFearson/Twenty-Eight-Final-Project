@@ -10,12 +10,17 @@ enum {BABYMODE, EASY, NORMAL, HARD}
 ##---------Global Variables---------##
 var cards_playable = false
 var difficulty = BABYMODE
-var american_mode = false
-var variant_rules : Dictionary = {"honors" : true, "partner_bid": true, "post_trump_bid": true, "bet_based_pips": true, "redeal":true}
+var variant_rules : Dictionary = {
+"honors" : false, 
+"partner_bid": false, 
+"final_bet": false, 
+"bet_based_pips": false, 
+"redeal":false, 
+"american_mode" : false}
 
 
 func database_constructor(x):
-	if not american_mode:
+	if not variant_rules.american_mode:
 		var id = 0 # Unique Id for every suit/face
 		var rank = 0 # Rising rank value for every face.
 		for suit in SUITS:

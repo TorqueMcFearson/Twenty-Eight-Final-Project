@@ -1,0 +1,316 @@
+[gd_scene load_steps=10 format=3 uid="uid://bgeal4id2fu3q"]
+
+[ext_resource type="AudioStream" uid="uid://cv4oqocfrgwx" path="res://Assets/SFX & Music/clean-pop-up-interface-notification-5-SBA-300463463.wav" id="1_aqtn3"]
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="2_spj1c"]
+[ext_resource type="FontFile" uid="uid://o1cc5lq5fclw" path="res://Assets/Fonts/INKFREE.TTF" id="3_xaccw"]
+
+[sub_resource type="GDScript" id="GDScript_2il5b"]
+resource_name = "Final Bet"
+script/source = "extends Control
+
+signal bid_24
+var current_bid = 0
+@onready var Director = $\"/root/Director\"
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	modulate.a = 0
+	var adjust = (20-14)*.025
+	$\"Bet Please/Amount\".modulate = Color.from_hsv(0.31-adjust, 1, 1-adjust*.25)
+	$\"Current Bet/Amount\".add_theme_color_override(\"font_color\",Color(1, 0.48235294222832, 0))
+	$\"Current Bet/Amount\".add_theme_color_override(\"font_outline_color\",Color(1, 0.48235294222832, 0))
+	$\"Current Bet/Amount\".text = str(\"Current Bid: \", current_bid)
+
+	fade_in()
+	pass
+
+func fade_in():
+	get_tree().create_tween()\\
+			.tween_property(self,\"modulate\",Color(1,1,1,1),1)\\
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
+func fade_out():
+		get_tree().create_tween()\\
+			.tween_property(self,\"modulate\",Color(1,1,1,0),.45)\\
+			.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUINT)
+			
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+func _on_bet_pressed():
+	$Pass.disabled = true
+	$Bet.disabled = true
+	$\"Menu SFX\".play()
+	fade_out()
+	await $\"Menu SFX\".finished
+	bid_24.emit(24)
+
+
+func _on_pass_pressed():
+	$Pass.disabled = true
+	$Bet.disabled = true
+	$\"Menu SFX\".play()
+	fade_out()
+	await $\"Menu SFX\".finished
+	bid_24.emit(0)
+
+	
+
+
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onpiw"]
+bg_color = Color(0.259925, 0.37, 0.2405, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.301835, 0.53, 0.1961, 1)
+border_blend = true
+shadow_color = Color(0, 0, 0, 0.262745)
+shadow_size = 7
+shadow_offset = Vector2(-5, 7)
+
+[sub_resource type="Gradient" id="Gradient_kjl4k"]
+offsets = PackedFloat32Array(0.86087, 0.956522, 1)
+colors = PackedColorArray(0.2236, 0.251507, 0.26, 0, 0.165575, 0.277971, 0.214964, 0.407108, 0.0705882, 0.14902, 0.101961, 0.454902)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mq5un"]
+gradient = SubResource("Gradient_kjl4k")
+fill = 2
+fill_from = Vector2(0.51, 0.51)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t71eg"]
+texture = SubResource("GradientTexture2D_mq5un")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucsmk"]
+bg_color = Color(0.2, 0.2, 0.2, 0.243137)
+
+[node name="Final Bid" type="Control"]
+process_mode = 1
+z_index = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = SubResource("GDScript_2il5b")
+metadata/_edit_lock_ = true
+
+[node name="Menu SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_aqtn3")
+volume_db = -17.542
+pitch_scale = 0.42
+
+[node name="Current Bet" type="Panel" parent="."]
+modulate = Color(0.86, 0.86, 0.86, 0.976471)
+layout_mode = 0
+offset_left = 454.0
+offset_top = 140.0
+offset_right = 768.0
+offset_bottom = 191.0
+scale = Vector2(0.782695, 0.782695)
+
+[node name="Amount" type="Label" parent="Current Bet"]
+layout_mode = 2
+offset_left = -5.0
+offset_right = 314.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0.35, 0.74, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("2_spj1c")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_onpiw")
+text = "Current Bet: 99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bet Please" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 332.0
+offset_top = 191.0
+offset_right = 820.0
+offset_bottom = 394.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_onpiw")
+
+[node name="Gradient" type="Panel" parent="Bet Please"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 483.0
+offset_bottom = 199.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_t71eg")
+
+[node name="Amount" type="Label" parent="Bet Please"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 2
+offset_left = 199.0
+offset_top = 66.0
+offset_right = 288.0
+offset_bottom = 148.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 60
+text = "24"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Difficult" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = -194.0
+offset_top = -15.0
+offset_right = 284.0
+offset_bottom = 21.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 23
+text = "Fair!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = -136.0
+offset_top = 34.0
+offset_right = -52.0
+offset_bottom = 63.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 23
+text = "2 pip"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose" type="Label" parent="Bet Please/Amount"]
+layout_mode = 2
+offset_left = 143.0
+offset_top = 34.0
+offset_right = 227.0
+offset_bottom = 63.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 23
+text = "-3 pip"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Bet Please"]
+layout_mode = 2
+offset_top = 9.0
+offset_right = 488.0
+offset_bottom = 60.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("2_spj1c")
+theme_override_font_sizes/font_size = 31
+text = "Up The Stakes?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 395.0
+offset_top = 272.0
+offset_right = 479.0
+offset_bottom = 301.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 23
+text = "Win:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 674.0
+offset_top = 272.0
+offset_right = 758.0
+offset_bottom = 301.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_xaccw")
+theme_override_font_sizes/font_size = 23
+text = "Lose:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bet" type="Button" parent="."]
+layout_mode = 2
+offset_left = 459.0
+offset_top = 334.0
+offset_right = 546.0
+offset_bottom = 381.25
+text = "Yes"
+
+[node name="Pass" type="Button" parent="."]
+layout_mode = 2
+offset_left = 594.0
+offset_top = 334.0
+offset_right = 681.0
+offset_bottom = 381.25
+text = "No"
+
+[node name="Redeal" type="Label" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 332.0
+offset_top = 450.0
+offset_right = 820.0
+offset_bottom = 501.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.552941)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/line_spacing = -7
+theme_override_fonts/font = ExtResource("2_spj1c")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_ucsmk")
+text = "Tip: You can re-deal if none of the cards in your hands are worth points"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="pressed" from="Bet" to="." method="_on_bet_pressed"]
+[connection signal="pressed" from="Pass" to="." method="_on_pass_pressed"]

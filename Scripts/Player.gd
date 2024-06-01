@@ -34,6 +34,7 @@ func _process(_delta):
 
 func ready_bid():
 	held_suits.clear()
+	value = 0
 	for card in $Hand.get_children():
 		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
 		value += card.value

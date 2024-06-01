@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3yww81jiah31"
-path="res://.godot/imported/pip-frame.png-e0f92ca11a26f45326a538e815470f9f.ctex"
+uid="uid://v02ey7is1wm3"
+path="res://.godot/imported/pip2.png-e5f50462f098dd67f5301d068048de7f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/pip-frame.png"
-dest_files=["res://.godot/imported/pip-frame.png-e0f92ca11a26f45326a538e815470f9f.ctex"]
+source_file="res://Assets/pip2.png"
+dest_files=["res://.godot/imported/pip2.png-e5f50462f098dd67f5301d068048de7f.ctex"]
 
 [params]
 

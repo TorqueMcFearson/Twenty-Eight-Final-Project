@@ -24,16 +24,10 @@ func _on_mute_toggled(toggled_on):
 		Music.stream_paused = true
 	else:
 		Music.stream_paused = false
-		print(\"worked on audio script\")
 	pass # Replace with function body.
 
 func _on_value_changed(_value):
-	if value < -30:
-		Music.volume_db = value * 2
-
-	else:
-		Music.volume_db = value
-	pass # Replace with function body.pass # Replace with function body.
+	Music.volume_db = -50+value
 
 
 func _on_mute_mouse_entered():
@@ -50,9 +44,9 @@ offset_left = 57.0
 offset_top = 20.0
 offset_right = 169.0
 offset_bottom = 50.0
-min_value = -40.0
-max_value = -5.0
-value = -13.0
+min_value = 5.0
+max_value = 45.0
+value = 40.0
 script = SubResource("GDScript_jsoji")
 
 [node name="Mute" type="TextureButton" parent="."]

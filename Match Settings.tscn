@@ -1,0 +1,370 @@
+[gd_scene load_steps=18 format=3 uid="uid://cxl8scq7xo7cf"]
+
+[ext_resource type="Script" path="res://Match Settings.gd" id="1_3s0mc"]
+[ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="2_gcpqs"]
+[ext_resource type="FontFile" uid="uid://cakwfk05xxfvj" path="res://Assets/Fonts/EBGaramond-VariableFont_wght.ttf" id="3_c1oab"]
+[ext_resource type="Theme" uid="uid://ohqo0pv8my16" path="res://Assets/Themes and Styleboxes/Radial Buttons.tres" id="4_5k4uv"]
+[ext_resource type="FontFile" uid="uid://cle2ntgv6jh42" path="res://Assets/Fonts/EBGaramond-Bold.ttf" id="4_41f7w"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="4_nju3k"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_5g6f1"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="6_amuc5"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="7_a35ii"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqoo"]
+bg_color = Color(0.54902, 0.505882, 0.533333, 0.203922)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kp2gr"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.203922)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 0.415686)
+border_blend = true
+corner_radius_top_left = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_famct"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_top_right = 12
+corner_radius_bottom_right = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vfpog"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.227451)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(1, 1, 1, 0.0666667)
+shadow_size = 2
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_pe3ai"]
+color = Color(0.65, 0.65, 0.65, 0.415686)
+grow_begin = -3.0
+grow_end = -3.0
+thickness = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iid8t"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.0980392)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_op8ei"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_s8ymg"]
+
+[node name="Match Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3s0mc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 50
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 458.0
+offset_top = 49.0
+offset_right = 694.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lfqoo")
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 30
+text = "Match Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Margin Container" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 155.0
+offset_top = 121.0
+offset_right = 1027.0
+offset_bottom = 529.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer3" type="PanelContainer" parent="Margin Container"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_kp2gr")
+
+[node name="Rule Text" type="RichTextLabel" parent="Margin Container/PanelContainer3"]
+layout_mode = 2
+size_flags_stretch_ratio = 9.71
+theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/normal_font = ExtResource("3_c1oab")
+theme_override_fonts/bold_font = ExtResource("4_41f7w")
+theme_override_font_sizes/normal_font_size = 18
+theme_override_font_sizes/bold_font_size = 18
+bbcode_enabled = true
+text = "Twenty-Eight has many different rules. Customize the ones you are fimilar with or would like to try."
+
+[node name="Rule Text2" type="Label" parent="Margin Container/PanelContainer3"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+size_flags_stretch_ratio = 9.71
+theme_override_colors/font_color = Color(0.983333, 1, 0, 1)
+theme_override_constants/line_spacing = -6
+theme_override_fonts/font = ExtResource("3_c1oab")
+text = "For a traditional experience, this mode is not recommened."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Margin Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_famct")
+
+[node name="PanelContainer" type="PanelContainer" parent="Margin Container/PanelContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vfpog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 25
+text = "Rule Variants"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 0
+
+[node name="American" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("4_5k4uv")
+text = "Filthy American Mode"
+
+[node name="Partner Overbid" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("4_5k4uv")
+text = "Partner Overbid Minimum"
+
+[node name="Final Bet" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("4_5k4uv")
+text = "Final Post Trump Bet"
+
+[node name="Bet Based Pips" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("4_5k4uv")
+text = "Bet Based Scoring"
+
+[node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 9
+theme_override_styles/separator = SubResource("StyleBoxLine_pe3ai")
+
+[node name="Label2" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 25
+text = "System settings"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 20
+text = "Difficulty"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="CheckBox" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+texture_filter = 2
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_pressed = true
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Easy"
+alignment = 1
+
+[node name="CheckBox2" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Medium"
+alignment = 1
+
+[node name="CheckBox3" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Hard"
+alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 20
+text = "Game Speed"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="CheckBox" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_pressed = true
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Normal"
+alignment = 1
+
+[node name="CheckBox2" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Fast"
+alignment = 1
+
+[node name="CheckBox3" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+theme = ExtResource("4_5k4uv")
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Fastest"
+alignment = 1
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -2
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("4_nju3k")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("5_5g6f1")
+centered = false
+script = ExtResource("6_amuc5")
+metadata/_edit_lock_ = true
+
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("7_a35ii")
+offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
+
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover" binds= [0]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover_exit" binds= [0]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_on_checkbutton_toggled" binds= ["american"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover" binds= [1]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover_exit" binds= [1]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_on_checkbutton_toggled" binds= ["partner_bid"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_rule_hover" binds= [2]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_rule_hover_exit" binds= [2]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_on_checkbutton_toggled" binds= ["final_bet"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_rule_hover" binds= [2]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_rule_hover_exit" binds= [2]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_on_checkbutton_toggled" binds= ["bet_based_pips"]]

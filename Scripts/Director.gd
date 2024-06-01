@@ -116,12 +116,15 @@ func match_start():
 	await timer(.25)
 	await trump_stage()						# Calls and waits the Trump choosing round.
 	await _on_deal_all_pressed()
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(.75).timeout
 	if current_better == $Player1:
-		print("trump check cause player 1 is better")
+		print("trump check cause player 1 is bidder")
 		for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
 			each.trump_check()					# Enable to highlight trumps when player wins
 	get_tree().call_group("Players", "ready_bid")
+	await get_tree().create_timer(.75).timeout
+	if Global.variant_rules.final_bet and current_bet < 20:
+		await final_bet()
 	await timer(1)
 	await game_stage()
 	await pip_stage()
@@ -160,7 +163,7 @@ func betting_stage():
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
 	if Global.variant_rules.bet_based_pips:
-		if current_bet > 23:
+		if current_bet > 24:
 			pip_change = 3
 		elif current_bet > 19:
 			pip_change = 2
@@ -171,6 +174,28 @@ func betting_stage():
 	# Once loop breaks, this function completes and _ready() continues from await.
 
 
+func call_bet_window(): # Human betting window called.
+	$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
+	var bet_scene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
+	$"Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
+	bet_scene.current_bid = current_bet
+	if current_bet == 13 and Global.variant_rules.redeal:
+		if $Player1.check_redeal():
+			bet_scene.redeal = true
+	$PopUp.add_child(bet_scene)										# Add the window to the root of scene.
+	var bet = await get_node("PopUp/BettingUI").bet_or_pass		# Pause until signal returns bet or pass.
+	if bet: 												# bet returns value (true)
+		pass_count = 0										# bets break the pass streak.
+		current_bet = bet									# store players returned bet
+		current_better = $Player1							# store player object as last bidder
+		print('Player Bet: ',bet)
+	else:													# Pass returns 0 (false)
+		pass_count += 1										# incremeant pass streak.
+		print('Player Passed! Count:', pass_count)
+	$Player1/Hand.z_index = 0								# Return cards to normal layer.
+	bet_scene.queue_free()									# Kill the betting window.
+	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
+	
 func bet_label():
 	$"UI/Bet Node/Bet Label".text = str("Bet:\n",current_bet)
 	if current_better.name in team1:
@@ -183,7 +208,37 @@ func bet_label():
 		$"UI/Bet Node/Bet Label/Arrow Team 2".visible = true
 	$"UI/Bet Node/Bet Label".visible = true
 
-
+func final_bet():
+	if betting_team == "Team 1":
+		$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
+		var bet_scene = load("res://final_bet.tscn").instantiate() # Betting window readied.
+		$"Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
+		bet_scene.current_bid = current_bet
+		$PopUp.add_child(bet_scene)										# Add the window to the root of scene.
+		var bet = await bet_scene.bid_24		# Pause until signal returns bet or pass.
+		if bet: 												# bet returns value (true)
+			current_bet = bet									# store players returned bet
+			print('Player Bet: ',bet)
+			if Global.variant_rules.bet_based_pips:
+				pip_change = 2
+			bet_label()
+		$Player1/Hand.z_index = 0								# Return cards to normal layer.
+		bet_scene.queue_free()									# Kill the betting window.
+		$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
+		
+		pass
+	else: #if team 2 (AI team)
+		var team_goal = ($Player2.bet_goal + $Player4.bet_goal)*.5 + (randi() % 6)
+		if team_goal  >= 24:
+			current_bet = 24
+			print('Bot Bet: 24')
+			if Global.variant_rules.bet_based_pips:
+				pip_change = 2
+			$SFX/Card_Ding.play()
+			bet_label()
+	
+	
+	
 func trump_stage():
 	var trump_sprite = $"UI/Trump Card/Trump Sprite"
 	trump_suit = await current_better.pick_trump() 			# Calls for the bid winner to process trump choice (Player.gd)
@@ -377,28 +432,7 @@ func play_trick():
 	await timer(1)
 
 
-func call_bet_window(): # Human betting window called.
-	
-	$Player1/Hand.z_index = 5 									# Players moved to front of viewport. (5 is random high number)
-	var bet_scene = load("res://betting_ui.tscn").instantiate() # Betting window readied.
-	$"Black Fade".modulate = Color(1, 1, 1, 0.50)			# Fade the table behind to 50% black
-	bet_scene.current_bid = current_bet
-	if current_bet == 13:
-		if $Player1.check_redeal():
-			bet_scene.redeal = true
-	$PopUp.add_child(bet_scene)										# Add the window to the root of scene.
-	var bet = await get_node("PopUp/BettingUI").bet_or_pass		# Pause until signal returns bet or pass.
-	if bet: 												# bet returns value (true)
-		pass_count = 0										# bets break the pass streak.
-		current_bet = bet									# store players returned bet
-		current_better = $Player1							# store player object as last bidder
-		print('Player Bet: ',bet)
-	else:													# Pass returns 0 (false)
-		pass_count += 1										# incremeant pass streak.
-		print('Player Passed! Count:', pass_count)
-	$Player1/Hand.z_index = 0								# Return cards to normal layer.
-	bet_scene.queue_free()									# Kill the betting window.
-	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
+
 
 
 func round_message(message : String,duration):	# Template for making a message fade in center of screen.
@@ -426,7 +460,6 @@ func draw_card(hand):
 		return 1							# return true because we skip, not stop.
 	var new_card = $CardConstructor.newcard(drawpile.pop_back(),face_show)
 	var j = sort_hand(children,new_card)
-	print("%s %s went to slot %s" % [new_card.face,new_card.suit,j]) if hand == $Player1/Hand else 1
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
 	var tween = new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.

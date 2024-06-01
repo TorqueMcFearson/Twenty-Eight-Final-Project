@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://ohqo0pv8my16"]
+
+[ext_resource type="Texture2D" uid="uid://v02ey7is1wm3" path="res://Assets/pip2.png" id="1_niycq"]
+[ext_resource type="Texture2D" uid="uid://b3yww81jiah31" path="res://Assets/pip-frame.png" id="2_gjqc7"]
+
+[resource]
+CheckBox/colors/font_color = Color(0.43, 0.43, 0.43, 1)
+CheckBox/colors/font_pressed_color = Color(1, 1, 1, 1)
+CheckBox/constants/check_v_offset = 2
+CheckBox/constants/h_separation = 8
+CheckBox/icons/radio_checked = ExtResource("1_niycq")
+CheckBox/icons/radio_unchecked = ExtResource("2_gjqc7")
+CheckButton/colors/font_hover_color = Color(1, 0.671333, 0.42, 1)
