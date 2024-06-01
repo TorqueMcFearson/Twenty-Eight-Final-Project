@@ -6,17 +6,21 @@ const SUITS = ["Diamonds", "Spades", "Hearts", "Clubs"] #
 const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value. Returns for J,9,A,10
 const AMERICAN_POINTS = {'A':3,'K':2, 'Q':1, 'J':1} #Dictionary for lookup point value. Returns for J,9,A,10
 var cards = {} # Declare array, for use in functions
-enum {BABYMODE, EASY, NORMAL, HARD}
+enum {EASY, NORMAL, HARD}
 ##---------Global Variables---------##
 var cards_playable = false
-var difficulty = BABYMODE
+var game_speed : float = 1 :
+	set(value):
+		print("gamespeed saved as ", value)
+		Engine.time_scale = value
+var difficulty = NORMAL
 var variant_rules : Dictionary = {
-"honors" : true, 
+"traditional" : true, 
 "partner_bid": true, 
 "final_bet": true, 
 "bet_based_pips": true, 
 "redeal":true, 
-"american_mode" : true}
+"american_mode" : false}
 
 
 func database_constructor(x):

@@ -41,13 +41,12 @@ func _process(delta):
 
 
 func _on_new_game_mouse_entered(extra_arg_0):
-	
 	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(0.79, 0.784, 0.427)
 	pass # Replace with function body.
 
 
 func _on_mouse_exited(extra_arg_0):
-	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(1, 1, 1)
+	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(1, 1, 1,)
 	pass # Replace with function body.
 
 

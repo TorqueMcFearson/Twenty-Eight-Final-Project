@@ -105,6 +105,9 @@ func initialize():
 ## ------------------Round Calling Starts-------------------------- ## 
 func match_start(): 
 	#return				 #<---- uncomment 'return' to start main without auto-director.
+	await timer(.55) # Typical pause. For 1 sec.
+	match_settings()
+	await move_on
 	await timer(.75) # Typical pause. For 1 sec.
 	round_message("Match Begins!",1.5)
 	await timer(.75)
@@ -129,7 +132,10 @@ func match_start():
 	await game_stage()
 	await pip_stage()
 
+func match_settings():
+	var setting_scene = load("res://Match Settings.tscn").instantiate()
 
+	$PopUp.add_child(setting_scene)
 
 func _process(delta): # This runs a fade in when the scene starts. Stops once faded in.
 	fade_in(delta) # Call to Fader.
