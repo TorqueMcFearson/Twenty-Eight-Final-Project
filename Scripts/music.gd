@@ -6,7 +6,7 @@ func _ready():
 	volume_db = -60
 	play()
 	fade_in(6)
-	#stream_paused = true
+	stream_paused = true
 	pass # Replace with function body.
 
 

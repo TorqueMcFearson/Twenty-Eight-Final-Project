@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6mk3o3hw86bp"]
+[gd_scene load_steps=7 format=3 uid="uid://c6mk3o3hw86bp"]
 
 [ext_resource type="AudioStream" uid="uid://ptm4m2x8cxp5" path="res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav" id="1_qydrf"]
 [ext_resource type="Texture2D" uid="uid://uvpp4us06w7b" path="res://Assets/pip.png" id="2_2eqvt"]
@@ -28,7 +28,7 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	$CPUParticles2D.position = get_viewport().get_mouse_position()
 
 func time_loop():
 	counter = lerp(counter, lerp_goal,lerp_factor)
@@ -93,6 +93,9 @@ func time_loop():
 			#.set_ease(Tween.EASE_IN_OUT)\\
 			#.set_delay(duration).finished			# Duration delay before fades out.
 "
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_akfc2"]
+size = Vector2(154, 111)
 
 [node name="Node" type="Node"]
 script = SubResource("GDScript_yvhe7")
@@ -173,5 +176,17 @@ position = Vector2(-184, 103)
 
 [node name="Card" parent="Control/Hand" instance=ExtResource("4_6h6em")]
 position = Vector2(184, 33)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Area2D"]
+offset_left = 519.0
+offset_top = 249.0
+offset_right = 673.0
+offset_bottom = 360.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(596, 305)
+shape = SubResource("RectangleShape2D_akfc2")
 
 [connection signal="timeout" from="Timer" to="." method="time_loop"]

@@ -53,11 +53,16 @@ func _ready():
 	$Discard_Deck.visible = false # Hides Discard deck until cards are in it.
 	$DrawDeck/Amount.text = str(drawpile.size()) #Changes Deck Label to display amount in it.
 	$Discard_Deck/Amount.text = '' # Discard Deck starts empty.
+	if not Global.guides:
+		$"UI/Bet Node".visible = false
 	$"UI/Bet Node/Bet Label".modulate = 0xffffff00
 	$Player1.human = true
 	$"Round Message".modulate = 0xffffff00
 	print('dealer: ',dealer)
 	drawpile.shuffle() #Shuffles the array of 31 IDs in drawpile.
+	await timer(.55) # Typical pause. For 1 sec.
+	match_settings()
+	await move_on
 	match_start()
 	
 	## Debug tool: Uncomment to activate ## Just prints to console the draw cards in order ##
@@ -105,9 +110,7 @@ func initialize():
 ## ------------------Round Calling Starts-------------------------- ## 
 func match_start(): 
 	#return				 #<---- uncomment 'return' to start main without auto-director.
-	await timer(.55) # Typical pause. For 1 sec.
-	match_settings()
-	await move_on
+
 	await timer(.75) # Typical pause. For 1 sec.
 	round_message("Match Begins!",1.5)
 	await timer(.75)
@@ -116,8 +119,9 @@ func match_start():
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid") # AI determines it's hand value.
 	await betting_stage() 					# Calls and waits for the Betting round.
-	await timer(.25)
-	await trump_stage()						# Calls and waits the Trump choosing round.
+	await timer(1.25)
+	await trump_stage()
+	await timer(.54)						# Calls and waits the Trump choosing round.
 	await _on_deal_all_pressed()
 	await get_tree().create_timer(.75).timeout
 	if current_better == $Player1:
@@ -168,12 +172,14 @@ func betting_stage():
 	else:
 		betting_team = "Team 2"
 	var message = str("Winner: ", betting_team, "\n\n\nBet: ", current_bet)
+	if not Global.guides:
+		message = str("Winner: ", betting_team, "\nBet: ", current_bet)
 	if Global.variant_rules.bet_based_pips:
 		if current_bet > 24:
 			pip_change = 3
 		elif current_bet > 19:
 			pip_change = 2
-	round_message(message,2)
+	round_message(message,1)
 	await timer(.5)
 	dealer = current_better						#Bet winner starts the 1st hand.
 	
@@ -247,15 +253,31 @@ func final_bet():
 	
 func trump_stage():
 	var trump_sprite = $"UI/Trump Card/Trump Sprite"
+	$SFX/Card_PopUp.play(.25)
 	trump_suit = await current_better.pick_trump() 			# Calls for the bid winner to process trump choice (Player.gd)
 	if current_better.human:
 		var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
 		trump_sprite.texture = load(assemble)
 		trump_sprite.modulate = Color(0.61000001430511, 0.61000001430511, 0.61000001430511)
+	if not Global.guides and current_better.human:
+		trump_sprite.position.x = -468
+		get_tree().create_tween().tween_property(trump_sprite,'scale',Vector2(1.5,1.5),.35).set_ease(Tween.EASE_IN)
+		var tween2 = get_tree().create_tween()
+		await tween2.tween_property(trump_sprite,'position',Vector2(-509,185),.75)\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_SPRING)
+		await timer(2.25)
+		trump_sprite.texture = load("res://Assets/Cards/PNG/Cards/cardBack_red4.png")
+		await timer(.5)
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
 	tween.tween_property(trump_sprite,'position',Vector2(0,0),.75)\
 			.set_ease(Tween.EASE_OUT)\
 			.set_trans(Tween.TRANS_SPRING)
+	get_tree().create_tween().tween_property(trump_sprite,'scale',Vector2(1,1),.35).set_ease(Tween.EASE_IN)
+
+	
+
+
 
 
 
@@ -641,26 +663,19 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 
 
 func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inpatience.
-	print ('engine timescale: ',Engine.time_scale)
 	if toggled_on:
-		Engine.time_scale = 2.5
+		Engine.time_scale = 2
+		$"Pause slot/TextureButton2/Label".text = "Fastest"
 	else:
 		Engine.time_scale = 1
+		$"Pause slot/TextureButton2/Label".text = "Normal"
+	print ('engine timescale: ',Engine.time_scale)
 
 	pass # Replace with function body. # Replace with function body.
 
 
 func sort_hand(children,new_card):
-	#var i = 0
-	#var j = 0
-	#for old_card in children:				# Position stored relative to amount of cards in hand.
-		#if new_card.id > old_card.id:
-			#new_card.slot = Vector2((i+1)*40,0)
-			#j += 1
-		#else:
-			#old_card.slot = Vector2((i+1)*40,0)
-		#i += 1
-	#return j	
+	
 	var i = 0
 	var j = 0
 	var found = false
@@ -701,5 +716,6 @@ func _player_redeal():
 func _on_ui_icon_entered(node):
 	var item = $"Pause slot".find_child(node).get_node("Label")
 	item.visible = !item.visible
+	$"Pause slot/TextureButton2/Label".text = "Game\nSpeed"
 
 

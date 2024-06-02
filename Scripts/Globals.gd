@@ -7,16 +7,18 @@ const POINTS = {'J':3,'9':2, 'A':1, '10':1} #Dictionary for lookup point value. 
 const AMERICAN_POINTS = {'A':3,'K':2, 'Q':1, 'J':1} #Dictionary for lookup point value. Returns for J,9,A,10
 var cards = {} # Declare array, for use in functions
 enum {EASY, NORMAL, HARD}
+enum {NONE, PARTIAL, FULL}
 ##---------Global Variables---------##
 var cards_playable = false
 var game_speed : float = 1
 var difficulty = NORMAL
+var guides := FULL
 var variant_rules : Dictionary = {
-"traditional" : true, 
-"partner_bid": true, 
-"final_bet": true, 
-"bet_based_pips": true, 
-"redeal":true, 
+"traditional" : false, 
+"partner_bid": false, 
+"final_bet": false, 
+"bet_based_pips": false, 
+"redeal":false, 
 "american_mode" : false}
 
 

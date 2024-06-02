@@ -82,10 +82,8 @@ func deselect_and_go():
 	Director.take_card(self)
 
 func go():
-
 	tweening = true
 	var tween = create_tween()
-
 	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
 	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
@@ -147,7 +145,7 @@ func face_up():
 	
 func trump_check():
 	if suit == Director.trump_suit and Director.trump_revealed:
-		if face_up:
+		if face_up and Global.guides == 2:
 			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
 			$CardBack/Panel.visible = false
 		if rank <99:
@@ -157,7 +155,7 @@ func trump_check():
 		
 func _on_reference_rect_mouse_entered():
 	if not tweening and not selected:
-		if face_show:
+		if face_show and Global.guides == 2:
 			$Label.visible = true
 			if trump:
 				$"Trump Label".visible = true
@@ -171,7 +169,7 @@ func _on_reference_rect_mouse_entered():
 		
 func _on_reference_rect_mouse_exited():
 	if not tweening and not selected:
-		if face_show:
+		if face_show and Global.guides == 2:
 			$Label.visible = false
 			if trump:
 				$"Trump Label".visible = false
@@ -189,35 +187,39 @@ func _on_reference_rect_gui_input(event): # A click event
 			if not inplay and not selected:
 				Director.select_card(self)
 				click_delay.start(.5)
-				$Label.visible = true
-				if trump:
-					$"Trump Label".visible = true
-					$CardBack.set_self_modulate(Color(0.78400003910065, 1, 0.75999999046326))
-					$CardBack/Panel.visible = true
+				if Global.guides == 2:
+					$Label.visible = true
+					if trump:
+						$"Trump Label".visible = true
+						$CardBack.set_self_modulate(Color(0.78400003910065, 1, 0.75999999046326))
+						$CardBack/Panel.visible = true
 			elif selected and not tweening:
 				Director.play_card(self)
-				$Label.visible = false
-				if trump:
-					$"Trump Label".visible = false
-					$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
-					$CardBack/Panel.visible = false
+				if Global.guides == 2:
+					$Label.visible = false
+					if trump:
+						$"Trump Label".visible = false
+						$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+						$CardBack/Panel.visible = false
 				z_index -=2
 				inplay = true
 				click_delay.start(.5)
 
 
 func enable_card():
+	
 	disabled = false
-	modulate = Color(1,1,1)
+	if Global.guides:
+		modulate = Color(1,1,1)
 	
 func disable_card():
 	disabled = true
-	if face_show:
+	if face_show and Global.guides:
 		modulate = Color(0.80, 0.80, 0.80)
 	
 func label_off():
 		$Label.visible = false
-		if trump:
+		if trump and Global.guides:
 			$"Trump Label".visible = false
 			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
 			$CardBack/Panel.visible = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cxl8scq7xo7cf"]
+[gd_scene load_steps=28 format=3 uid="uid://cxl8scq7xo7cf"]
 
 [ext_resource type="Script" path="res://Match Settings.gd" id="1_3s0mc"]
 [ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="2_gcpqs"]
@@ -17,6 +17,13 @@
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="14_txml4"]
 [ext_resource type="AudioStream" uid="uid://b48px1hjnuhte" path="res://Assets/SFX & Music/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav" id="15_mfbox"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5hnot"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqoo"]
 bg_color = Color(0.5, 0.46, 0.485333, 0.203922)
 draw_center = false
@@ -26,10 +33,10 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kp2gr"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.266667)
 border_width_left = 8
 border_width_top = 8
@@ -38,7 +45,7 @@ border_width_bottom = 8
 border_color = Color(0, 0, 0, 0.415686)
 border_blend = true
 corner_radius_top_left = 12
-corner_radius_bottom_left = 12
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_famct"]
 content_margin_left = 15.0
@@ -48,6 +55,7 @@ content_margin_bottom = 15.0
 bg_color = Color(0, 0, 0, 0.415686)
 corner_radius_top_right = 12
 corner_radius_bottom_right = 16
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vfpog"]
 content_margin_left = 10.0
@@ -89,6 +97,17 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_s8ymg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4g46"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_bottom_left = 12
+anti_aliasing = false
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_q871x"]
+
 [node name="Match Settings" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -97,6 +116,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3s0mc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 115.0
+offset_right = 977.0
+offset_bottom = 565.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5hnot")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
@@ -133,9 +160,9 @@ vertical_alignment = 1
 
 [node name="Margin Container" type="HBoxContainer" parent="."]
 layout_mode = 2
-offset_left = 140.0
+offset_left = 168.0
 offset_top = 108.0
-offset_right = 1012.0
+offset_right = 984.0
 offset_bottom = 558.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -144,9 +171,11 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 
 [node name="PanelContainer3" type="PanelContainer" parent="Margin Container"]
-custom_minimum_size = Vector2(400, 0)
+custom_minimum_size = Vector2(400, 305)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_kp2gr")
 
 [node name="Rule Text" type="RichTextLabel" parent="Margin Container/PanelContainer3"]
@@ -159,8 +188,8 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/normal_font = ExtResource("3_c1oab")
 theme_override_fonts/bold_font = ExtResource("4_41f7w")
 theme_override_fonts/italics_font = ExtResource("5_g0jl7")
-theme_override_font_sizes/normal_font_size = 20
-theme_override_font_sizes/bold_font_size = 20
+theme_override_font_sizes/normal_font_size = 18
+theme_override_font_sizes/bold_font_size = 19
 bbcode_enabled = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="Margin Container"]
@@ -518,6 +547,106 @@ volume_db = -15.646
 pitch_scale = 1.1
 max_polyphony = 6
 
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+offset_left = 168.0
+offset_top = 413.0
+offset_right = 568.0
+offset_bottom = 558.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4g46")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vfpog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 0
+
+[node name="Label2" type="Label" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 25
+text = "Assistance"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 20
+text = "Guides/Highlights"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="None" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("7_6eaik")
+button_pressed = true
+button_group = SubResource("ButtonGroup_q871x")
+text = "None"
+alignment = 1
+
+[node name="Partial" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("7_6eaik")
+button_group = SubResource("ButtonGroup_q871x")
+text = "Partial"
+alignment = 1
+
+[node name="Full" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("7_6eaik")
+button_group = SubResource("ButtonGroup_q871x")
+text = "Full"
+alignment = 1
+
 [connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover" binds= [0]]
 [connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover_exit" binds= [0]]
 [connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_on_checkbutton_toggled" binds= ["american"]]
@@ -552,3 +681,8 @@ max_polyphony = 6
 [connection signal="mouse_entered" from="Cancel" to="." method="_on_cancel_ready_entered" binds= ["Cancel"]]
 [connection signal="mouse_exited" from="Cancel" to="." method="_on_cancel_ready_exited" binds= ["Cancel"]]
 [connection signal="pressed" from="Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="mouse_entered" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover" binds= [7]]
+[connection signal="mouse_exited" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover_exit" binds= [7]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/None" to="." method="_on_guides_pressed" binds= [0]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Partial" to="." method="_on_guides_pressed" binds= [1]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Full" to="." method="_on_guides_pressed" binds= [2]]
