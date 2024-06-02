@@ -41,3 +41,4 @@ pointing/android/enable_long_press_as_right_click=true
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

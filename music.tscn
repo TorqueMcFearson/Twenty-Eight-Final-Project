@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://bcf7dnkwv1co5"]
 
-[ext_resource type="AudioStream" uid="uid://cvkg4itmmny1i" path="res://Assets/SFX & Music/Music/mental-loneliness-SBA-348372222.mp3" id="1_ygusg"]
+[ext_resource type="AudioStream" uid="uid://cf7duikvli3px" path="res://Assets/SFX & Music/Music/Vibing Over Venus.mp3" id="1_u2410"]
 [ext_resource type="Script" path="res://Scripts/music.gd" id="2_3cuy8"]
 
 [node name="Music" type="AudioStreamPlayer"]
 process_mode = 3
-stream = ExtResource("1_ygusg")
+stream = ExtResource("1_u2410")
 volume_db = -20.05
 script = ExtResource("2_3cuy8")
 

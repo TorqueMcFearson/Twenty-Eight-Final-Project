@@ -515,6 +515,7 @@ func play_card(card): # Click cards are moved to their assigned playslot
 		card.get_node("Label").set_rotation_degrees(180)
 	card.go()								# Tweens to playslot's base position (0,0)
 	card.inplay = true						# Set flag in objects variables.
+	card.selected = false
 	card.get_node("shadow").visible = false # Removes shadow (laying flat on table)
 	$SFX/Card_Fwip.play()						# SFX
 	if not player.human:

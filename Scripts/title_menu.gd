@@ -2,15 +2,14 @@ extends Node2D
 
 var fade_goal = Color(1,1,1,0)
 var fade_rate = .01
-var game_start = false
-@onready var main = preload("res://main.tscn")
+var game_start = false 
 
-
+const MAIN = preload("res://main.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$"Control/Black Fade".visible = true
-	$"Control/Black Fade".modulate = Color(1,1,1,.98)
-	
+	#$"Control/Black Fade".modulate = Color(1,1,1,.98)
+	Music.stream = Music.TITLE_MUSIC
+	Music.fade_in(1)
 	pass
 
 
@@ -26,19 +25,11 @@ func _process(delta):
 		set_process(false)
 		if game_start == true:
 			$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
-			get_tree().change_scene_to_packed(main)
+
+			get_tree().change_scene_to_packed(MAIN)
 		else:
 			print('QUITTED')
 			get_tree().quit()
-
-		
-	
-	
-
-
-
-	
-
 
 func _on_new_game_mouse_entered(extra_arg_0):
 	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(0.79, 0.784, 0.427)
@@ -67,7 +58,7 @@ func _on_new_game_pressed():
 	game_start = true
 	set_process(true)
 	await Music.fade_out(.75)
-	Music.stream = load("res://Assets/SFX & Music/Music/trap-story-SBA-346746122.mp3")
+	Music.stream = Music.GAME_MUSIC
 	Music.fade_in(2)
 	pass # Replace with function body.
 

@@ -119,6 +119,14 @@ corner_radius_bottom_left = 7
 process_mode = 1
 script = ExtResource("1_04n5t")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -100
+offset_left = -169.0
+offset_top = -121.0
+offset_right = 1321.0
+offset_bottom = 772.0
+color = Color(1, 0, 0, 1)
+
 [node name="Click Delay" type="Timer" parent="."]
 wait_time = 0.295
 one_shot = true

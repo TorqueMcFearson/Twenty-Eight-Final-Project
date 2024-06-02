@@ -1,5 +1,5 @@
 extends Control
-
+const title_menu = preload("res://title_menu.tscn")
 const DEFAULT = "[color=#d9882b][b]Variant Rules[/b][/color]
 Twenty-Eight has many different houses rules. So customize the ones you are fimilar with or would like to try. Choose carefully as these cannot be changed during the match."
 const american = "[color=#d9882b][b]Filthy American Mode[/b][/color]
@@ -193,7 +193,10 @@ func butt_off():
 
 
 func _on_cancel_pressed():
-	get_tree().change_scene_to_packed(load("res://title_menu.tscn"))
+	Music.fade_out(.75)
+	await get_tree().create_tween().tween_property($"/root/Director/Black Fade","modulate",Color(1,1,1,1),.75).set_ease(Tween.EASE_OUT).finished
+	await get_tree().create_timer(.5).timeout
+	get_tree().change_scene_to_packed(title_menu)
 	pass # Replace with function body.
 
 
