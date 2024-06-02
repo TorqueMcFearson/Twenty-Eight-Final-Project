@@ -644,7 +644,6 @@ func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inp
 	print ('engine timescale: ',Engine.time_scale)
 	if toggled_on:
 		Engine.time_scale = 2.5
-
 	else:
 		Engine.time_scale = 1
 
@@ -697,4 +696,10 @@ func _player_redeal():
 	await timer(.5)
 	get_tree().call_group("Players", "ready_bid")
 
-			
+
+
+func _on_ui_icon_entered(node):
+	var item = $"Pause slot".find_child(node).get_node("Label")
+	item.visible = !item.visible
+
+
