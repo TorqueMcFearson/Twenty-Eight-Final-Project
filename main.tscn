@@ -119,14 +119,6 @@ corner_radius_bottom_left = 7
 process_mode = 1
 script = ExtResource("1_04n5t")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-z_index = -100
-offset_left = -169.0
-offset_top = -121.0
-offset_right = 1321.0
-offset_bottom = 772.0
-color = Color(1, 0, 0, 1)
-
 [node name="Click Delay" type="Timer" parent="."]
 wait_time = 0.295
 one_shot = true
@@ -773,6 +765,9 @@ grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.88, 0.88, 0.88, 1)
 
 [connection signal="mouse_entered" from="Pause slot/Music_Slider" to="." method="_on_ui_icon_entered" binds= ["Music_Slider"]]
 [connection signal="mouse_exited" from="Pause slot/Music_Slider" to="." method="_on_ui_icon_entered" binds= ["Music_Slider"]]

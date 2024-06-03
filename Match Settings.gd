@@ -52,7 +52,7 @@ const speed = "[color=#d9882b][b]Game Speed[/b][/color]
 This setting will determine the speed of the game engine, affecting animations and wait times."
 
 const guides = "[color=#d9882b][b]Guides/Highlights[/b][/color]
-Use this option to enable if the game provides contextual highlights and remainders for trumps, playsuit, bids, points and more.
+This option chooses the level of contextual highlights and remainders for trumps, playsuit, bids, points and more.
 [font_size=17]
 [color=red]None[/color] - Cardtable experience, no tooltips or highlights.
 [color=orange]Partial[/color] - Limited contextual text and tooltip information.
@@ -194,7 +194,7 @@ func butt_off():
 
 func _on_cancel_pressed():
 	Music.fade_out(.75)
-	await get_tree().create_tween().tween_property($"/root/Director/Black Fade","modulate",Color(1,1,1,1),.75).set_ease(Tween.EASE_OUT).finished
+	await get_tree().create_tween().tween_property($"/root/Director/CanvasModulate","color",Color(0,0,0,1),.75).set_ease(Tween.EASE_OUT).finished
 	await get_tree().create_timer(.5).timeout
 	get_tree().change_scene_to_packed(title_menu)
 	pass # Replace with function body.
