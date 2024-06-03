@@ -548,6 +548,7 @@ pitch_scale = 1.1
 max_polyphony = 6
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 0
 offset_left = 168.0
 offset_top = 413.0
 offset_right = 568.0

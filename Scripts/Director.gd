@@ -63,6 +63,7 @@ func _ready():
 	await timer(.55) # Typical pause. For 1 sec.
 	match_settings()
 	await move_on
+	Global.database_constructor()
 	match_start()
 	
 	## Debug tool: Uncomment to activate ## Just prints to console the draw cards in order ##
