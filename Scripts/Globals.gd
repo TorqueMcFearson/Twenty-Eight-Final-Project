@@ -19,7 +19,8 @@ var variant_rules : Dictionary = {
 "final_bet": false, 
 "bet_based_pips": false, 
 "redeal":false, 
-"american" : false}
+"american" : false,
+"pairs" : true}
 
 
 func database_constructor():

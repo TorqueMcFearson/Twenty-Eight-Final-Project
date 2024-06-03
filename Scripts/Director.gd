@@ -210,6 +210,8 @@ func call_bet_window(): # Human betting window called.
 	$"Black Fade".modulate = Color(1, 1, 1, 0)				# Remove 50% black fade.
 	
 func bet_label():
+	if not Global.guides:
+		return
 	$"UI/Bet Node/Bet Label".text = str("Bet:\n",current_bet)
 	if current_better.name in team1:
 		$"UI/Bet Node".modulate = Color.hex(0xff9203c4)
@@ -297,8 +299,29 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 		if card.trump_check():
 			if card.rank > leading_card:
 				leading_card = card.rank
-	pass
+	if Global.variant_rules.pairs:
+		pairs_check()
 
+func pairs_check():
+	var pair_player
+	var matches : int
+	for hand in handpool:
+		var cards = hand.get_children()
+		for card in cards:
+			if card.face in ["Q","K"] and card.suit == trump_suit:
+				matches +=1
+		if matches == 2:
+			pair_player = hand.get_parent()
+		else:
+			matches = 0
+	if pair_player:
+		if pair_player.team == betting_team:
+			current_bet -= 4
+			round_message(str(pair_player.team, " has the Trump King & Queen.\n Increasing bid by 4 points"),1.75)
+		else:
+			current_bet += 4
+			round_message(str(pair_player.team, " has the Trump King & Queen.\n Decreasing bid by 4 points"),1.75)
+		bet_label()
 
 func game_stage(): # A loop of 8 tricks is played.
 	for cards in $Player1/Hand.get_child_count():									# 8 cards per hand, 8 rounds per game.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cxl8scq7xo7cf"]
+[gd_scene load_steps=27 format=3 uid="uid://cxl8scq7xo7cf"]
 
 [ext_resource type="Script" path="res://Match Settings.gd" id="1_3s0mc"]
 [ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="2_gcpqs"]
@@ -9,8 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_5g6f1"]
 [ext_resource type="FontFile" uid="uid://2v7xkqdssjys" path="res://Assets/Fonts/EBGaramond-Italic.ttf" id="5_g0jl7"]
 [ext_resource type="Script" path="res://Scripts/Background.gd" id="6_amuc5"]
-[ext_resource type="FontFile" uid="uid://b2lncg1cpel7s" path="res://Assets/Fonts/Jaro-Regular-VariableFont_opsz.ttf" id="6_viy3r"]
-[ext_resource type="FontFile" uid="uid://kpudc6qj8hyv" path="res://Assets/FlatUI/kenvector_future.ttf" id="7_6eaik"]
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="6_vctq2"]
 [ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="7_a35ii"]
 [ext_resource type="Theme" uid="uid://bfjhhbjxqmnoq" path="res://Assets/Themes and Styleboxes/Check_buttons_theme_resave.tres" id="8_exk8e"]
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="13_43do1"]
@@ -161,9 +160,9 @@ vertical_alignment = 1
 [node name="Margin Container" type="HBoxContainer" parent="."]
 layout_mode = 2
 offset_left = 168.0
-offset_top = 108.0
+offset_top = 128.0
 offset_right = 984.0
-offset_bottom = 558.0
+offset_bottom = 538.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -171,7 +170,7 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 
 [node name="PanelContainer3" type="PanelContainer" parent="Margin Container"]
-custom_minimum_size = Vector2(400, 305)
+custom_minimum_size = Vector2(400, 273)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -188,8 +187,8 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/normal_font = ExtResource("3_c1oab")
 theme_override_fonts/bold_font = ExtResource("4_41f7w")
 theme_override_fonts/italics_font = ExtResource("5_g0jl7")
-theme_override_font_sizes/normal_font_size = 18
-theme_override_font_sizes/bold_font_size = 19
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="Margin Container"]
@@ -213,7 +212,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 25
 text = "Rule Settings"
 horizontal_alignment = 1
@@ -230,7 +229,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
-theme_override_fonts/font = ExtResource("6_viy3r")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 text = "Filthy American Mode"
 
@@ -241,6 +240,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
 text = "Variant Rules"
 
 [node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -253,7 +253,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
-theme_override_fonts/font = ExtResource("6_viy3r")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
 text = "    First-Hand Redeal"
@@ -265,7 +265,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
-theme_override_fonts/font = ExtResource("6_viy3r")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
 text = "    Partner Bid Minimum"
@@ -277,7 +277,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
-theme_override_fonts/font = ExtResource("6_viy3r")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
 text = "    Bet-Based Pips"
@@ -289,7 +289,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
-theme_override_fonts/font = ExtResource("6_viy3r")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
 text = "         Post-Trump Bid"
@@ -308,7 +308,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 25
 text = "System settings"
 horizontal_alignment = 1
@@ -330,7 +330,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 20
 text = "AI Difficulty"
 horizontal_alignment = 1
@@ -347,7 +347,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_pressed = true
 button_group = SubResource("ButtonGroup_op8ei")
 text = "Easy"
@@ -361,7 +361,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_op8ei")
 text = "Normal"
 alignment = 1
@@ -374,7 +374,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_op8ei")
 text = "Hard"
 alignment = 1
@@ -396,7 +396,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 20
 text = "Game Speed"
 horizontal_alignment = 1
@@ -411,7 +411,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("4_5k4uv")
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_pressed = true
 button_group = SubResource("ButtonGroup_s8ymg")
 text = "Normal"
@@ -423,7 +423,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("4_5k4uv")
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_s8ymg")
 text = "Fast"
 alignment = 1
@@ -434,7 +434,7 @@ size_flags_horizontal = 10
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("4_5k4uv")
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_s8ymg")
 text = "Fastest"
 alignment = 1
@@ -550,9 +550,9 @@ max_polyphony = 6
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0
 offset_left = 168.0
-offset_top = 413.0
+offset_top = 401.0
 offset_right = 568.0
-offset_bottom = 558.0
+offset_bottom = 538.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_m4g46")
 
@@ -577,7 +577,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 25
 text = "Assistance"
 horizontal_alignment = 1
@@ -599,7 +599,7 @@ theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
 theme_override_constants/shadow_offset_x = -3
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 20
 text = "Guides/Highlights"
 horizontal_alignment = 1
@@ -616,7 +616,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_pressed = true
 button_group = SubResource("ButtonGroup_q871x")
 text = "None"
@@ -630,7 +630,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_q871x")
 text = "Partial"
 alignment = 1
@@ -643,7 +643,7 @@ mouse_filter = 1
 theme = ExtResource("4_5k4uv")
 theme_override_constants/h_separation = 15
 theme_override_constants/check_v_offset = 0
-theme_override_fonts/font = ExtResource("7_6eaik")
+theme_override_fonts/font = ExtResource("6_vctq2")
 button_group = SubResource("ButtonGroup_q871x")
 text = "Full"
 alignment = 1

@@ -538,7 +538,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
 mouse_filter = 1
-color = Color(0, 0, 0, 0.501961)
+color = Color(0.1959, 0.310578, 0.361434, 0.780392)
 metadata/_edit_lock_ = true
 
 [node name="Music_Slider" parent="Pause slot" instance=ExtResource("11_exjj8")]
