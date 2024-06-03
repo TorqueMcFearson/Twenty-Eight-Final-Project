@@ -300,31 +300,34 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 			if card.rank > leading_card:
 				leading_card = card.rank
 	if Global.variant_rules.pairs:
-		pairs_check()
+		await pairs_check()
 
 func pairs_check():
+	await timer(.75)
 	var pair_player
-	var matches : int
+	var pair = []
 	for hand in handpool:
 		var cards = hand.get_children()
 		for card in cards:
 			if card.face in ["Q","K"] and card.suit == trump_suit:
-				matches +=1
+				pair.append(card.face)
 				print(hand.get_parent()," found pair: ",card.face,card.suit)
-		if matches == 2:
+		if pair.size() == 2:
 			pair_player = hand.get_parent()
 			break
 		else:
-			matches = 0
+			pair.clear()
 	if pair_player:
+		for each in pair:
+			each.face_up() #####################################STOPPED HERE.
 		if pair_player.team == betting_team:
 			current_bet -= 4
-			round_message(str(pair_player.team, " has the Trump King & Queen.\n Decreasing bid by 4 points"),1.75)
+			round_message(str(pair_player.team, " has the pair.\n Decreasing bid by 4 points"),2.5)
 			print(pair_player.team, betting_team)
 		else:
 			current_bet += 4
 			print(pair_player.team, betting_team)
-			round_message(str(pair_player.team, " has the Trump King & Queen.\n Increasing bid by 4 points"),1.75)
+			round_message(str(pair_player.team, " has the Pair.\n Increasing bid by 4 points"),1.75)
 		bet_label()
 
 func game_stage(): # A loop of 8 tricks is played.
