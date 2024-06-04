@@ -93,7 +93,7 @@ func go():
 func go_and_die():
 	tweening = true
 	get_tree().create_tween().tween_property(self,'global_rotation',0,.45)\
-			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE).finished
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
 			
 	await get_tree().create_tween().tween_property(self,'global_position',Vector2(531,237),.45)\
 			.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).finished

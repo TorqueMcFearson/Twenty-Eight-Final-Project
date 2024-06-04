@@ -267,7 +267,7 @@ func trump_stage():
 		trump_sprite.position.x = -468
 		get_tree().create_tween().tween_property(trump_sprite,'scale',Vector2(1.5,1.5),.35).set_ease(Tween.EASE_IN)
 		var tween2 = get_tree().create_tween()
-		await tween2.tween_property(trump_sprite,'position',Vector2(-509,185),.75)\
+		tween2.tween_property(trump_sprite,'position',Vector2(-509,185),.75)\
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_SPRING)
 		await timer(2.25)
@@ -333,7 +333,8 @@ func pairs_check():
 			round_message(str(pair_player.team, " has the Pair.\n Increasing bid by 4 points"),2.5)
 		await timer(3.5)
 		for each in pair:
-			each.face_down()
+			if not pair_player.human:
+				each.face_down()
 			each.position.y = 0
 		bet_label()
 
@@ -412,7 +413,6 @@ func pip_update():
 	for n in pip_change:
 		await timer(.45)
 		$SFX/Pip_Pop.play()
-		var node = get_node(betting_team)
 		if betting_team == "Team 1":
 			if bet_won:
 				team1_pips +=1
@@ -531,7 +531,7 @@ func draw_card(hand):
 	var j = sort_hand(children,new_card)
 	hand.add_child(new_card)				# Add card object to scene under requesting hand.
 	new_card.global_position = $DrawDeck.global_position - Vector2(-64,-64) # position center of draw deck
-	var tween = new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
+	new_card.grow_and_go() # Tween animations of scale-up and move-to stored position in hand.
 	for each in children:		# For each card still in hand
 		each.go()							# Tween them there.
 	$SFX/Card_Fwip.play(.11)		# Card SFX
@@ -548,7 +548,6 @@ func play_card(card): # Click cards are moved to their assigned playslot
 	var playslot = player.get_node("Playslot")  # store playslot object
 	if playslot.get_child_count():				# If playslot has card, cancel function.
 		return
-	var hand = card.get_parent()				# store hand object
 	var slot = Vector2(0,0)					# stores a base position.
 	card.slot = slot						# Updates the card's variable for upcoming tween.
 	card.reparent(playslot)					# Moves card object from hand to playslot

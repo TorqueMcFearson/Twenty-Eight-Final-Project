@@ -99,7 +99,7 @@ func _ready():
 	$Card_PopUp.play()
 	var tween = create_tween()
 	tween.tween_property(self,"position",Vector2(0,0),0.42).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
-	var tween2 = get_tree().create_tween().tween_property(self,"modulate", Color(1,1,1,1),.42).set_ease(Tween.EASE_IN)
+	get_tree().create_tween().tween_property(self,"modulate", Color(1,1,1,1),.42).set_ease(Tween.EASE_IN)
 	var rules = ["partner_bid","bet_based_pips","final_bet","redeal","pair"]
 	var i = 0
 	traditional_button.set_pressed(Global.variant_rules.traditional)
@@ -143,7 +143,7 @@ func _rule_hover(rule):
 		$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/Label".modulate = Color(0.85000002384186, 0.53266668319702, 0.17000000178814)
 	pass # Replace with function body.
 
-func _rule_hover_exit(rule):
+func _rule_hover_exit(_rule):
 		#$"Margin Container/PanelContainer3/Rule Text".text = ""
 		$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/Label".modulate = Color(1,1,1)
 		$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/Label".modulate = Color(1,1,1)
@@ -184,13 +184,13 @@ func _on_difficulty_button(value):
 	Global.difficulty = value # Replace with function body.
 
 
-func _on_game_speed(speed):
-	Global.game_speed = speed
-	Engine.time_scale = speed
+func _on_game_speed(speed_set):
+	Global.game_speed = speed_set
+	Engine.time_scale = speed_set
 	pass # Replace with function body.
 
-func _on_guides_pressed(value: int):
-	Global.guides = value # Replace with function body.
+func _on_guides_pressed(value):
+	Global.guides = Global.get(value)  # Replace with function body.
 	print(Global.guides)
 	pass # Replace with function body.
 
@@ -199,7 +199,7 @@ func _on_ready_pressed():
 	$Card_PopUp.play()
 	var tween = create_tween()
 	tween.tween_property(self,"position",Vector2(0,-600),0.42).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
-	var tween2 = create_tween().tween_property(self,"modulate", Color(1,1,1,0.12),.42).set_ease(Tween.EASE_IN)
+	create_tween().tween_property(self,"modulate", Color(1,1,1,0.12),.42).set_ease(Tween.EASE_IN)
 	$/root/Director.emit_signal("move_on")
 	tween.tween_callback(self.queue_free)
 	
