@@ -300,10 +300,11 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 		if card.trump_check():
 			if card.rank > leading_card:
 				leading_card = card.rank
-	if Global.variant_rules.pairs:
+	if Global.variant_rules.pair:
 		pair_flag = true
 
 func pairs_check():
+	await timer(.25)
 	var pair_player
 	var pair = []
 	for hand in handpool:

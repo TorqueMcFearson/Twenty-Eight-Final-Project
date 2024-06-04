@@ -19,7 +19,7 @@ var variant_rules : Dictionary = {
 "final_bet": true, 
 "bet_based_pips": true, 
 "redeal":true, 
-"american" : true,
+"american" : false,
 "pair" : true}
 
 

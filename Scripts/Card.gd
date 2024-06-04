@@ -139,13 +139,12 @@ func face_up():
 	var cardasssemble = "res://Assets/Cards/PNG/Cards/card" + suit + face + ".png"
 	get_node("CardBack").texture = load(cardasssemble)
 	face_show = true
-	
-	pass
+
 	
 	
 func trump_check():
 	if suit == Director.trump_suit and Director.trump_revealed:
-		if face_up and Global.guides == 2:
+		if face_show and Global.guides == 2:
 			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
 			$CardBack/Panel.visible = false
 		if rank <99:

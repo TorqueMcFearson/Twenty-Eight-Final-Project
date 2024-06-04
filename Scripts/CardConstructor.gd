@@ -18,6 +18,6 @@ func newcard(id,face_show):
 	var props = Global.cards.get(id)  	# Uses ID to retrieve cards props from the database
 	for prop in props:						# Applies each property to the card in a for loop
 		new_card[prop] = props[prop]
-	new_card.face_show = true#face_show 		# Applies face_show up or down from the pass-through.
+	new_card.face_show = face_show 		# Applies face_show up or down from the pass-through.
 	return new_card 						# Sends the card to the Director.
 	

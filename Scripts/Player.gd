@@ -157,7 +157,7 @@ func play_turn():
 			var playable_trump = playable_cards.filter(func(x): return (x.trump and x.rank > Director.leading_card))
 			if playable_trump.is_empty():
 				print("Has trump but can't beat. Playing worst trash card.")
-				card = playable_cards.filter(func(x): return (not x.trump))
+				card = playable_cards.filter(func(x): return (not x.trump)).front()
 			else:
 				print("Has trump and can beat. Playing best trump card.")
 				card = playable_trump.back()
