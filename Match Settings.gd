@@ -1,12 +1,12 @@
 extends Control
 const title_menu = preload("res://title_menu.tscn")
 
-const DEFAULT = "[color=#d9882b][font_size=17][b]Variant Rules[/b][/font_size][/color]
+const DEFAULT = "[color=#d9882b][font_size=17][b]Customize Rules[/b][/font_size][/color]
 Twenty-Eight has many different houses rules. So customize the ones you are fimilar with or would like to try. Choose carefully as these cannot be changed during the match."
 
 
 const american = "[color=#d9882b][font_size=17][b]Filthy American Mode[/b][/font_size][/color]
-This changes the order of value and rank of each card to resemble something that is more fimilar in american card games.
+This reorganizes the value and rank of each card to resemble something that is more fimilar in american card games.
 [font_size=17]
 American ranks: 7-8-9-10-J-Q-K-A
 Traditional ranks: 7-8-Q-K-10-A-9-J[/font_size]
@@ -62,14 +62,22 @@ This option chooses the level of contextual highlights and remainders for trumps
 [color=orange]Partial[/color] - Limited contextual text and tooltip information.
 [color=green]Full[/color] - Game experience Full card highlighting and tooltips[/font_size]"
 
-enum {AMERICAN,PARTNER_BID,FINAL_BET,BET_PIPS,REDEAL,DIFFICULTY,SPEED,GUIDES}
+const pair = "[color=#d9882b][font_size=17][b]Trump Pair[/b][/font_size][/color]
+This rule applies when a player has both the king and queen that matches the trump suit. It occurs at the end of the round that the trump was revealed in. If the player with the pair is on the bidding team, the bid is lowered by 4 points, otherwise the bid is raised by 4 points.
+[font_size=17]
+[color=red]None[/color] - Cardtable experience, no tooltips or highlights.
+[color=orange]Partial[/color] - Limited contextual text and tooltip information.
+[color=green]Full[/color] - Game experience Full card highlighting and tooltips[/font_size]"
+
+enum {AMERICAN,PARTNER_BID,FINAL_BET,BET_PIPS,REDEAL,DIFFICULTY,SPEED,GUIDES,PAIR}
 # Called when the node enters the scene tree for the first time.
 @onready var american_button = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American"
-@onready var traditional_button =$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules"
+@onready var traditional_button = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules"
 @onready var partner_button =$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid"
 @onready var final_button =$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet"
 @onready var pips_button = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips"
 @onready var redeal_button =$"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal"
+@onready var trump_pair = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair"
 @onready var easy = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy"
 @onready var normal = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal"
 @onready var hard = $"Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard"
@@ -80,7 +88,7 @@ enum {AMERICAN,PARTNER_BID,FINAL_BET,BET_PIPS,REDEAL,DIFFICULTY,SPEED,GUIDES}
 @onready var partial = $PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Partial
 @onready var full = $PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Full
 
-@onready var button_group = [pips_button,final_button,partner_button,redeal_button]
+@onready var button_group = [partner_button,pips_button,final_button,redeal_button,trump_pair]
 @onready var difficulty_group = [easy,normal,hard]
 @onready var guide_group = [none,partial,full]
 @onready var speed_group = [medium,fast,fastest]
@@ -92,11 +100,14 @@ func _ready():
 	var tween = create_tween()
 	tween.tween_property(self,"position",Vector2(0,0),0.42).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	var tween2 = get_tree().create_tween().tween_property(self,"modulate", Color(1,1,1,1),.42).set_ease(Tween.EASE_IN)
-	var rules = ["bet_based_pips","final_bet","partner_bid","redeal"]
+	var rules = ["partner_bid","bet_based_pips","final_bet","redeal","pair"]
 	var i = 0
 	traditional_button.set_pressed(Global.variant_rules.traditional)
+	american_button.set_pressed_no_signal(Global.variant_rules.american)
 	for each in button_group:
-		each.set_pressed(Global.variant_rules[rules[i]])
+		if Global.variant_rules.traditional:
+			each.disabled = false
+		each.set_pressed_no_signal(Global.variant_rules[rules[i]])
 		i+=1
 	difficulty_group[Global.difficulty].set_pressed(true)
 	print(difficulty_group[Global.difficulty].is_pressed())
@@ -122,6 +133,8 @@ func _rule_hover(rule):
 			$"Margin Container/PanelContainer3/Rule Text".text = speed
 		GUIDES:#7
 			$"Margin Container/PanelContainer3/Rule Text".text = guides
+		PAIR:#8
+			$"Margin Container/PanelContainer3/Rule Text".text = pair
 		-1:
 			$"Margin Container/PanelContainer3/Rule Text".text = DEFAULT
 	if rule == DIFFICULTY:
@@ -155,15 +168,16 @@ func _on_checkbutton_toggled(toggled_on, rule):
 
 
 func _on_traditional_rules_toggled(toggled_on):
-	print("Traditional Button Fired")
-	for each in button_group:
-		each.disabled = !toggled_on
-		each.set_pressed(false)
-	final_button.disabled = true
+	print("Traditional Button Fired now: ", toggled_on)
+	if toggled_on:
+		for each in button_group:
+			each.disabled = false
+	else:
+		for each in button_group:
+			each.set_pressed(true)
+			each.disabled = true
 	Global.variant_rules.traditional = toggled_on
-	#for each in Global.variant_rules.keys():
-		#Global.variant_rules[each] = false
-		#print(Global.variant_rules[each])
+
 
 
 func _on_difficulty_button(value):

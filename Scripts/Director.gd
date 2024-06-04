@@ -30,6 +30,7 @@ var team_points = 0
 var bet_won : bool
 var leading_card = 0
 var pip_change = 1
+var pair_flag = false
 
 # The Trick Data
 var trick_suit : String
@@ -300,17 +301,16 @@ func trump_reveal(): # TODO trump face_up if player wins or revealed during play
 			if card.rank > leading_card:
 				leading_card = card.rank
 	if Global.variant_rules.pairs:
-		await pairs_check()
+		pair_flag = true
 
 func pairs_check():
-	await timer(.75)
 	var pair_player
 	var pair = []
 	for hand in handpool:
 		var cards = hand.get_children()
 		for card in cards:
 			if card.face in ["Q","K"] and card.suit == trump_suit:
-				pair.append(card.face)
+				pair.append(card)
 				print(hand.get_parent()," found pair: ",card.face,card.suit)
 		if pair.size() == 2:
 			pair_player = hand.get_parent()
@@ -319,7 +319,9 @@ func pairs_check():
 			pair.clear()
 	if pair_player:
 		for each in pair:
-			each.face_up() #####################################STOPPED HERE.
+			each.face_up()
+			each.position.y = -20
+		await timer(.5)
 		if pair_player.team == betting_team:
 			current_bet -= 4
 			round_message(str(pair_player.team, " has the pair.\n Decreasing bid by 4 points"),2.5)
@@ -327,7 +329,11 @@ func pairs_check():
 		else:
 			current_bet += 4
 			print(pair_player.team, betting_team)
-			round_message(str(pair_player.team, " has the Pair.\n Increasing bid by 4 points"),1.75)
+			round_message(str(pair_player.team, " has the Pair.\n Increasing bid by 4 points"),2.5)
+		await timer(3.5)
+		for each in pair:
+			each.face_down()
+			each.position.y = 0
 		bet_label()
 
 func game_stage(): # A loop of 8 tricks is played.
@@ -488,6 +494,9 @@ func play_trick():
 	dealer = trick_winner[0]
 	trick_winner = ["null",0]
 	leading_card = 0
+	if pair_flag:
+		await timer(1)
+		await pairs_check()
 	await timer(1)
 
 

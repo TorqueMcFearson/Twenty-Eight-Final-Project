@@ -24,6 +24,7 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqoo"]
+content_margin_top = 15.0
 bg_color = Color(0.5, 0.46, 0.485333, 0.203922)
 draw_center = false
 corner_radius_top_left = 30
@@ -37,8 +38,8 @@ content_margin_top = 15.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.266667)
-border_width_left = 8
-border_width_top = 8
+border_width_left = 16
+border_width_top = 16
 border_width_right = 16
 border_width_bottom = 8
 border_color = Color(0, 0, 0, 0.415686)
@@ -170,7 +171,7 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 
 [node name="PanelContainer3" type="PanelContainer" parent="Margin Container"]
-custom_minimum_size = Vector2(400, 273)
+custom_minimum_size = Vector2(400, 299)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -241,7 +242,8 @@ size_flags_vertical = 0
 size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
-text = "Variant Rules"
+button_pressed = true
+text = "Customize Rules"
 
 [node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -256,7 +258,21 @@ theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
+button_pressed = true
 text = "    First-Hand Redeal"
+
+[node name="Trump Pair" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "    Trump Pair"
 
 [node name="Partner Overbid" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 0)
@@ -268,6 +284,7 @@ theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
+button_pressed = true
 text = "    Partner Bid Minimum"
 
 [node name="Bet Based Pips" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -280,6 +297,7 @@ theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
+button_pressed = true
 text = "    Bet-Based Pips"
 
 [node name="Final Bet" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
@@ -292,6 +310,7 @@ theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
 disabled = true
+button_pressed = true
 text = "         Post-Trump Bid"
 
 [node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
@@ -470,10 +489,10 @@ metadata/_edit_lock_ = true
 [node name="Ready" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0.733333)
 layout_mode = 0
-offset_left = 893.0
-offset_top = 63.0
-offset_right = 1133.0
-offset_bottom = 144.0
+offset_left = 886.0
+offset_top = 72.0
+offset_right = 1126.0
+offset_bottom = 153.0
 scale = Vector2(0.4, 0.4)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -507,10 +526,10 @@ uppercase = true
 [node name="Cancel" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0.733333)
 layout_mode = 0
-offset_left = 152.0
-offset_top = 63.0
-offset_right = 392.0
-offset_bottom = 144.0
+offset_left = 168.0
+offset_top = 72.0
+offset_right = 408.0
+offset_bottom = 153.0
 scale = Vector2(0.4, 0.4)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -550,9 +569,9 @@ max_polyphony = 6
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0
 offset_left = 168.0
-offset_top = 401.0
+offset_top = 414.0
 offset_right = 568.0
-offset_bottom = 538.0
+offset_bottom = 551.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_m4g46")
 
@@ -657,6 +676,9 @@ alignment = 1
 [connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_rule_hover" binds= [4]]
 [connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_rule_hover_exit" binds= [2]]
 [connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_on_checkbutton_toggled" binds= ["redeal"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_rule_hover" binds= [8]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_rule_hover_exit" binds= [8]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_on_checkbutton_toggled" binds= ["pair"]]
 [connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover" binds= [1]]
 [connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover_exit" binds= [1]]
 [connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_on_checkbutton_toggled" binds= ["partner_bid"]]

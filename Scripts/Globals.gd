@@ -15,12 +15,12 @@ var difficulty = NORMAL
 var guides := FULL
 var variant_rules : Dictionary = {
 "traditional" : false, 
-"partner_bid": false, 
-"final_bet": false, 
-"bet_based_pips": false, 
-"redeal":false, 
-"american" : false,
-"pairs" : true}
+"partner_bid": true, 
+"final_bet": true, 
+"bet_based_pips": true, 
+"redeal":true, 
+"american" : true,
+"pair" : true}
 
 
 func database_constructor():
