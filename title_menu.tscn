@@ -33,6 +33,7 @@ script = ExtResource("1_65ybi")
 stream = ExtResource("2_7mfm6")
 volume_db = -17.542
 pitch_scale = 0.42
+bus = &"Sfx"
 script = SubResource("GDScript_3l07d")
 
 [node name="Background" type="Sprite2D" parent="."]

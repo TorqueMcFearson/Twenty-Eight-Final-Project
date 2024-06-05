@@ -107,6 +107,7 @@ metadata/_edit_lock_ = true
 stream = ExtResource("1_aqtn3")
 volume_db = -17.542
 pitch_scale = 0.42
+bus = &"Sfx"
 
 [node name="Current Bet" type="Panel" parent="."]
 modulate = Color(0.86, 0.86, 0.86, 0.976471)

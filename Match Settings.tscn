@@ -1,6 +1,6 @@
 [gd_scene load_steps=27 format=3 uid="uid://cxl8scq7xo7cf"]
 
-[ext_resource type="Script" path="res://Match Settings.gd" id="1_3s0mc"]
+[ext_resource type="Script" path="res://Scripts/Match Settings.gd" id="1_3s0mc"]
 [ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="2_gcpqs"]
 [ext_resource type="FontFile" uid="uid://cakwfk05xxfvj" path="res://Assets/Fonts/EBGaramond-VariableFont_wght.ttf" id="3_c1oab"]
 [ext_resource type="Theme" uid="uid://ohqo0pv8my16" path="res://Assets/Themes and Styleboxes/Radial Buttons.tres" id="4_5k4uv"]
@@ -565,6 +565,7 @@ stream = ExtResource("15_mfbox")
 volume_db = -15.646
 pitch_scale = 1.1
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0

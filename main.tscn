@@ -134,41 +134,48 @@ stream = ExtResource("2_7opyx")
 volume_db = -11.085
 pitch_scale = 0.69
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Ding" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("4_uix57")
 volume_db = -15.139
 pitch_scale = 0.69
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Whiff" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("5_xsm04")
 volume_db = -10.753
 pitch_scale = 0.62
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Shuffle" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("3_t5s6t")
 volume_db = -11.085
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_PopUp" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("7_sblwi")
 volume_db = -15.646
 pitch_scale = 1.1
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Pip_Pop" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("8_t1p8p")
 volume_db = -11.26
 pitch_scale = 0.34
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Match Win Lose" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("9_2a7v3")
 volume_db = -11.26
 pitch_scale = 0.34
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
 modulate = Color(0.74, 0.74, 0.74, 1)
