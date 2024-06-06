@@ -100,6 +100,11 @@ func _ready():
 	var tween = create_tween()
 	tween.tween_property(self,"position",Vector2(0,0),0.42).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	get_tree().create_tween().tween_property(self,"modulate", Color(1,1,1,1),.42).set_ease(Tween.EASE_IN)
+	init_rules()
+	init_options()
+
+
+func init_rules():
 	var rules = ["partner_bid","bet_based_pips","final_bet","redeal","pair"]
 	var i = 0
 	traditional_button.set_pressed(Global.variant_rules.traditional)
@@ -109,6 +114,10 @@ func _ready():
 			each.disabled = false
 		each.set_pressed_no_signal(Global.variant_rules[rules[i]])
 		i+=1
+	
+	
+func init_options():
+	print("Option Init")
 	difficulty_group[Global.difficulty].set_pressed(true)
 	print(difficulty_group[Global.difficulty].is_pressed())
 	speed_group[((Global.game_speed-1)*2)].set_pressed(true)

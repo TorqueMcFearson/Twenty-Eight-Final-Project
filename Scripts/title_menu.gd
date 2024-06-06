@@ -72,6 +72,5 @@ func butts_off():
 func _on_setting_pressed():
 	$"CanvasLayer/Pause Menu".visible = true
 	$"CanvasLayer/Pause Menu/Pause Node".visible = false
-	await get_tree().create_timer(.1)
 	$"CanvasLayer/Pause Menu"._on_game_options_pressed()
 	pass # Replace with function body.

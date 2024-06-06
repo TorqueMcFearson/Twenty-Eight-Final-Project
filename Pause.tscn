@@ -21,6 +21,10 @@ var music_paused
 var title_menu = \"res://title_menu.tscn\"
 var main = \"res://main.tscn\"
 var previous_settings = {}
+var guide_change := false:
+	set(value):
+		guide_change = value
+		print(\"guide_change: \",\"on\" if guide_change else \"off\")
 @onready var easy = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy\"
 @onready var normal = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal\"
 @onready var hard = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard\"
@@ -43,6 +47,8 @@ var previous_settings = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	for each in [master,music,sfx]:
+		each.ready_up()
 	pass #
 
 
@@ -85,6 +91,15 @@ func pause_game():
 		get_tree().paused = false
 		visible = false
 		print('resumed')
+		if get_tree().current_scene.name == \"Director\":
+			if guide_change: 
+				$/root/Director.guides_changed()
+				guide_change = false
+			var setting_window = $\"/root/Director/PopUp\".get_node_or_null(\"Match Settings\")
+			if setting_window:
+				setting_window.init_options()
+			else:
+				print(\"Match settings not found.\")
 	paused = !paused
 	
 ################################ PAUSE MENU AREA ################################
@@ -107,8 +122,7 @@ func _on_quit_to_desktop_pressed():
 
 
 func _on_game_options_pressed():
-	for each in [master,music,sfx]:
-		each.ready_up()
+	await get_tree().create_timer(.25,true)
 	swap_menu()
 	pass #
 
@@ -120,6 +134,7 @@ func swap_menu():
 	tween.tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38)\\
 			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
 	tween.tween_callback(func():Global.tweening = null)
+	tween.tween_callback(_ready)
 	Global.tweening = tween
 	
 func swap_menu_back():
@@ -169,12 +184,6 @@ func _on_cancel_pressed():
 func _on_accept_pressed():
 	swap_menu_back()
 
-	
-
-
-
-
-
 
 func _on_game_speed(speed_set):
 	Global.game_speed = speed_set
@@ -182,7 +191,8 @@ func _on_game_speed(speed_set):
 	pass #
 
 func _on_guides_pressed(value):
-	Global.guides = Global.get(value)  #
+	Global.guides = Global.get(value)
+	guide_change = true  #
 	pass #
 
 func _on_difficulty_pressed(value):

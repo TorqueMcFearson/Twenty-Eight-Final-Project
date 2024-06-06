@@ -206,7 +206,6 @@ func _on_reference_rect_gui_input(event): # A click event
 
 
 func enable_card():
-	
 	disabled = false
 	if Global.guides:
 		modulate = Color(1,1,1)

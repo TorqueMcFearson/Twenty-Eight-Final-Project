@@ -704,7 +704,7 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 	pass # Replace with function body
 
 
-func _on_texture_button_2_toggled(toggled_on): # Speeds up game-rate for dev inpatience.
+func _on_texture_button_2_toggled(): # Speeds up game-rate for dev inpatience.
 	if toggled_on:
 		Engine.time_scale = 2
 		$"Pause slot/TextureButton2/Label".text = "Fastest"
@@ -754,10 +754,24 @@ func _player_redeal():
 	get_tree().call_group("Players", "ready_bid")
 
 
-
 func _on_ui_icon_entered(node):
 	var item = $"Pause slot".find_child(node).get_node("Label")
 	item.visible = !item.visible
 	$"Pause slot/TextureButton2/Label".text = "Game\nSpeed"
 
 
+func guides_changed():
+	if Global.guides == Global.FULL:
+		var hand = $"Player1/Hand".get_children()
+		for card in hand:	#@TEST for trump outline mechanic. 
+			card.trump_check()					# Enable to highlight trumps when player wins
+		for playslot in get_tree().get_nodes_in_group("Playslots"):
+			var card = playslot.get_child(0)
+			if not card:
+				continue
+			card.trump_check()
+		if trump_revealed:
+			var assemble = str("res://Assets/Cards/PNG/Cards/",trump_suit,"_trump.png")
+			$"UI/Trump Card/Trump Sprite".texture = load(assemble)
+	if not Global.guides >= Global.PARTIAL:
+		bet_label()
