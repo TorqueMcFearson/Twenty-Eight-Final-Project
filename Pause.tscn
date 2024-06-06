@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cekuxfe6x47bw"]
+[gd_scene load_steps=31 format=3 uid="uid://cekuxfe6x47bw"]
 
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bwh40"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_a1wts"]
@@ -71,7 +71,7 @@ func pause_game():
 	var pause_menu = $\".\"
 	if not paused:
 		music_paused = Music.stream_paused
-		Music.stream_paused = true
+		#Music.stream_paused = true
 		dark.visible = true
 		pause_menu.visible = true
 		#Engine.time_scale = 0
@@ -149,16 +149,17 @@ func init_menu():
 
 ################################ GAME OPTIONS AREA ################################
 func _on_cancel_pressed():
-	
+	print(\"current master level:\", AudioServer.get_bus_volume_db(0))
 	if not $\"Game Settings Node\".position.x < 0:
 		return
 	var i = 0
 	for each in ['Master','Music','Sfx']:
-		AudioServer.set_bus_volume_db(previous_settings[each],i) 
+		AudioServer.set_bus_volume_db(i,previous_settings[each]) 
+		print(each, ': ',AudioServer.get_bus_volume_db(i))
+		print(previous_settings[each])
 		i +=1
 	for each in ['difficulty','game_speed','guides']:
 		Global.set(each,previous_settings[each])
-		print(Global.get(each))
 	Engine.time_scale = Global.game_speed
 	swap_menu_back() #
 
@@ -167,11 +168,7 @@ func _on_cancel_pressed():
 		
 func _on_accept_pressed():
 	swap_menu_back()
-	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	var tween :Tween = create_tween()
-	tween.tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) 
-	if get_tree().current_scene.name == \"Title Menu\":
-		tween.tween_callback(func():set_visible(false))
+
 	
 
 
@@ -352,14 +349,14 @@ func _on_value_changed(value):
 
 
 func _on_drag_started():
-	if name == \"Master\" or name == \"Music\":
-		Music.stream_paused = false
-
+	#if name == \"Master\" or name == \"Music\":
+		#Music.stream_paused = false
+	pass
 		
 
 func _on_drag_ended(value_changed):
-	if name == \"Master\" or name == \"Music\":
-		Music.stream_paused = true
+	#if name == \"Master\" or name == \"Music\":
+		#Music.stream_paused = true
 	pass # Replace with function body.
 "
 
@@ -375,6 +372,12 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
+
+[sub_resource type="InputEventKey" id="InputEventKey_13b1j"]
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_j1eol"]
+events = [SubResource("InputEventKey_13b1j")]
 
 [node name="Pause Menu" type="Control"]
 process_mode = 3
@@ -403,6 +406,7 @@ color = Color(0.160784, 0.168627, 0.2, 0.666667)
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
 process_mode = 3
+visible = false
 modulate = Color(0.74, 0.74, 0.74, 1)
 z_index = -2
 position = Vector2(579, 326)
@@ -1008,6 +1012,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("4_f73an")
 theme_type_variation = &"FlatButton"
+shortcut = SubResource("Shortcut_j1eol")
 
 [node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Ready"]
 process_mode = 3
