@@ -284,8 +284,10 @@ func trump_stage():
 		tween2.tween_property(trump_sprite,'position',Vector2(-509,185),.75)\
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_SPRING)
-		await timer(2.25)
+		tween2.tween_callback(func():$"UI/Trump Card/Trump Sprite/Memorize".visible = true)
+		await timer(2.75)
 		trump_sprite.texture = load("res://Assets/Cards/PNG/Cards/cardBack_red4.png")
+		$"UI/Trump Card/Trump Sprite/Memorize".visible = false
 		await timer(.5)
 	var tween= get_tree().create_tween() 				# Slides trump card in. TODO:(AI:Face down, Human:Face up.)
 	tween.tween_property(trump_sprite,'position',Vector2(0,0),.75)\

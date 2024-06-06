@@ -240,6 +240,23 @@ texture = ExtResource("13_r0gnh")
 centered = false
 offset = Vector2(12, 10)
 
+[node name="Memorize" type="Label" parent="UI/Trump Card/Trump Sprite"]
+process_mode = 1
+visible = false
+anchors_preset = -1
+anchor_left = -0.317076
+anchor_top = -1.87794
+anchor_right = 0.329265
+anchor_bottom = -1.87794
+offset_left = -7.60983
+offset_top = 556.808
+offset_right = 156.39
+offset_bottom = 630.808
+theme = ExtResource("15_3otkc")
+text = "Memorize This Suit"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Label" type="Label" parent="UI/Trump Card"]
 process_mode = 1
 layout_mode = 0
