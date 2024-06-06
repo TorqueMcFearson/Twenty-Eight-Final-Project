@@ -705,9 +705,10 @@ func _on_deal_one_card_pressed(): # Deal 1 card button. _on_deal_all_pressed()
 
 
 func _on_texture_button_2_toggled(): # Speeds up game-rate for dev inpatience.
-	if toggled_on:
-		Engine.time_scale = 2
+	Engine.time_scale +=.5 if Engine.time_scale <2 else -1
+	if Engine.time_scale == 2:
 		$"Pause slot/TextureButton2/Label".text = "Fastest"
+		$"Pause slot/TextureButton2".texture = load("res://Assets/HyperCasual Game UI/SuperNextButton.png")
 	else:
 		Engine.time_scale = 1
 		$"Pause slot/TextureButton2/Label".text = "Normal"
