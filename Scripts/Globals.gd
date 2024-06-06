@@ -13,6 +13,7 @@ var cards_playable = false
 var game_speed : float = 1
 var difficulty = NORMAL
 var guides := FULL
+var tweening : Tween
 var variant_rules : Dictionary = {
 "traditional" : false, 
 "partner_bid": true, 

@@ -43,19 +43,7 @@ var previous_settings = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var i = 0
-	for each in ['Master','Music','Sfx']:
-		var volume = 100+(AudioServer.get_bus_volume_db(i)*2)
-		volume_node.find_child(each).value = volume
-		previous_settings[each] = volume
-		i +=1
-	for each in ['difficulty','game_speed','guides']:
-		previous_settings[each] = Global.get(each)
-	difficulty_group[Global.difficulty].set_pressed(true)
-	speed_group[((Global.game_speed-1)*2)].set_pressed(true)
-	guide_group[Global.guides].set_pressed(true)
-	print(previous_settings)
-	pass # Replace with function body.
+	pass #
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,9 +52,16 @@ func _process(_delta):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed(\"ui_cancel\"):
+		print(\"ESC PRESSED\")
+		if Global.tweening:
+			print(\"Tweening!\")
+			await Global.tweening.finished
 		if get_tree().current_scene.name == \"Director\":
-			pause_game()
-		else:
+			if $\"Game Settings Node\".position.x < -1:
+				_on_cancel_pressed()
+			else:
+				pause_game()
+		elif $\"Game Settings Node\".position.x < 0:
 			_on_cancel_pressed()
 
 
@@ -115,27 +110,86 @@ func _on_game_options_pressed():
 	for each in [master,music,sfx]:
 		each.ready_up()
 	swap_menu()
-	pass # Replace with function body.
+	pass #
 
 func swap_menu():
+	init_menu()
 	create_tween().tween_property($\"Pause Node\",\"position\",Vector2(-914,0),.30)\\
 			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK).set_delay(.02)
-	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38)\\
+	var tween := create_tween()
+	tween.tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38)\\
 			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
+	tween.tween_callback(func():Global.tweening = null)
+	Global.tweening = tween
+	
+func swap_menu_back():
+	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	var tween :Tween = create_tween()
+	tween.tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
+	if get_tree().current_scene.name == \"Title Menu\":
+		tween.tween_callback(func():set_visible(false))
+	tween.tween_callback(func():Global.tweening = null)
+	Global.tweening = tween
+		
+		
+func init_menu():
+	var i = 0
+	for each in ['Master','Music','Sfx']:
+		previous_settings[each] = AudioServer.get_bus_volume_db(i)
+		var volume = 100+(AudioServer.get_bus_volume_db(i)*2)
+		volume_node.find_child(each).value = volume
+		i +=1
+	for each in ['difficulty','game_speed','guides']:
+		previous_settings[each] = Global.get(each)
+	difficulty_group[Global.difficulty].set_pressed(true)
+	speed_group[((Global.game_speed-1)*2)].set_pressed(true)
+	guide_group[Global.guides].set_pressed(true)
+	print(previous_settings)
+
+
 ################################ GAME OPTIONS AREA ################################
-
-
 func _on_cancel_pressed():
+	
+	if not $\"Game Settings Node\".position.x < 0:
+		return
+	var i = 0
+	for each in ['Master','Music','Sfx']:
+		AudioServer.set_bus_volume_db(previous_settings[each],i) 
+		i +=1
+	for each in ['difficulty','game_speed','guides']:
+		Global.set(each,previous_settings[each])
+		print(Global.get(each))
+	Engine.time_scale = Global.game_speed
+	swap_menu_back() #
+
+	
+	
+		
+func _on_accept_pressed():
+	swap_menu_back()
 	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	var tween :Tween = create_tween()
 	tween.tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) 
 	if get_tree().current_scene.name == \"Title Menu\":
 		tween.tween_callback(func():set_visible(false))
+	
 
 
-func _on_ready_pressed():
-	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	create_tween().tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) # Replace with function body.
+
+
+
+
+func _on_game_speed(speed_set):
+	Global.game_speed = speed_set
+	Engine.time_scale = speed_set
+	pass #
+
+func _on_guides_pressed(value):
+	Global.guides = Global.get(value)  #
+	pass #
+
+func _on_difficulty_pressed(value):
+	Global.difficulty = Global.get(value)  #
 "
 
 [sub_resource type="Gradient" id="Gradient_ai83s"]
@@ -932,12 +986,12 @@ button_group = SubResource("ButtonGroup_w1hea")
 text = "Full"
 alignment = 1
 
-[node name="Ready Shadow" type="Panel" parent="Game Settings Node"]
+[node name="Accept Shadow" type="Panel" parent="Game Settings Node"]
 process_mode = 3
 layout_mode = 0
-offset_left = 1212.0
+offset_left = 1651.0
 offset_top = 466.0
-offset_right = 1311.0
+offset_right = 1750.0
 offset_bottom = 504.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
 
@@ -981,12 +1035,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Accept Shadow" type="Panel" parent="Game Settings Node"]
+[node name="Ready Shadow" type="Panel" parent="Game Settings Node"]
 process_mode = 3
 layout_mode = 0
-offset_left = 1651.0
+offset_left = 1212.0
 offset_top = 466.0
-offset_right = 1750.0
+offset_right = 1311.0
 offset_bottom = 504.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
 
@@ -1042,5 +1096,14 @@ uppercase = true
 [connection signal="drag_started" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_started"]
 [connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_value_changed"]
 [connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" method="_on_value_changed"]
-[connection signal="pressed" from="Game Settings Node/Ready" to="." method="_on_ready_pressed"]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy" to="." method="_on_difficulty_pressed" binds= ["EASY"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal" to="." method="_on_difficulty_pressed" binds= ["NORMAL"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard" to="." method="_on_difficulty_pressed" binds= ["HARD"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Normal" to="." method="_on_game_speed" binds= [1]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fast" to="." method="_on_game_speed" binds= [1.5]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fastest" to="." method="_on_game_speed" binds= [2.0]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/None" to="." method="_on_guides_pressed" binds= ["NONE"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Partial" to="." method="_on_guides_pressed" binds= ["PARTIAL"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Full" to="." method="_on_guides_pressed" binds= ["FULL"]]
+[connection signal="pressed" from="Game Settings Node/Ready" to="." method="_on_accept_pressed"]
 [connection signal="pressed" from="Game Settings Node/Cancel" to="." method="_on_cancel_pressed"]
