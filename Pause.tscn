@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cekuxfe6x47bw"]
+[gd_scene load_steps=29 format=3 uid="uid://cekuxfe6x47bw"]
 
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bwh40"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_a1wts"]
@@ -372,12 +372,6 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-
-[sub_resource type="InputEventKey" id="InputEventKey_13b1j"]
-keycode = 4194309
-
-[sub_resource type="Shortcut" id="Shortcut_j1eol"]
-events = [SubResource("InputEventKey_13b1j")]
 
 [node name="Pause Menu" type="Control"]
 process_mode = 3
@@ -1012,7 +1006,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("4_f73an")
 theme_type_variation = &"FlatButton"
-shortcut = SubResource("Shortcut_j1eol")
 
 [node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Ready"]
 process_mode = 3
