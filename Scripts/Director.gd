@@ -46,7 +46,21 @@ var team2_pips := 0
 func timer(x): # Shortcut for a wait timer because the code below is too long.
 	return get_tree().create_timer(x,false).timeout
 
-
+func _unhandled_input(event):
+	if event is InputEventKey:
+		if Input.is_key_pressed(KEY_1):
+			Engine.time_scale = 2
+			_on_texture_button_2_toggled()
+		elif Input.is_key_pressed(KEY_2):
+			Engine.time_scale = 1
+			_on_texture_button_2_toggled()
+		elif Input.is_key_pressed(KEY_3):
+			Engine.time_scale = 1.5
+			_on_texture_button_2_toggled()
+		
+		
+	
+	
 func _ready():
 	print(drawpile)
 	# NOTE: Some elements are disabled/non-visible so I can see them in editor, but not at gamestart.
@@ -708,10 +722,13 @@ func _on_texture_button_2_toggled(): # Speeds up game-rate for dev inpatience.
 	Engine.time_scale +=.5 if Engine.time_scale <2 else -1
 	if Engine.time_scale == 2:
 		$"Pause slot/TextureButton2/Label".text = "Fastest"
-		$"Pause slot/TextureButton2".texture = load("res://Assets/HyperCasual Game UI/SuperNextButton.png")
+		$"Pause slot/TextureButton2".texture_normal = load("res://Assets/HyperCasual Game UI/SuperNextButton.png")
+	elif Engine.time_scale == 1.5:
+		$"Pause slot/TextureButton2/Label".text = "Faster"
+		$"Pause slot/TextureButton2".texture_normal = load("res://Assets/HyperCasual Game UI/nextBtn.png")
 	else:
-		Engine.time_scale = 1
 		$"Pause slot/TextureButton2/Label".text = "Normal"
+		$"Pause slot/TextureButton2".texture_normal = load("res://Assets/HyperCasual Game UI/playBtn.png")
 	print ('engine timescale: ',Engine.time_scale)
 
 	pass # Replace with function body. # Replace with function body.
