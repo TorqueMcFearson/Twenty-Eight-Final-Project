@@ -495,7 +495,7 @@ func play_trick():
 	await get_tree().create_tween()\
 			.tween_property(winning_card,'modulate',Color(1, 1, 1),.32)\
 			.set_ease(Tween.EASE_OUT)\
-			.set_trans(Tween.TRANS_SPRING).finished 	
+			.set_trans(Tween.TRANS_SPRING).finished 
 	var sum = 0
 	for playslot in get_tree().get_nodes_in_group('Playslots'):
 		var card = playslot.get_child(0)
@@ -505,6 +505,11 @@ func play_trick():
 		card.go_and_die()									# Winning cards fly to that point.
 		await timer(0.08)									
 	trick_winner[0].points += sum							# Give the player his points.
+	var trick_score_scene = load("res://trick_score.tscn").instantiate()
+	trick_score_scene.points = sum
+	if Global.guides:
+		$PopUp.add_child(trick_score_scene)
+		await $"PopUp".child_exiting_tree
 	print(trick_winner," won trick worth ", sum,' points!')
 	dealer = trick_winner[0]
 	trick_winner = ["null",0]

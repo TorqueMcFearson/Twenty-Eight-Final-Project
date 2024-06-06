@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmnb5b637vatb"]
+
+[ext_resource type="Script" path="res://Scripts/Trick_Score.gd" id="1_jdfu1"]
+[ext_resource type="AudioStream" uid="uid://ptm4m2x8cxp5" path="res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav" id="2_18nil"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="2_eqti7"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="3_d7g2u"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="4_fi418"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="5_syeip"]
+
+[node name="Trick Score" type="Node2D"]
+script = ExtResource("1_jdfu1")
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -2
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("2_eqti7")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("3_d7g2u")
+centered = false
+script = ExtResource("4_fi418")
+metadata/_edit_lock_ = true
+
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("5_syeip")
+offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
+metadata/_edit_lock_ = true
+
+[node name="Round Message" type="Label" parent="."]
+offset_right = 152.0
+offset_bottom = 60.0
+size_flags_horizontal = 4
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.121569)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -7
+theme_override_constants/shadow_offset_y = 10
+theme_override_constants/outline_size = 13
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/line_spacing = -10
+theme_override_font_sizes/font_size = 25
+text = "Points
+0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_18nil")
+volume_db = -20.0
+pitch_scale = 0.66
+bus = &"Sfx"
+
+[node name="Player1" type="Marker2D" parent="."]
+position = Vector2(502, 471)
+
+[node name="Player2" type="Marker2D" parent="."]
+position = Vector2(156, 284)
+
+[node name="Player3" type="Marker2D" parent="."]
+position = Vector2(502, 118)
+
+[node name="Player4" type="Marker2D" parent="."]
+position = Vector2(842, 291)
+
+[connection signal="timeout" from="Timer" to="." method="time_loop"]
