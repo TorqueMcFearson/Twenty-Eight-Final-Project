@@ -44,7 +44,7 @@ var team2_pips := 0
 
 
 func timer(x): # Shortcut for a wait timer because the code below is too long.
-	return get_tree().create_timer(x).timeout
+	return get_tree().create_timer(x,false).timeout
 
 
 func _ready():
@@ -125,13 +125,13 @@ func match_start():
 	await trump_stage()
 	await timer(.54)						# Calls and waits the Trump choosing round.
 	await _on_deal_all_pressed()
-	await get_tree().create_timer(.75).timeout
+	await get_tree().create_timer(.75,false).timeout
 	if current_better == $Player1:
 		print("trump check cause player 1 is bidder")
 		for each in $Player1/Hand.get_children():	#@TEST for trump outline mechanic. 
 			each.trump_check()					# Enable to highlight trumps when player wins
 	get_tree().call_group("Players", "ready_bid")
-	await get_tree().create_timer(.75).timeout
+	await get_tree().create_timer(.75,false).timeout
 	if Global.variant_rules.final_bet and current_bet < 20:
 		await final_bet()
 	await timer(1)
@@ -161,7 +161,7 @@ func betting_stage():
 				$SFX/Card_PopUp.play(.25)
 				await call_bet_window()					# Calls Human betting screen
 				bet_label()								# Updates bet label in center of mat.
-				await get_tree().create_timer(1).timeout
+				await get_tree().create_timer(1,false).timeout
 			else:
 				await player.ai_bid()			# Calls function for AI bet.
 		if pass_count == 3:
@@ -496,6 +496,7 @@ func play_trick():
 	trick_winner = ["null",0]
 	leading_card = 0
 	if pair_flag:
+		pair_flag = false
 		await timer(1)
 		await pairs_check()
 	await timer(1)
@@ -594,7 +595,7 @@ func _on_deal_all_pressed(): ## NOTE: Used by Director and Deal all button. Deal
 		for hand in handpool:		# For each hand
 			if not draw_card(hand):	# Run Draw_card(), if return 0, empty draw deck.
 				return
-			await get_tree().create_timer(time).timeout # wait 'time' before next card
+			await get_tree().create_timer(time,false).timeout # wait 'time' before next card
 			$SFX/Card_Fwip.pitch_scale += .01 # Raise SFX pitch a little each card
 			time = time+.005-(time*time) # Decrease time between cards for speed up
 	$SFX/Card_Fwip.pitch_scale = .69		# Reset SFX pitch when done.
@@ -610,7 +611,7 @@ func _on_discard_button_pressed(): # Discards all hands to discard pile.
 			var id = card.get('id')			# Get their ID.
 			drawpile.append(id)			# Dump ID into discard array.
 			card.go_and_redeal()				# tween from position to draw_deck.
-			await get_tree().create_timer(time).timeout #wait 'time' before next card 
+			await get_tree().create_timer(time,false).timeout #wait 'time' before next card 
 			$DrawDeck/Amount.text = str(drawpile.size()) # Update discarddeck label
 			$SFX/Card_Fwip.play()				# SFX
 			$SFX/Card_Fwip.pitch_scale += .01	# Raise SFX pitch a little each card

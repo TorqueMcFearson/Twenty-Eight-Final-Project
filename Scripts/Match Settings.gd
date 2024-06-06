@@ -213,7 +213,7 @@ func butt_off():
 func _on_cancel_pressed():
 	Music.fade_out(.75)
 	await get_tree().create_tween().tween_property($"/root/Director/CanvasModulate","color",Color(0,0,0,1),.75).set_ease(Tween.EASE_OUT).finished
-	await get_tree().create_timer(.5).timeout
+	await get_tree().create_timer(.5,false).timeout
 	get_tree().change_scene_to_packed(title_menu)
 	pass # Replace with function body.
 

@@ -18,7 +18,7 @@ func _ready():
 	lose = false if team_score >= current_bet else true
 	lerp_goal = team_score if lose else current_bet
 	label.text = "Match score:\n%s/%s" %[round(counter), current_bet]
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(1,false).timeout
 	$Timer.start()
 	print('ready')
 	pass
@@ -39,7 +39,7 @@ func time_loop():
 		$AudioStreamPlayer.pitch_scale += 0.02
 		$AudioStreamPlayer.volume_db += 0.002
 		label.text = "Match score:\n%s/%s" %[round(counter), current_bet]
-		await get_tree().create_timer(.5).timeout
+		await get_tree().create_timer(.5,false).timeout
 		if lose:
 			$AudioStreamPlayer.stream = load("res://Assets/SFX & Music/scifi-delete-sound-2-program-mobile-computer-SBA-300463331.wav")
 			label.modulate = Color(0.68999999761581, 0.1104000210762, 0.1104000210762)
@@ -48,7 +48,7 @@ func time_loop():
 		$AudioStreamPlayer.pitch_scale = 1
 		$AudioStreamPlayer.volume_db += 0
 		$AudioStreamPlayer.play()
-		await get_tree().create_timer(2).timeout
+		await get_tree().create_timer(2,false).timeout
 		queue_free()
 		return
 
@@ -73,7 +73,7 @@ func time_loop():
 		#$AudioStreamPlayer.stream = load("res://Assets/SFX & Music/magical-video-game-note-hint-4-SBA-300420782.wav")
 		label.modulate = Color(0.28826001286507, 0.87000000476837, 0.27840000391006)
 		$AudioStreamPlayer.play()
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(1,false).timeout
 		$AudioStreamPlayer.stream = load("res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav")
 		$Timer.paused = false
 		lerp_goal = team_score

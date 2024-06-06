@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cekuxfe6x47bw"]
+[gd_scene load_steps=29 format=3 uid="uid://cekuxfe6x47bw"]
 
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bwh40"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_a1wts"]
@@ -10,17 +10,16 @@
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="5_ekm2g"]
 [ext_resource type="Theme" uid="uid://c8cmykceu5nqm" path="res://Assets/Themes and Styleboxes/Audio Slider.tres" id="6_ya8pg"]
 [ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="7_i1mus"]
+[ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="8_ybp8i"]
 
 [sub_resource type="GDScript" id="GDScript_0nqtg"]
 resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
-var music_recall
+var music_paused
 var title_menu = \"res://title_menu.tscn\"
 var main = \"res://main.tscn\"
-@onready var game_options = $\"Pause Menu/VBoxContainer/Game Difficulty\"
-@onready var music_audio_options = $\"Pause Menu/VBoxContainer/Music_Slider\"
 var previous_settings = {}
 @onready var easy = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy\"
 @onready var normal = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal\"
@@ -32,6 +31,9 @@ var previous_settings = {}
 @onready var partial = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Partial\"
 @onready var full = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Full\"
 @onready var volume_node = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer\"
+@onready var master = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master\"
+@onready var music = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music\"
+@onready var sfx = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx\"
 
 
 @onready var difficulty_group = [easy,normal,hard]
@@ -62,27 +64,29 @@ func _process(_delta):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed(\"ui_cancel\"):
-		pause_game()
+		if get_tree().current_scene.name == \"Director\":
+			pause_game()
+		else:
+			_on_cancel_pressed()
+
 
 
 func pause_game():
-	var dark = $\"../Pause Fade\"
+	var dark = $\"Pause Fade\"
 	var pause_menu = $\".\"
 	if not paused:
-		music_recall = Music.stream_paused
+		music_paused = Music.stream_paused
 		Music.stream_paused = true
 		dark.visible = true
 		pause_menu.visible = true
-		Engine.time_scale = 0
+		#Engine.time_scale = 0
 		get_tree().paused = true
 		visible = true
-		game_options.visible = false
-		music_audio_options.visible = false
 
 	else:
-		Music.stream_paused = music_recall
+		Music.stream_paused = music_paused
 		dark.visible = false
-		Engine.time_scale = 1
+		#Engine.time_scale = 1
 		get_tree().paused = false
 		visible = false
 		print('resumed')
@@ -108,22 +112,97 @@ func _on_quit_to_desktop_pressed():
 
 
 func _on_game_options_pressed():
-	get_tree().create_tween().tween_property($\"Pause Node\",\"position\",Vector2(-914,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	get_tree().create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
+	for each in [master,music,sfx]:
+		each.ready_up()
+	swap_menu()
 	pass # Replace with function body.
 
+func swap_menu():
+	create_tween().tween_property($\"Pause Node\",\"position\",Vector2(-914,0),.30)\\
+			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK).set_delay(.02)
+	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38)\\
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
 ################################ GAME OPTIONS AREA ################################
 
 
 func _on_cancel_pressed():
-	get_tree().create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	get_tree().create_tween().tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) # Replace with function body.
+	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	var tween :Tween = create_tween()
+	tween.tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) 
+	if get_tree().current_scene.name == \"Title Menu\":
+		tween.tween_callback(func():set_visible(false))
 
 
 func _on_ready_pressed():
-	get_tree().create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	get_tree().create_tween().tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) # Replace with function body.
+	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	create_tween().tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20) # Replace with function body.
 "
+
+[sub_resource type="Gradient" id="Gradient_ai83s"]
+offsets = PackedFloat32Array(0.599237, 0.896947, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.164706, 0.0784314, 0.0784314, 0.0784314, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rhjdu"]
+gradient = SubResource("Gradient_ai83s")
+width = 1152
+height = 648
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b41eh"]
+content_margin_top = 20.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 0.0156863)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0.85, 0.8279, 0.629, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4k21"]
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.439216)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mf06y"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.611765)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_top = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1lcf"]
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.439216)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_wrlb8"]
+default_font = ExtResource("2_h38gi")
+Button/font_sizes/font_size = 18
+Button/styles/focus = SubResource("StyleBoxFlat_b41eh")
+Button/styles/hover = SubResource("StyleBoxFlat_w4k21")
+Button/styles/normal = SubResource("StyleBoxFlat_mf06y")
+Button/styles/pressed = SubResource("StyleBoxFlat_s1lcf")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vblft"]
 bg_color = Color(0, 0, 0, 0.0745098)
@@ -137,7 +216,7 @@ content_margin_left = 15.0
 content_margin_top = 15.0
 content_margin_right = 15.0
 content_margin_bottom = 15.0
-bg_color = Color(0, 0, 0, 0.415686)
+bg_color = Color(0, 0, 0, 0.611765)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -180,8 +259,16 @@ script/source = "extends HSlider
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(\"This node is \",name)
-	await get_tree().create_timer(.01).timeout
+	pass
+	
+		
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func ready_up():
 	$Label.text = str(value)
 	if value <10:
 		$Label.size.x= 10
@@ -191,14 +278,6 @@ func _ready():
 		$Label.size.x= (value/100)*212
 		$Label.position.x = 0
 		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
-		
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 
 func _on_value_changed(value):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(name), (value-100)/2)
@@ -212,11 +291,22 @@ func _on_value_changed(value):
 		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
 		$Label.size.x= (value/100)*212
 	pass # Replace with function body.
+	if name == \"Sfx\" and not $Timer.time_left:
+		$AudioStreamPlayer.play()
+		$Timer.start(.20)
+	
 
 
+func _on_drag_started():
+	if name == \"Master\" or name == \"Music\":
+		Music.stream_paused = false
 
+		
 
-
+func _on_drag_ended(value_changed):
+	if name == \"Master\" or name == \"Music\":
+		Music.stream_paused = true
+	pass # Replace with function body.
 "
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_dh6qc"]
@@ -233,6 +323,8 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [node name="Pause Menu" type="Control"]
+process_mode = 3
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -241,13 +333,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_0nqtg")
 
+[node name="Pause Fade" type="ColorRect" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 1
+color = Color(0.160784, 0.168627, 0.2, 0.666667)
+
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+process_mode = 3
 modulate = Color(0.74, 0.74, 0.74, 1)
 z_index = -2
 position = Vector2(579, 326)
 scale = Vector2(0.766667, 0.5168)
 texture = ExtResource("1_bwh40")
-metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
 modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
@@ -268,7 +374,16 @@ offset = Vector2(636.687, 508.163)
 region_rect = Rect2(0, 0, 100, 1260)
 metadata/_edit_lock_ = true
 
+[node name="TextureRect" type="TextureRect" parent="."]
+process_mode = 3
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture2D_rhjdu")
+
 [node name="Game Paused" type="Label" parent="."]
+process_mode = 3
+visible = false
 layout_mode = 2
 offset_left = 508.0
 offset_top = 151.0
@@ -283,11 +398,13 @@ text = "Game Paused"
 horizontal_alignment = 1
 
 [node name="Pause Node" type="Control" parent="."]
+process_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
 [node name="Pause Menu" type="MarginContainer" parent="Pause Node"]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -304,33 +421,52 @@ scale = Vector2(1.5, 1.5)
 pivot_offset = Vector2(74, 85)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Pause Node/Pause Menu"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 8
 
 [node name="Resume Game" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Resume Game"
 
 [node name="Restart Game" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Restart Game"
 
 [node name="Game Options" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Game Options"
 
 [node name="Return to Title" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Return to Title"
 
 [node name="Quit to Desktop" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Quit to Desktop"
 
 [node name="Game Settings Node" type="Control" parent="."]
+process_mode = 3
 anchors_preset = 0
 
 [node name="Box Shdow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
 offset_left = 1200.0
 offset_top = 199.0
 offset_right = 1764.0
@@ -338,6 +474,7 @@ offset_bottom = 465.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vblft")
 
 [node name="PanelContainer2" type="PanelContainer" parent="Game Settings Node"]
+process_mode = 3
 layout_mode = 2
 offset_left = 1207.0
 offset_top = 196.0
@@ -347,19 +484,23 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_gwgrq")
 
 [node name="Game Settings Box" type="HBoxContainer" parent="Game Settings Node/PanelContainer2"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 12
 
 [node name="PanelContainer" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box"]
+process_mode = 3
 custom_minimum_size = Vector2(262, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yjqe7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 0
@@ -376,15 +517,18 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="Master Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -399,12 +543,14 @@ text = "Master"
 horizontal_alignment = 1
 
 [node name="Master" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme = ExtResource("6_ya8pg")
 value = 90.0
 script = SubResource("GDScript_qettf")
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master"]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -425,15 +571,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Music Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -448,12 +597,14 @@ text = "Music"
 horizontal_alignment = 1
 
 [node name="Music" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme = ExtResource("6_ya8pg")
 value = 90.0
 script = SubResource("GDScript_qettf")
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music"]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -474,15 +625,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SFX Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -497,12 +651,14 @@ text = "SFX"
 horizontal_alignment = 1
 
 [node name="Sfx" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme = ExtResource("6_ya8pg")
 value = 90.0
 script = SubResource("GDScript_qettf")
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -522,22 +678,38 @@ text = "90"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
+stream = ExtResource("8_ybp8i")
+max_polyphony = 4
+bus = &"Sfx"
+
+[node name="Timer" type="Timer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
+wait_time = 0.25
+one_shot = true
+
 [node name="PanelContainer7" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/PanelContainer7"]
+process_mode = 3
 layout_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box"]
+process_mode = 3
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yjqe7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 0
@@ -554,14 +726,17 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="PanelContainer3" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -576,17 +751,18 @@ text = "AI Difficulty"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 6
 
 [node name="Easy" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_pressed = true
 button_group = SubResource("ButtonGroup_dh6qc")
@@ -594,40 +770,43 @@ text = "Easy"
 alignment = 1
 
 [node name="Normal" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_group = SubResource("ButtonGroup_dh6qc")
 text = "Normal"
 alignment = 1
 
 [node name="Hard" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_group = SubResource("ButtonGroup_dh6qc")
 text = "Hard"
 alignment = 1
 
 [node name="PanelContainer4" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -642,10 +821,12 @@ text = "Game Speed"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 6
 
 [node name="Normal" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 8
@@ -658,6 +839,7 @@ text = "Normal"
 alignment = 1
 
 [node name="Fast" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 8
@@ -669,6 +851,7 @@ text = "Fast"
 alignment = 1
 
 [node name="Fastest" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
@@ -680,14 +863,17 @@ text = "Fastest"
 alignment = 1
 
 [node name="PanelContainer5" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5"]
+process_mode = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.81
@@ -702,17 +888,18 @@ text = "Guides/Highlights"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_vertical = 6
 
 [node name="None" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_pressed = true
 button_group = SubResource("ButtonGroup_w1hea")
@@ -720,32 +907,34 @@ text = "None"
 alignment = 1
 
 [node name="Partial" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_group = SubResource("ButtonGroup_w1hea")
 text = "Partial"
 alignment = 1
 
 [node name="Full" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_p7e8j")
 theme_override_constants/h_separation = 15
-theme_override_constants/check_v_offset = 0
 theme_override_fonts/font = ExtResource("2_h38gi")
 button_group = SubResource("ButtonGroup_w1hea")
 text = "Full"
 alignment = 1
 
 [node name="Ready Shadow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
 offset_left = 1212.0
 offset_top = 466.0
 offset_right = 1311.0
@@ -753,7 +942,9 @@ offset_bottom = 504.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
 
 [node name="Ready" type="Button" parent="Game Settings Node"]
+process_mode = 3
 modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
 offset_left = 1661.0
 offset_top = 464.0
 offset_right = 1901.0
@@ -765,6 +956,7 @@ theme = ExtResource("4_f73an")
 theme_type_variation = &"FlatButton"
 
 [node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Ready"]
+process_mode = 3
 show_behind_parent = true
 layout_mode = 0
 offset_left = 5.50013
@@ -776,6 +968,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.478431)
 
 [node name="Label2" type="Label" parent="Game Settings Node/Ready"]
+process_mode = 3
 layout_mode = 1
 offset_left = 20.0
 offset_top = 17.5
@@ -789,6 +982,8 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Accept Shadow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
 offset_left = 1651.0
 offset_top = 466.0
 offset_right = 1750.0
@@ -796,7 +991,9 @@ offset_bottom = 504.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
 
 [node name="Cancel" type="Button" parent="Game Settings Node"]
+process_mode = 3
 modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
 offset_left = 1222.0
 offset_top = 464.0
 offset_right = 1462.0
@@ -808,6 +1005,7 @@ theme = ExtResource("4_f73an")
 theme_type_variation = &"FlatButton"
 
 [node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Cancel"]
+process_mode = 3
 show_behind_parent = true
 layout_mode = 0
 offset_left = 5.50013
@@ -819,6 +1017,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.478431)
 
 [node name="Label2" type="Label" parent="Game Settings Node/Cancel"]
+process_mode = 3
 layout_mode = 0
 offset_left = 19.0716
 offset_top = 15.7857
@@ -836,7 +1035,11 @@ uppercase = true
 [connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Game Options" to="." method="_on_game_options_pressed"]
 [connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Return to Title" to="." method="_on_return_to_title_pressed"]
 [connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Quit to Desktop" to="." method="_on_quit_to_desktop_pressed"]
+[connection signal="drag_ended" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_ended"]
+[connection signal="drag_started" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_started"]
 [connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_value_changed"]
+[connection signal="drag_ended" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_ended"]
+[connection signal="drag_started" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_started"]
 [connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_value_changed"]
 [connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" method="_on_value_changed"]
 [connection signal="pressed" from="Game Settings Node/Ready" to="." method="_on_ready_pressed"]

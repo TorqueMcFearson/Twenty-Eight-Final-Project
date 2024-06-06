@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=6 format=3 uid="uid://ohqo0pv8my16"]
 
-[ext_resource type="Texture2D" uid="uid://v02ey7is1wm3" path="res://Assets/pip2.png" id="1_niycq"]
-[ext_resource type="Texture2D" uid="uid://b3yww81jiah31" path="res://Assets/pip-frame.png" id="2_gjqc7"]
+[ext_resource type="Texture2D" uid="uid://blgy7chkxe4n7" path="res://Assets/pip_on2.png" id="1_6biau"]
+[ext_resource type="Texture2D" uid="uid://opgcx7nwa0em" path="res://Assets/pip_off.png" id="2_swb3f"]
 [ext_resource type="FontFile" uid="uid://b2lncg1cpel7s" path="res://Assets/Fonts/Jaro-Regular-VariableFont_opsz.ttf" id="3_ia34f"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3n6du"]
@@ -9,12 +9,13 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3kly"]
 
 [resource]
+Button/styles/normal = null
 CheckBox/colors/font_color = Color(0.43, 0.43, 0.43, 1)
 CheckBox/colors/font_pressed_color = Color(1, 1, 1, 1)
-CheckBox/constants/check_v_offset = 2
+CheckBox/constants/check_v_offset = -2
 CheckBox/constants/h_separation = 8
-CheckBox/icons/radio_checked = ExtResource("1_niycq")
-CheckBox/icons/radio_unchecked = ExtResource("2_gjqc7")
+CheckBox/icons/radio_checked = ExtResource("1_6biau")
+CheckBox/icons/radio_unchecked = ExtResource("2_swb3f")
 CheckBox/styles/focus = SubResource("StyleBoxEmpty_3n6du")
 CheckButton/colors/font_disabled_color = Color(0.43, 0.43, 0.43, 0.772549)
 CheckButton/colors/font_hover_color = Color(1, 0.670588, 0.4, 1)

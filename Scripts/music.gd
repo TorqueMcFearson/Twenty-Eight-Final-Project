@@ -1,5 +1,5 @@
 extends AudioStreamPlayer
-var saved_volume = -18
+var saved_volume = -10
 const GAME_MUSIC = preload("res://Assets/SFX & Music/Music/Vibing Over Venus.mp3")
 const TITLE_MUSIC = preload("res://Assets/SFX & Music/Music/trap-story-SBA-346746122.mp3")
 # Called when the node enters the scene tree for the first time.

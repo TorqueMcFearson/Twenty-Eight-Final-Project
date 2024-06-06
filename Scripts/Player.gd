@@ -19,7 +19,6 @@ func _ready():
 	else:
 		team = "Team 2"
 	pass # Replace with function body.
-	#var click_delay = create_timer()
 
 func initialize():
 	held_suits = {}
@@ -213,7 +212,7 @@ func check_redeal():
 func redeal():
 	await player_message("Requesting redeal.",Color(1, 1, 1),1)
 	await Director._on_discard_button_pressed()
-	await get_tree().create_timer(.75).timeout
+	await get_tree().create_timer(.75,false).timeout
 	await Director._on_deal_all_pressed()
 	await Director.timer(.5)
 	get_tree().call_group("Players", "ready_bid")
