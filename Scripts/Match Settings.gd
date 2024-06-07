@@ -5,7 +5,7 @@ const DEFAULT = "[color=#d9882b][font_size=17][b]Customize Rules[/b][/font_size]
 Twenty-Eight has many different houses rules. So customize the ones you are fimilar with or would like to try. Choose carefully as these cannot be changed during the match."
 
 
-const american = "[color=#d9882b][font_size=17][b]Filthy American Mode[/b][/font_size][/color]
+const american = "[color=#d9882b][font_size=17][b]American Mode[/b][/font_size][/color]
 This reorganizes the value and rank of each card to resemble something that is more fimilar in american card games.
 [font_size=17]
 American ranks: 7-8-9-10-J-Q-K-A

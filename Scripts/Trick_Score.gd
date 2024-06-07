@@ -35,7 +35,6 @@ func _process(delta):
 	pass
 
 func time_loop():
-	print(counter," vs ",change)
 	counter = lerp(counter, lerp_goal,lerp_factor)
 
 

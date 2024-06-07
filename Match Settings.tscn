@@ -232,7 +232,7 @@ size_flags_stretch_ratio = 1.06
 theme = ExtResource("8_exk8e")
 theme_override_fonts/font = ExtResource("6_vctq2")
 theme_override_font_sizes/font_size = 18
-text = "Filthy American Mode"
+text = "American Mode"
 
 [node name="Traditional Rules" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 0)

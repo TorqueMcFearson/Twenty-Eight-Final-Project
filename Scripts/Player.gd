@@ -155,8 +155,10 @@ func play_turn():
 		elif trick_choice == "trump":
 			var playable_trump = playable_cards.filter(func(x): return (x.trump and x.rank > Director.leading_card))
 			if playable_trump.is_empty():
-				print("Has trump but can't beat. Playing worst trash card.")
-				card = playable_cards.filter(func(x): return (not x.trump)).front()
+				print("Has trump but can't beat. Playing worst card.")
+				var y = playable_cards.map(func(x): return x.rank)
+				card = playable_cards[y.find(y.min())]
+				print(playable_cards, " , ", y)
 			else:
 				print("Has trump and can beat. Playing best trump card.")
 				card = playable_trump.back()
