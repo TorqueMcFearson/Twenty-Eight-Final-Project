@@ -1,5 +1,5 @@
 # Twenty-Eight: A Card Game
-#### Video Demo: *coming soon...*
+#### Video Demo:   🚧 *coming soon* 🚧
 #### Game Demo (web): [https://torquemcfearson.itch.io/twenty-eight](https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY)
 #### Game Demo (Windows): [https://torquemcfearson.itch.io/twenty-eight?#download](https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY#download)
 
