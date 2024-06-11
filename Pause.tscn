@@ -1,67 +1,116 @@
-[gd_scene load_steps=3 format=3 uid="uid://cekuxfe6x47bw"]
+[gd_scene load_steps=30 format=3 uid="uid://cekuxfe6x47bw"]
 
-[ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="1_q58ua"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bwh40"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_a1wts"]
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="2_h38gi"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="3_lisdo"]
+[ext_resource type="Theme" uid="uid://ohqo0pv8my16" path="res://Assets/Themes and Styleboxes/Radial Buttons.tres" id="3_p7e8j"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="4_4xhia"]
+[ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="4_f73an"]
+[ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="5_ekm2g"]
+[ext_resource type="Theme" uid="uid://c8cmykceu5nqm" path="res://Assets/Themes and Styleboxes/Audio Slider.tres" id="6_ya8pg"]
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="7_i1mus"]
+[ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="8_ybp8i"]
+[ext_resource type="PackedScene" uid="uid://cotsys01qofn5" path="res://hotkeys.tscn" id="12_kbmwa"]
 
 [sub_resource type="GDScript" id="GDScript_0nqtg"]
 resource_name = "Pauser"
 script/source = "extends Control
 
 var paused = false
-
+var music_paused
 var title_menu = \"res://title_menu.tscn\"
 var main = \"res://main.tscn\"
-@onready var game_options = $\"MarginContainer/VBoxContainer/Game Difficulty\"
-@onready var music_audio_options = $MarginContainer/VBoxContainer/Music_Slider
+var previous_settings = {}
+var guide_change := false:
+	set(value):
+		guide_change = value
+		print(\"guide_change: \",\"on\" if guide_change else \"off\")
+@onready var easy = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy\"
+@onready var normal = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal\"
+@onready var hard = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard\"
+@onready var regular = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Normal\"
+@onready var fast = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fast\"
+@onready var fastest = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fastest\"
+@onready var none = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/None\"
+@onready var partial = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Partial\"
+@onready var full = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Full\"
+@onready var volume_node = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer\"
+@onready var master = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master\"
+@onready var music = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music\"
+@onready var sfx = $\"Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx\"
 
+
+@onready var difficulty_group = [easy,normal,hard]
+@onready var guide_group = [none,partial,full]
+@onready var speed_group = [regular,fast,fastest]
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	for each in [master,music,sfx]:
+		each.ready_up()
+	pass #
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed(\"ui_cancel\"):
-		pause_game()
+		print(\"ESC PRESSED\")
+		if Global.tweening:
+			print(\"Tweening!\")
+			await Global.tweening.finished
+		if get_tree().current_scene.name == \"Director\":
+			if $\"Game Settings Node\".position.x < -1:
+				_on_cancel_pressed()
+			else:
+				pause_game()
+		elif $\"Game Settings Node\".position.x < 0:
+			_on_cancel_pressed()
+
 
 
 func pause_game():
-	var dark = $\"../Pause Fade\"
+	var dark = $\"Pause Fade\"
 	var pause_menu = $\".\"
 	if not paused:
-		music_recall = Music.stream_paused
-		Music.stream_paused = true
+		music_paused = Music.stream_paused
+		#Music.stream_paused = true
 		dark.visible = true
 		pause_menu.visible = true
-		Engine.time_scale = 0
+		#Engine.time_scale = 0
 		get_tree().paused = true
 		visible = true
 
-		game_options.visible = false
-		music_audio_options.visible = false
-
 	else:
-		Music.stream_paused = music_recall
+		Music.stream_paused = music_paused
 		dark.visible = false
-		Engine.time_scale = 1
+		#Engine.time_scale = 1
 		get_tree().paused = false
 		visible = false
 		print('resumed')
+		if get_tree().current_scene.name == \"Director\":
+			if guide_change: 
+				$/root/Director.guides_changed()
+				guide_change = false
+			var setting_window = $\"/root/Director/PopUp\".get_node_or_null(\"Match Settings\")
+			if setting_window:
+				setting_window.init_options()
+			else:
+				print(\"Match settings not found.\")
 	paused = !paused
 	
-
+################################ PAUSE MENU AREA ################################
+func _on_resume_game_pressed():
+	pause_game()
+	
+	
 func _on_restart_game_pressed():
 	pause_game()
 	get_tree().reload_current_scene()
-	
-
-func _on_audio_options_pressed():
-	music_audio_options.visible = !music_audio_options.visible
-	pass # Replace with function body.
 
 
 func _on_return_to_title_pressed():
@@ -74,16 +123,270 @@ func _on_quit_to_desktop_pressed():
 
 
 func _on_game_options_pressed():
-	game_options.visible = !game_options.visible
-	pass # Replace with function body.
+	await get_tree().create_timer(.25,true)
+	swap_menu()
+	pass #
 
-
-func _on_game_audio_slider_value_changed(value):
+func swap_menu():
+	init_menu()
+	create_tween().tween_property($\"Pause Node\",\"position\",Vector2(-914,0),.30)\\
+			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK).set_delay(.02)
+	var tween := create_tween()
+	tween.tween_property($\"Game Settings Node\",\"position\",Vector2(-914,0),.38)\\
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
+	tween.tween_callback(func():Global.tweening = null)
+	tween.tween_callback(_ready)
+	Global.tweening = tween
 	
+func swap_menu_back():
+	create_tween().tween_property($\"Game Settings Node\",\"position\",Vector2(0,0),.30).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	var tween :Tween = create_tween()
+	tween.tween_property($\"Pause Node\",\"position\",Vector2(0,0),.38).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(.20)
+	if get_tree().current_scene.name == \"Title Menu\":
+		tween.tween_callback(func():set_visible(false))
+	tween.tween_callback(func():Global.tweening = null)
+	Global.tweening = tween
+		
+		
+func init_menu():
+	var i = 0
+	for each in ['Master','Music','Sfx']:
+		previous_settings[each] = AudioServer.get_bus_volume_db(i)
+		var volume = 100+(AudioServer.get_bus_volume_db(i)*2)
+		volume_node.find_child(each).value = volume
+		i +=1
+	for each in ['difficulty','game_speed','guides']:
+		previous_settings[each] = Global.get(each)
+	difficulty_group[Global.difficulty].set_pressed(true)
+	speed_group[((Global.game_speed-1)*2)].set_pressed(true)
+	guide_group[Global.guides].set_pressed(true)
+	print(previous_settings)
+
+
+################################ GAME OPTIONS AREA ################################
+func _on_cancel_pressed():
+	print(\"current master level:\", AudioServer.get_bus_volume_db(0))
+	if not $\"Game Settings Node\".position.x < 0:
+		return
+	var i = 0
+	for each in ['Master','Music','Sfx']:
+		AudioServer.set_bus_volume_db(i,previous_settings[each]) 
+		print(each, ': ',AudioServer.get_bus_volume_db(i))
+		print(previous_settings[each])
+		i +=1
+	for each in ['difficulty','game_speed','guides']:
+		Global.set(each,previous_settings[each])
+	Engine.time_scale = Global.game_speed
+	swap_menu_back() #
+
+	
+	
+		
+func _on_accept_pressed():
+	swap_menu_back()
+
+
+func _on_game_speed(speed_set):
+	Global.game_speed = speed_set
+	Engine.time_scale = speed_set
+	pass #
+
+func _on_guides_pressed(value):
+	Global.guides = Global.get(value)
+	guide_change = true  #
+	pass #
+
+func _on_difficulty_pressed(value):
+	Global.difficulty = Global.get(value)  #
+"
+
+[sub_resource type="Gradient" id="Gradient_ai83s"]
+offsets = PackedFloat32Array(0.599237, 0.896947, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.164706, 0.0784314, 0.0784314, 0.0784314, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rhjdu"]
+gradient = SubResource("Gradient_ai83s")
+width = 1152
+height = 648
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b41eh"]
+content_margin_top = 20.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 0.0156863)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0.85, 0.8279, 0.629, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4k21"]
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.439216)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mf06y"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.611765)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_top = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1lcf"]
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.439216)
+corner_radius_top_left = 3
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_wrlb8"]
+default_font = ExtResource("2_h38gi")
+Button/font_sizes/font_size = 18
+Button/styles/focus = SubResource("StyleBoxFlat_b41eh")
+Button/styles/hover = SubResource("StyleBoxFlat_w4k21")
+Button/styles/normal = SubResource("StyleBoxFlat_mf06y")
+Button/styles/pressed = SubResource("StyleBoxFlat_s1lcf")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vblft"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwgrq"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.611765)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjqe7"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.227451)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(1, 1, 1, 0.0666667)
+shadow_size = 2
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mufq"]
+content_margin_left = 15.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.0980392)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_qettf"]
+script/source = "extends HSlider
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+	
+		
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func ready_up():
+	$Label.text = str(value)
+	if value <10:
+		$Label.size.x= 10
+		$Label.position.x = -10
+		$Label.add_theme_color_override(\"font_color\",Color(\"white\"))
+	else:
+		$Label.size.x= (value/100)*212
+		$Label.position.x = 0
+		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
+
+func _on_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(name), (value-100)/2)
+	$Label.text = str(value)
+	if value <10:
+		$Label.position.x = -10
+		$Label.add_theme_color_override(\"font_color\",Color(\"white\"))
+		$Label.size.x= 10
+	else:
+		$Label.position.x = 0
+		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
+		$Label.size.x= (value/100)*212
+	pass # Replace with function body.
+	if name == \"Sfx\" and not $Timer.time_left:
+		$AudioStreamPlayer.play()
+		$Timer.start(.20)
+	
+
+
+func _on_drag_started():
+	#if name == \"Master\" or name == \"Music\":
+		#Music.stream_paused = false
+	pass
+		
+
+func _on_drag_ended(value_changed):
+	#if name == \"Master\" or name == \"Music\":
+		#Music.stream_paused = true
 	pass # Replace with function body.
 "
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_dh6qc"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_luher"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_w1hea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g21rq"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
 [node name="Pause Menu" type="Control"]
+process_mode = 3
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -92,113 +395,728 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_0nqtg")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Pause Fade" type="ColorRect" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 1
+color = Color(0.160784, 0.168627, 0.2, 0.666667)
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+process_mode = 3
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -106.5
-offset_top = -40.0
-offset_right = 106.5
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
+modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -2
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("1_bwh40")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -53.0
-offset_top = -233.5
-offset_right = 53.0
-offset_bottom = -210.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Game Paused"
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("2_a1wts")
+centered = false
+script = ExtResource("3_lisdo")
+metadata/_edit_lock_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("4_4xhia")
+offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+process_mode = 3
 layout_mode = 0
-offset_left = 480.0
-offset_top = 127.0
-offset_right = 610.0
-offset_bottom = 318.0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture2D_rhjdu")
+
+[node name="Game Paused" type="Label" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 2
+offset_left = 508.0
+offset_top = 151.0
+offset_right = 614.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.25, 1.25)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Game Paused"
+horizontal_alignment = 1
+
+[node name="Pause Node" type="Control" parent="."]
+process_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Pause Menu" type="MarginContainer" parent="Pause Node"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -68.0
+offset_right = 74.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(74, 85)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Pause Node/Pause Menu"]
+process_mode = 3
 layout_mode = 2
+size_flags_vertical = 8
 
-[node name="Restart Game" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Resume Game" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
+text = "Resume Game"
+
+[node name="Restart Game" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Restart Game"
 
-[node name="Game Options" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Game Options" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Game Options"
 
-[node name="Game Difficulty" type="HSlider" parent="MarginContainer/VBoxContainer"]
-visible = false
+[node name="Return to Title" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
-scrollable = false
-tick_count = 3
-ticks_on_borders = true
-
-[node name="Easy" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_top = 12.0
-offset_right = 40.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Easy"
-
-[node name="Medium" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 12.0
-offset_right = 114.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Medium"
-
-[node name="Hard" type="Label" parent="MarginContainer/VBoxContainer/Game Difficulty"]
-layout_mode = 0
-offset_left = 110.0
-offset_top = 12.0
-offset_right = 150.0
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-text = "Hard
-"
-
-[node name="Audio Options" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Audio Options"
-
-[node name="Music_Slider" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_q58ua")]
-visible = false
-layout_mode = 2
-
-[node name="Game_Audio_Slider" type="HSlider" parent="MarginContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
-
-[node name="Return to Title" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Return to Title"
 
-[node name="Quit to Desktop" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Quit to Desktop" type="Button" parent="Pause Node/Pause Menu/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_wrlb8")
 text = "Quit to Desktop"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Restart Game" to="." method="_on_restart_game_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Game Options" to="." method="_on_game_options_pressed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/Game Options" to="." method="_on_game_options_toggled"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Audio Options" to="." method="_on_audio_options_pressed"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/Game_Audio_Slider" to="." method="_on_game_audio_slider_value_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Return to Title" to="." method="_on_return_to_title_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit to Desktop" to="." method="_on_quit_to_desktop_pressed"]
+[node name="Game Settings Node" type="Control" parent="."]
+process_mode = 3
+anchors_preset = 0
+offset_top = 3.0
+offset_bottom = 3.0
+
+[node name="Box Shdow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
+offset_left = 1200.0
+offset_top = 199.0
+offset_right = 1764.0
+offset_bottom = 465.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vblft")
+
+[node name="PanelContainer2" type="PanelContainer" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 2
+offset_left = 1207.0
+offset_top = 196.0
+offset_right = 1773.0
+offset_bottom = 455.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gwgrq")
+
+[node name="Game Settings Box" type="HBoxContainer" parent="Game Settings Node/PanelContainer2"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="PanelContainer" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box"]
+process_mode = 3
+custom_minimum_size = Vector2(262, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yjqe7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 25
+text = "Audio Options"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Master Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 20
+text = "Master"
+horizontal_alignment = 1
+
+[node name="Master" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("6_ya8pg")
+value = 90.0
+script = SubResource("GDScript_qettf")
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_i1mus")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Music Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 20
+text = "Music"
+horizontal_alignment = 1
+
+[node name="Music" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("6_ya8pg")
+value = 90.0
+script = SubResource("GDScript_qettf")
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_i1mus")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX Volume" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 20
+text = "SFX"
+horizontal_alignment = 1
+
+[node name="Sfx" type="HSlider" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("6_ya8pg")
+value = 90.0
+script = SubResource("GDScript_qettf")
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_i1mus")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
+stream = ExtResource("8_ybp8i")
+max_polyphony = 4
+bus = &"Sfx"
+
+[node name="Timer" type="Timer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+process_mode = 3
+wait_time = 0.25
+one_shot = true
+
+[node name="PanelContainer7" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/PanelContainer7"]
+process_mode = 3
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box"]
+process_mode = 3
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yjqe7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 25
+text = "Game Options"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 18
+text = "AI Difficulty"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Easy" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_pressed = true
+button_group = SubResource("ButtonGroup_dh6qc")
+text = "Easy"
+alignment = 1
+
+[node name="Normal" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_dh6qc")
+text = "Normal"
+alignment = 1
+
+[node name="Hard" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_dh6qc")
+text = "Hard"
+alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 18
+text = "Game Speed"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Normal" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_pressed = true
+button_group = SubResource("ButtonGroup_luher")
+text = "Normal"
+alignment = 1
+
+[node name="Fast" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_luher")
+text = "Fast"
+alignment = 1
+
+[node name="Fastest" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_luher")
+text = "Fastest"
+alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4mufq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5"]
+process_mode = 3
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_h38gi")
+theme_override_font_sizes/font_size = 18
+text = "Guides/Highlights"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="None" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_pressed = true
+button_group = SubResource("ButtonGroup_w1hea")
+text = "None"
+alignment = 1
+
+[node name="Partial" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_w1hea")
+text = "Partial"
+alignment = 1
+
+[node name="Full" type="CheckBox" parent="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("3_p7e8j")
+theme_override_constants/h_separation = 15
+theme_override_fonts/font = ExtResource("2_h38gi")
+button_group = SubResource("ButtonGroup_w1hea")
+text = "Full"
+alignment = 1
+
+[node name="Accept Shadow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
+offset_left = 1651.0
+offset_top = 466.0
+offset_right = 1750.0
+offset_bottom = 504.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
+
+[node name="Ready" type="Button" parent="Game Settings Node"]
+process_mode = 3
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 1661.0
+offset_top = 464.0
+offset_right = 1901.0
+offset_bottom = 545.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_f73an")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Ready"]
+process_mode = 3
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Game Settings Node/Ready"]
+process_mode = 3
+layout_mode = 1
+offset_left = 20.0
+offset_top = 17.5
+offset_right = 222.0
+offset_bottom = 65.5
+theme = ExtResource("5_ekm2g")
+theme_override_font_sizes/font_size = 33
+text = "Accept"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Ready Shadow" type="Panel" parent="Game Settings Node"]
+process_mode = 3
+layout_mode = 0
+offset_left = 1212.0
+offset_top = 466.0
+offset_right = 1311.0
+offset_bottom = 504.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g21rq")
+
+[node name="Cancel" type="Button" parent="Game Settings Node"]
+process_mode = 3
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 1222.0
+offset_top = 464.0
+offset_right = 1462.0
+offset_bottom = 545.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_f73an")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Game Settings Node/Cancel"]
+process_mode = 3
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Game Settings Node/Cancel"]
+process_mode = 3
+layout_mode = 0
+offset_left = 19.0716
+offset_top = 15.7857
+offset_right = 221.072
+offset_bottom = 63.7857
+theme = ExtResource("5_ekm2g")
+theme_override_font_sizes/font_size = 33
+text = "Cancel"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Keys" parent="." instance=ExtResource("12_kbmwa")]
+
+[connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Resume Game" to="." method="_on_resume_game_pressed"]
+[connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Restart Game" to="." method="_on_restart_game_pressed"]
+[connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Game Options" to="." method="_on_game_options_pressed"]
+[connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Return to Title" to="." method="_on_return_to_title_pressed"]
+[connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Quit to Desktop" to="." method="_on_quit_to_desktop_pressed"]
+[connection signal="drag_ended" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_ended"]
+[connection signal="drag_started" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_started"]
+[connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_value_changed"]
+[connection signal="drag_ended" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_ended"]
+[connection signal="drag_started" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_started"]
+[connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_value_changed"]
+[connection signal="value_changed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" to="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" method="_on_value_changed"]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy" to="." method="_on_difficulty_pressed" binds= ["EASY"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal" to="." method="_on_difficulty_pressed" binds= ["NORMAL"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard" to="." method="_on_difficulty_pressed" binds= ["HARD"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Normal" to="." method="_on_game_speed" binds= [1]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fast" to="." method="_on_game_speed" binds= [1.5]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fastest" to="." method="_on_game_speed" binds= [2.0]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/None" to="." method="_on_guides_pressed" binds= ["NONE"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Partial" to="." method="_on_guides_pressed" binds= ["PARTIAL"]]
+[connection signal="pressed" from="Game Settings Node/PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer/Full" to="." method="_on_guides_pressed" binds= ["FULL"]]
+[connection signal="pressed" from="Game Settings Node/Ready" to="." method="_on_accept_pressed"]
+[connection signal="pressed" from="Game Settings Node/Cancel" to="." method="_on_cancel_pressed"]

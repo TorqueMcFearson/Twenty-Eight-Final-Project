@@ -2,36 +2,55 @@ extends Control
 
 signal bet_or_pass(which)
 var current_bid = 0
+var min_bid
 var difficulty = 0
 var redeal := false
 @onready var Director = $"/root/Director"
-
+@onready var bet_based_labels = [$"Bet Please/Amount/Win",$"Bet Please/Amount/Lose",$"Win Label",$"Lose Label"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	modulate.a = 0
+	if not Global.variant_rules.bet_based_pips or not Global.guides:
+		for each in bet_based_labels:
+			each.visible = false
+	min_bid = current_bid+1
+	if Global.variant_rules.partner_bid and Director.current_better == Director.get_node("Player3") and current_bid <19:
+		print("same team, clamping to 20 min bet.")
+		min_bid= clamp(min_bid,20,99)
+		if Global.guides:
+			$Redeal.text = "Patner Bid: If you partner was the last to bid, you must bid a minimum of 20."
+			$Redeal.visible = true
 	if current_bid > 13:
-		if Director.current_better == Director.get_node("Player3"):
-			$"Current Bet/Amount".add_theme_color_override("font_color",Color(1, 0.48235294222832, 0))
-			$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(1, 0.48235294222832, 0))
-			$"Current Bet/Amount".text = str("Teammate Bet: ", current_bid)
-		else:
-			$"Current Bet/Amount".add_theme_color_override("font_color",Color(0, 0.59999990463257, 1))
-			$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(0, 0.59999990463257, 1))
-			$"Current Bet/Amount".text = str("Opponent Bet: ", current_bid)
-		$HSlider.min_value = current_bid+1
-		$HSlider.tick_count = 28 - current_bid
-	elif redeal:
-		$Pass.text = "Redeal"
-		$Redeal.visible = true
+		if Global.guides:
+			if Director.current_better == Director.get_node("Player3"):
+				$"Current Bet/Amount".add_theme_color_override("font_color",Color(1, 0.48235294222832, 0))
+				$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(1, 0.48235294222832, 0))
+				$"Current Bet/Amount".text = str("Teammate Bet: ", current_bid)
+			else:
+				$"Current Bet/Amount".add_theme_color_override("font_color",Color(0, 0.59999990463257, 1))
+				$"Current Bet/Amount".add_theme_color_override("font_outline_color",Color(0, 0.59999990463257, 1))
+				$"Current Bet/Amount".text = str("Opponent Bet: ", current_bid)
+		$HSlider.min_value = min_bid
+		$HSlider.tick_count = 27 - min_bid
+
 	else:
-		$Pass.visible = false
-		$Bet.position.x += 71
+		if redeal and Global.variant_rules.redeal:
+			$Pass.text = "Redeal"
+			if Global.guides:
+				$Redeal.visible = true
+		else:
+			$Pass.visible = false
+			$Bet.position.x += 71
 		$HSlider.min_value = 14
 		$"Current Bet".visible = false
 		$"Bet Please/Label".text = "Starting Bet:"
 	_on_h_slider_value_changed($HSlider.value)
 	fade_in()
+	if not Global.guides:
+		for each in [$"Win Label",$"Lose Label",$"Bet Please/Amount/Win",$"Bet Please/Amount/Lose",$"Bet Please/Amount/Difficult"]:
+			each.visible=false
+		$"Bet Please/Amount".position.y -=10
 	pass
 
 func fade_in():
@@ -78,7 +97,8 @@ func _on_pass_pressed():
 func _on_h_slider_value_changed(value):
 	$"Bet Please/Amount".text = str(value)
 	var adjust = (value-14)*.025
-	$"Bet Please/Amount".modulate = Color.from_hsv(0.31-adjust, 1, 1-adjust*.25)
+	if Global.guides:
+		$"Bet Please/Amount".modulate = Color.from_hsv(0.31-adjust, 1, 1-adjust*.25)
 	if value < 20 :
 		if difficulty != 14:
 			$"Bet Please/Amount/Difficult".text = "Easy"

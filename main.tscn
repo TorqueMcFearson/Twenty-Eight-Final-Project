@@ -24,9 +24,9 @@
 [ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="16_a23og"]
 [ext_resource type="Texture2D" uid="uid://cvmhc33n3evr4" path="res://Assets/HyperCasual Game UI/settingsBtn.png" id="17_bu8k6"]
 [ext_resource type="Texture2D" uid="uid://incl5nrm6jff" path="res://Assets/arrows.png" id="17_ia5ws"]
-[ext_resource type="LabelSettings" uid="uid://bagr541kktq7r" path="res://Round Label.tres" id="19_6hsui"]
-[ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="19_m4own"]
+[ext_resource type="LabelSettings" uid="uid://bagr541kktq7r" path="res://Assets/Themes and Styleboxes/Round Label.tres" id="19_6hsui"]
 [ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="20_rf60e"]
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="27_13w1w"]
 [ext_resource type="Theme" uid="uid://dnoloj2nweqwj" path="res://Assets/FlatUI/kenneyUI-green.tres" id="27_d6853"]
 [ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="28_g8nlv"]
 
@@ -119,57 +119,75 @@ process_mode = 1
 script = ExtResource("1_04n5t")
 
 [node name="Click Delay" type="Timer" parent="."]
+process_mode = 1
 wait_time = 0.295
 one_shot = true
 autostart = true
 
 [node name="CardConstructor" type="Node" parent="."]
+process_mode = 1
 script = ExtResource("2_rcgu6")
 
 [node name="SFX" type="Node" parent="."]
+process_mode = 1
 
 [node name="Card_Fwip" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("2_7opyx")
 volume_db = -11.085
 pitch_scale = 0.69
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Ding" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("4_uix57")
 volume_db = -15.139
 pitch_scale = 0.69
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Whiff" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("5_xsm04")
 volume_db = -10.753
 pitch_scale = 0.62
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_Shuffle" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("3_t5s6t")
 volume_db = -11.085
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Card_PopUp" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("7_sblwi")
 volume_db = -15.646
 pitch_scale = 1.1
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Pip_Pop" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("8_t1p8p")
 volume_db = -11.26
 pitch_scale = 0.34
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Match Win Lose" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 1
 stream = ExtResource("9_2a7v3")
 volume_db = -11.26
 pitch_scale = 0.34
 max_polyphony = 6
+bus = &"Sfx"
 
 [node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+process_mode = 1
 modulate = Color(0.74, 0.74, 0.74, 1)
 z_index = -2
 position = Vector2(579, 326)
@@ -178,6 +196,7 @@ texture = ExtResource("5_oe1mm")
 metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+process_mode = 1
 modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
 texture_repeat = 1
 position = Vector2(-755.217, -630.805)
@@ -188,6 +207,7 @@ script = ExtResource("7_4cs5p")
 metadata/_edit_lock_ = true
 
 [node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+process_mode = 1
 modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
 position = Vector2(-738.26, -608.129)
 scale = Vector2(1.14642, 1.17701)
@@ -196,10 +216,13 @@ offset = Vector2(636.687, 508.163)
 region_rect = Rect2(0, 0, 100, 1260)
 
 [node name="UI" type="Control" parent="."]
+process_mode = 1
 layout_mode = 3
 anchors_preset = 0
+metadata/_edit_use_anchors_ = true
 
 [node name="Trump Card" type="Panel" parent="UI"]
+process_mode = 1
 layout_mode = 0
 offset_left = 866.0
 offset_top = 46.0
@@ -207,14 +230,35 @@ offset_right = 1030.0
 offset_bottom = 259.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxo3h")
+metadata/_edit_use_anchors_ = true
 
 [node name="Trump Sprite" type="Sprite2D" parent="UI/Trump Card"]
+process_mode = 1
+z_index = 3
 position = Vector2(0, -390.667)
 texture = ExtResource("13_r0gnh")
 centered = false
 offset = Vector2(12, 10)
 
+[node name="Memorize" type="Label" parent="UI/Trump Card/Trump Sprite"]
+process_mode = 1
+visible = false
+anchors_preset = -1
+anchor_left = -0.317076
+anchor_top = -1.87794
+anchor_right = 0.329265
+anchor_bottom = -1.87794
+offset_left = -7.60983
+offset_top = 556.808
+offset_right = 156.39
+offset_bottom = 630.808
+theme = ExtResource("15_3otkc")
+text = "Memorize This Suit"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Label" type="Label" parent="UI/Trump Card"]
+process_mode = 1
 layout_mode = 0
 offset_top = -52.0
 offset_right = 164.0
@@ -227,8 +271,10 @@ theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Trump"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="UI/Trump Card"]
+process_mode = 1
 layout_mode = 0
 offset_top = 209.334
 offset_right = 164.0
@@ -241,8 +287,10 @@ theme_override_fonts/font = SubResource("SystemFont_6atd5")
 theme_override_font_sizes/font_size = 40
 text = "Card"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Bet Node" type="Control" parent="UI"]
+process_mode = 1
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 0
@@ -253,6 +301,7 @@ offset_bottom = 367.0
 metadata/_edit_lock_ = true
 
 [node name="Bet Label" type="Label" parent="UI/Bet Node"]
+process_mode = 1
 z_index = -2
 layout_mode = 1
 anchors_preset = 8
@@ -278,8 +327,10 @@ text = "Bet:
 14"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Arrow Team 1" type="TextureRect" parent="UI/Bet Node/Bet Label"]
+process_mode = 1
 visible = false
 self_modulate = Color(1, 1, 1, 0.4)
 layout_mode = 1
@@ -301,6 +352,7 @@ expand_mode = 3
 stretch_mode = 2
 
 [node name="Arrow Team 2" type="TextureRect" parent="UI/Bet Node/Bet Label"]
+process_mode = 1
 visible = false
 self_modulate = Color(1, 1, 1, 0.4)
 layout_mode = 1
@@ -323,14 +375,17 @@ expand_mode = 3
 stretch_mode = 2
 
 [node name="Pips" type="Node2D" parent="UI"]
+process_mode = 1
 
 [node name="DrawDeck" type="Sprite2D" parent="."]
+process_mode = 1
 position = Vector2(1011, 490)
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("8_aq1nh")
 centered = false
 
 [node name="Deck Label" type="Label" parent="DrawDeck"]
+process_mode = 1
 visible = false
 offset_left = 54.3492
 offset_top = 159.302
@@ -342,6 +397,8 @@ text = "Draw Deck "
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="DrawDeck"]
+process_mode = 1
+visible = false
 offset_left = 42.8571
 offset_top = 55.5556
 offset_right = 158.857
@@ -352,6 +409,7 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Discard_Deck" type="Sprite2D" parent="."]
+process_mode = 1
 texture_repeat = 1
 position = Vector2(-268, 543)
 scale = Vector2(0.63, 0.63)
@@ -359,6 +417,7 @@ texture = ExtResource("8_aq1nh")
 centered = false
 
 [node name="Deck Label" type="Label" parent="Discard_Deck"]
+process_mode = 1
 offset_left = 44.4444
 offset_top = 158.73
 offset_right = 200.444
@@ -369,6 +428,7 @@ text = "Discard Deck"
 metadata/_edit_use_anchors_ = true
 
 [node name="Amount" type="Label" parent="Discard_Deck"]
+process_mode = 1
 offset_left = 41.2698
 offset_top = 61.9047
 offset_right = 157.27
@@ -379,10 +439,12 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Player1" type="Node2D" parent="." groups=["Players"]]
+process_mode = 1
 position = Vector2(470, 471)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player1" groups=["Playslots"]]
+process_mode = 1
 z_index = -1
 offset_left = 54.0
 offset_top = -103.0
@@ -390,18 +452,23 @@ offset_right = 194.0
 offset_bottom = 88.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = ExtResource("11_wkpfp")
+metadata/_edit_use_anchors_ = true
 
 [node name="Selected" type="Node2D" parent="Player1"]
+process_mode = 1
 position = Vector2(32, -128)
 
 [node name="Hand" type="Node2D" parent="Player1"]
+process_mode = 1
 position = Vector2(-95, 72)
 
 [node name="Player2" type="Node2D" parent="." groups=["Players"]]
+process_mode = 1
 position = Vector2(97, 284)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player2" groups=["Playslots"]]
+process_mode = 1
 z_index = -1
 offset_left = 419.0
 offset_top = -28.0
@@ -410,17 +477,21 @@ offset_bottom = 163.0
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = ExtResource("12_u1og8")
+metadata/_edit_use_anchors_ = true
 
 [node name="Hand" type="Node2D" parent="Player2"]
+process_mode = 1
 position = Vector2(-21, -121)
 rotation = 1.5708
 scale = Vector2(0.75, 0.75)
 
 [node name="Player3" type="Node2D" parent="." groups=["Players"]]
+process_mode = 1
 position = Vector2(470, 115)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player3" groups=["Playslots"]]
+process_mode = 1
 z_index = -1
 z_as_relative = false
 offset_left = 158.0
@@ -430,17 +501,21 @@ offset_bottom = 324.0
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = ExtResource("11_wkpfp")
+metadata/_edit_use_anchors_ = true
 
 [node name="Hand" type="Node2D" parent="Player3"]
+process_mode = 1
 position = Vector2(258, -34)
 rotation = 3.14159
 scale = Vector2(0.75, 0.75)
 
 [node name="Player4" type="Node2D" parent="." groups=["Players"]]
+process_mode = 1
 position = Vector2(842, 284)
 script = ExtResource("10_10vqy")
 
 [node name="Playslot" type="Panel" parent="Player4" groups=["Playslots"]]
+process_mode = 1
 z_index = -1
 z_as_relative = false
 offset_left = -206.0
@@ -450,15 +525,19 @@ offset_bottom = 267.0
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = ExtResource("12_u1og8")
+metadata/_edit_use_anchors_ = true
 
 [node name="Hand" type="Node2D" parent="Player4"]
-position = Vector2(231, 135)
+process_mode = 1
+position = Vector2(231, 195)
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 
 [node name="PopUp" type="Node2D" parent="."]
+process_mode = 1
 
 [node name="Round Message" type="Label" parent="."]
+process_mode = 1
 modulate = Color(1, 1, 1, 0)
 z_index = 3
 anchors_preset = 3
@@ -478,8 +557,10 @@ text = "Null Text"
 label_settings = ExtResource("19_6hsui")
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="Panel" type="Panel" parent="Round Message"]
+process_mode = 1
 visible = false
 show_behind_parent = true
 layout_mode = 0
@@ -490,6 +571,7 @@ offset_bottom = 222.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pi238")
 
 [node name="Player Message" type="Label" parent="."]
+process_mode = 1
 z_index = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -507,10 +589,10 @@ theme_override_font_sizes/font_size = 40
 text = "Player Passed!"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Pause slot" type="Control" parent="."]
 process_mode = 3
-z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -523,6 +605,7 @@ mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [node name="Pause Fade" type="ColorRect" parent="Pause slot"]
+process_mode = 3
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -534,12 +617,8 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.01024, 1.02017)
 mouse_filter = 1
-color = Color(0, 0, 0, 0.501961)
+color = Color(0.1959, 0.310578, 0.361434, 0.780392)
 metadata/_edit_lock_ = true
-
-[node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
-visible = false
-layout_mode = 1
 
 [node name="Music_Slider" parent="Pause slot" instance=ExtResource("11_exjj8")]
 layout_mode = 0
@@ -547,30 +626,74 @@ offset_left = 40.0
 offset_top = 10.0
 offset_right = 152.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Pause slot/Music_Slider"]
+visible = false
+layout_mode = 0
+offset_top = 21.0
+offset_right = 116.0
+offset_bottom = 51.0
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("27_13w1w")
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="Pause Screen" parent="Pause slot" instance=ExtResource("16_a23og")]
+visible = false
+layout_mode = 1
 
 [node name="TextureButton" type="TextureButton" parent="Pause slot"]
 layout_mode = 0
-offset_left = 1095.0
-offset_top = 15.0
-offset_right = 1132.0
-offset_bottom = 50.0
+offset_left = 1091.0
+offset_top = 17.0
+offset_right = 1128.0
+offset_bottom = 52.0
 texture_normal = ExtResource("17_bu8k6")
 ignore_texture_size = true
 stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Pause slot/TextureButton"]
+visible = false
+layout_mode = 0
+offset_left = -30.0
+offset_top = 37.0
+offset_right = 67.0
+offset_bottom = 67.0
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("27_13w1w")
+text = "Pause
+Menu"
+horizontal_alignment = 1
 
 [node name="TextureButton2" type="TextureButton" parent="Pause slot"]
+process_mode = 1
 layout_mode = 0
-offset_left = 1045.0
-offset_top = 15.0
-offset_right = 1084.0
-offset_bottom = 50.0
-toggle_mode = true
+offset_left = 1041.0
+offset_top = 17.0
+offset_right = 1080.0
+offset_bottom = 52.0
 texture_normal = ExtResource("20_rf60e")
-texture_pressed = ExtResource("19_m4own")
 ignore_texture_size = true
 stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Pause slot/TextureButton2"]
+visible = false
+layout_mode = 0
+offset_left = -33.0
+offset_top = 37.0
+offset_right = 64.0
+offset_bottom = 67.0
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("27_13w1w")
+text = "Game 
+Speed"
+horizontal_alignment = 1
 
 [node name="Cheat Button" type="Button" parent="."]
+process_mode = 1
 visible = false
 offset_left = 28.0
 offset_top = 502.0
@@ -579,14 +702,17 @@ offset_bottom = 533.0
 text = "Cheat!"
 
 [node name="Play again?" type="Button" parent="."]
+process_mode = 1
 offset_left = 502.0
 offset_top = 802.0
 offset_right = 662.0
 offset_bottom = 840.0
 theme = ExtResource("27_d6853")
 text = "Play Again?"
+metadata/_edit_use_anchors_ = true
 
 [node name="Team 1" type="ProgressBar" parent="."]
+process_mode = 1
 offset_left = 28.0
 offset_top = 596.0
 offset_right = 187.0
@@ -597,8 +723,10 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_t8fno")
 max_value = 6.0
 step = 1.0
 show_percentage = false
+metadata/_edit_use_anchors_ = true
 
 [node name="HSlider" type="HSlider" parent="Team 1"]
+process_mode = 1
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 35.0
@@ -617,8 +745,10 @@ value = 3.0
 editable = false
 scrollable = false
 tick_count = 7
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Team 1"]
+process_mode = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -645,8 +775,10 @@ theme_override_font_sizes/font_size = 40
 text = "Team 1"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Team 2" type="ProgressBar" parent="."]
+process_mode = 1
 offset_left = -333.923
 offset_top = 639.535
 offset_right = -174.923
@@ -658,8 +790,10 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_rbgu2")
 max_value = 6.0
 step = 1.0
 show_percentage = false
+metadata/_edit_use_anchors_ = true
 
 [node name="HSlider" type="HSlider" parent="Team 2"]
+process_mode = 1
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_left = 35.0
@@ -677,8 +811,10 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_60b1t"
 editable = false
 scrollable = false
 tick_count = 7
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Team 2"]
+process_mode = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -706,8 +842,10 @@ theme_override_font_sizes/font_size = 40
 text = "Team 2"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Black Fade" type="ColorRect" parent="."]
+process_mode = 1
 visible = false
 top_level = true
 z_index = 1
@@ -724,7 +862,18 @@ scale = Vector2(1.01024, 1.02017)
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+process_mode = 1
+visible = false
+color = Color(0.00392157, 0, 0, 1)
+
+[connection signal="mouse_entered" from="Pause slot/Music_Slider" to="." method="_on_ui_icon_entered" binds= ["Music_Slider"]]
+[connection signal="mouse_exited" from="Pause slot/Music_Slider" to="." method="_on_ui_icon_entered" binds= ["Music_Slider"]]
+[connection signal="mouse_entered" from="Pause slot/TextureButton" to="." method="_on_ui_icon_entered" binds= ["TextureButton"]]
+[connection signal="mouse_exited" from="Pause slot/TextureButton" to="." method="_on_ui_icon_entered" binds= ["TextureButton"]]
 [connection signal="pressed" from="Pause slot/TextureButton" to="Pause slot/Pause Screen" method="pause_game"]
-[connection signal="toggled" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]
+[connection signal="mouse_entered" from="Pause slot/TextureButton2" to="." method="_on_ui_icon_entered" binds= ["TextureButton2"]]
+[connection signal="mouse_exited" from="Pause slot/TextureButton2" to="." method="_on_ui_icon_entered" binds= ["TextureButton2"]]
+[connection signal="pressed" from="Pause slot/TextureButton2" to="." method="_on_texture_button_2_toggled"]
 [connection signal="pressed" from="Cheat Button" to="." method="_pip_update"]
 [connection signal="pressed" from="Play again?" to="." method="_pip_update"]

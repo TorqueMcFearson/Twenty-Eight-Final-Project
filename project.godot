@@ -33,6 +33,10 @@ movie_writer/fps=30
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[input_devices]
+
+pointing/android/enable_long_press_as_right_click=true
+
 [rendering]
 
 renderer/rendering_method="mobile"

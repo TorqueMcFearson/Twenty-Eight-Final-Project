@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7ysejifbpiyt"]
+[gd_scene load_steps=9 format=3 uid="uid://b7ysejifbpiyt"]
 
 [ext_resource type="Script" path="res://Scripts/title_menu.gd" id="1_65ybi"]
 [ext_resource type="Texture2D" uid="uid://lmops2oruyf4" path="res://Assets/Background/casino bakground.jpg" id="1_bfqo5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="3_2w1h0"]
 [ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="4_110fr"]
 [ext_resource type="PackedScene" uid="uid://t5scb6qrkf2q" path="res://Music_slider.tscn" id="5_6xoau"]
+[ext_resource type="PackedScene" uid="uid://cekuxfe6x47bw" path="res://Pause.tscn" id="7_0ljmn"]
 
 [sub_resource type="GDScript" id="GDScript_3l07d"]
 resource_name = "Title SFX Player"
@@ -33,6 +34,7 @@ script = ExtResource("1_65ybi")
 stream = ExtResource("2_7mfm6")
 volume_db = -17.542
 pitch_scale = 0.42
+bus = &"Sfx"
 script = SubResource("GDScript_3l07d")
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -209,18 +211,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Black Fade" type="ColorRect" parent="Control"]
-visible = false
-top_level = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.01024, 1.02017)
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
+[node name="black_fade" type="CanvasModulate" parent="Control"]
+color = Color(0.0156863, 0.0156863, 0.0156863, 1)
 
 [node name="Music_Slider" parent="." instance=ExtResource("5_6xoau")]
 offset_left = 36.0
@@ -228,12 +220,19 @@ offset_top = 7.0
 offset_right = 148.0
 offset_bottom = 37.0
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Pause Menu" parent="CanvasLayer" instance=ExtResource("7_0ljmn")]
+visible = false
+z_index = 3
+
 [connection signal="mouse_entered" from="Control/Buttons/New_Game" to="." method="_on_new_game_mouse_entered" binds= ["New_Game"]]
 [connection signal="mouse_exited" from="Control/Buttons/New_Game" to="." method="_on_mouse_exited" binds= ["New_Game"]]
 [connection signal="pressed" from="Control/Buttons/New_Game" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="Control/Buttons/New_Game" to="Menu SFX" method="_on_any_pressed"]
 [connection signal="mouse_entered" from="Control/Buttons/Setting" to="." method="_on_new_game_mouse_entered" binds= ["Setting"]]
 [connection signal="mouse_exited" from="Control/Buttons/Setting" to="." method="_on_mouse_exited" binds= ["Setting"]]
+[connection signal="pressed" from="Control/Buttons/Setting" to="." method="_on_setting_pressed"]
 [connection signal="pressed" from="Control/Buttons/Setting" to="Menu SFX" method="_on_any_pressed"]
 [connection signal="mouse_entered" from="Control/Buttons/Exit" to="." method="_on_new_game_mouse_entered" binds= ["Exit"]]
 [connection signal="mouse_exited" from="Control/Buttons/Exit" to="." method="_on_mouse_exited" binds= ["Exit"]]

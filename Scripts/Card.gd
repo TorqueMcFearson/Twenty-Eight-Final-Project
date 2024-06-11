@@ -1,3 +1,5 @@
+class_name Card
+
 extends Node2D
 @onready var Director = $"/root/Director"
 @onready var click_delay = $"/root/Director/Click Delay"
@@ -11,7 +13,7 @@ var id: int					# Unique Id for database lookup
 ## PROPERTIES FROM DATABASE ARE -- id, face, suit, rank, value
 var rank : int				# Its order in which cards it win/lose over.
 var value : int				# It's point value in trick scoring
-var face_show : bool		# Wether is currently face up or down.
+var face_show := false		# Wether is currently face up or down.
 var inplay := false			# Wether is currently in the play slot.
 var tweening := false		# Wether is currently animating.
 var card_back_img = preload("res://Assets/Cards/PNG/Cards/cardBack_red2.png")
@@ -19,7 +21,6 @@ var slot := Vector2(0,0)
 var trump := false
 var disabled := true
 var selected := false
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -67,12 +68,12 @@ func grow_and_go():
 func select_and_go():
 	selected = true
 	tweening = true
-	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.20)
+	get_tree().create_tween().tween_property(get_node("shadow"),"position",Vector2(-22,22),.12)
 	#var tween = get_tree().create_tween()
 	#tween.tween_property(self,'scale',Vector2(1.25,1.25),.20).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = get_tree().create_tween()
 	tween2.finished.connect(_tween_end)
-	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR)
+	tween2.tween_property(self,'position',slot,.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR)
 
 
 func deselect_and_go():	
@@ -81,20 +82,18 @@ func deselect_and_go():
 	Director.take_card(self)
 
 func go():
-
 	tweening = true
 	var tween = create_tween()
-
 	tween.tween_property(self,'scale',Vector2(1,1),.10).set_trans(Tween.TRANS_ELASTIC)
 	var tween2 = create_tween()
-	tween2.tween_property(self,'position',slot,.35).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
+	tween2.tween_property(self,'position',slot,.20).set_ease(Tween.EASE_IN).set_trans(tween.TRANS_BACK)
 	tween2.finished.connect(_tween_end)
 	await tween2.finished
 
 func go_and_die():
 	tweening = true
 	get_tree().create_tween().tween_property(self,'global_rotation',0,.45)\
-			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE).finished
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
 			
 	await get_tree().create_tween().tween_property(self,'global_position',Vector2(531,237),.45)\
 			.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).finished
@@ -140,13 +139,12 @@ func face_up():
 	var cardasssemble = "res://Assets/Cards/PNG/Cards/card" + suit + face + ".png"
 	get_node("CardBack").texture = load(cardasssemble)
 	face_show = true
-	
-	pass
+
 	
 	
 func trump_check():
 	if suit == Director.trump_suit and Director.trump_revealed:
-		if face_up:
+		if face_show and Global.guides == 2:
 			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
 			$CardBack/Panel.visible = false
 		if rank <99:
@@ -155,8 +153,8 @@ func trump_check():
 		return trump
 		
 func _on_reference_rect_mouse_entered():
-	if not tweening:
-		if face_show:
+	if not tweening and not selected:
+		if face_show and Global.guides == 2:
 			$Label.visible = true
 			if trump:
 				$"Trump Label".visible = true
@@ -169,8 +167,8 @@ func _on_reference_rect_mouse_entered():
 				position.y = -20
 		
 func _on_reference_rect_mouse_exited():
-	if not tweening:
-		if face_show:
+	if not tweening and not selected:
+		if face_show and Global.guides == 2:
 			$Label.visible = false
 			if trump:
 				$"Trump Label".visible = false
@@ -180,26 +178,47 @@ func _on_reference_rect_mouse_exited():
 			position.y = 0
 	
 
+
+
 func _on_reference_rect_gui_input(event): # A click event
 	if Global.cards_playable and not tweening and not disabled and $"../..".human and not click_delay.get_time_left():
 		if event is InputEventMouseButton and event.pressed:
 			if not inplay and not selected:
 				Director.select_card(self)
 				click_delay.start(.5)
+				if Global.guides == 2:
+					$Label.visible = true
+					if trump:
+						$"Trump Label".visible = true
+						$CardBack.set_self_modulate(Color(0.78400003910065, 1, 0.75999999046326))
+						$CardBack/Panel.visible = true
 			elif selected and not tweening:
 				Director.play_card(self)
+				if Global.guides == 2:
+					$Label.visible = false
+					if trump:
+						$"Trump Label".visible = false
+						$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+						$CardBack/Panel.visible = false
 				z_index -=2
 				inplay = true
 				click_delay.start(.5)
-		pass # Replace with function body.
 
 
 func enable_card():
 	disabled = false
-	modulate = Color(1,1,1)
+	if Global.guides:
+		modulate = Color(1,1,1)
 	
 func disable_card():
 	disabled = true
-	if face_show:
+	if face_show and Global.guides:
 		modulate = Color(0.80, 0.80, 0.80)
 	
+func label_off():
+		$Label.visible = false
+		if trump and Global.guides:
+			$"Trump Label".visible = false
+			$CardBack.set_self_modulate(Color(0.88300001621246, 1, 0.87000000476837))
+			$CardBack/Panel.visible = false
+

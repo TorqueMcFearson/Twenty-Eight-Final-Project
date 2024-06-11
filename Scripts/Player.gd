@@ -19,7 +19,6 @@ func _ready():
 	else:
 		team = "Team 2"
 	pass # Replace with function body.
-	#var click_delay = create_timer()
 
 func initialize():
 	held_suits = {}
@@ -34,6 +33,7 @@ func _process(_delta):
 
 func ready_bid():
 	held_suits.clear()
+	value = 0
 	for card in $Hand.get_children():
 		held_suits[card.suit] = held_suits.get(card.suit, 0) + 1
 		value += card.value
@@ -53,6 +53,10 @@ func ai_bid():
 			await redeal()
 	var message : String
 	var min_bet = current_bet+1
+	if Global.variant_rules.partner_bid and Director.current_better.team == team:
+		print("same team, clamping to 20 min bet.")
+		min_bet = clamp(min_bet,20,99)
+		pass
 	var color = Color(1, 1, 1,1)
 	if current_bet < bet_goal or current_bet == 13:
 		#print('Ideal Bet: ',bet_goal, ' upper bet range: ',(bet_goal-current_bet)/2+current_bet)
@@ -151,8 +155,10 @@ func play_turn():
 		elif trick_choice == "trump":
 			var playable_trump = playable_cards.filter(func(x): return (x.trump and x.rank > Director.leading_card))
 			if playable_trump.is_empty():
-				print("Has trump but can't beat. Playing worst trash card.")
-				card = playable_cards.filter(func(x): return (not x.trump))
+				print("Has trump but can't beat. Playing worst card.")
+				var y = playable_cards.map(func(x): return x.rank)
+				card = playable_cards[y.find(y.min())]
+				print(playable_cards, " , ", y)
 			else:
 				print("Has trump and can beat. Playing best trump card.")
 				card = playable_trump.back()
@@ -208,7 +214,7 @@ func check_redeal():
 func redeal():
 	await player_message("Requesting redeal.",Color(1, 1, 1),1)
 	await Director._on_discard_button_pressed()
-	await get_tree().create_timer(.75).timeout
+	await get_tree().create_timer(.75,false).timeout
 	await Director._on_deal_all_pressed()
 	await Director.timer(.5)
 	get_tree().call_group("Players", "ready_bid")

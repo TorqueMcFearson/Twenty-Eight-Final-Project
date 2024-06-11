@@ -1,0 +1,33 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://c8cmykceu5nqm"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_vmpxo"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_hbpyp"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_cx0pj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilk7u"]
+bg_color = Color(0.86, 0.86, 0.86, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gooa"]
+content_margin_top = 7.0
+content_margin_bottom = 7.0
+bg_color = Color(0.18359, 0.18359, 0.18359, 0.494118)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.858824, 0.858824, 0.858824, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[resource]
+HSlider/icons/grabber = SubResource("ImageTexture_vmpxo")
+HSlider/icons/grabber_disabled = SubResource("ImageTexture_hbpyp")
+HSlider/icons/grabber_highlight = SubResource("ImageTexture_cx0pj")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_ilk7u")
+HSlider/styles/slider = SubResource("StyleBoxFlat_8gooa")

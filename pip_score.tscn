@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b5jgaf1u1dth1"]
 
-[ext_resource type="Script" path="res://Pip_Score.gd" id="1_67qyt"]
+[ext_resource type="Script" path="res://Scripts/Pip_Score.gd" id="1_67qyt"]
 [ext_resource type="AudioStream" uid="uid://ptm4m2x8cxp5" path="res://Assets/SFX & Music/simple-beep-notification-alert-5-SBA-300463354.wav" id="2_iujxv"]
 
 [node name="Pip_Score" type="Node2D"]
@@ -31,5 +31,6 @@ wait_time = 0.05
 stream = ExtResource("2_iujxv")
 volume_db = -16.554
 pitch_scale = 0.66
+bus = &"Sfx"
 
 [connection signal="timeout" from="Timer" to="." method="time_loop"]

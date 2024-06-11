@@ -1,0 +1,706 @@
+[gd_scene load_steps=22 format=3 uid="uid://2vc3ttw6u5r2"]
+
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="1_0ylhx"]
+[ext_resource type="Script" path="res://title_settings.gd" id="1_06d11"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bvcfb"]
+[ext_resource type="Theme" uid="uid://c8cmykceu5nqm" path="res://Assets/Themes and Styleboxes/Audio Slider.tres" id="2_i1fau"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_mr0cw"]
+[ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="3_bnbmr"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="3_kh0ts"]
+[ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="4_raq5p"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="4_wx7e0"]
+[ext_resource type="Theme" uid="uid://ohqo0pv8my16" path="res://Assets/Themes and Styleboxes/Radial Buttons.tres" id="5_q3frl"]
+[ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="6_7m7j4"]
+[ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="7_7qck6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynqp8"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6caci"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ttfr7"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.227451)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(1, 1, 1, 0.0666667)
+shadow_size = 2
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5dvb"]
+content_margin_left = 15.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.0980392)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_7r57j"]
+script/source = "extends HSlider
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+	
+		
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func ready_up():
+	$Label.text = str(value)
+	if value <10:
+		$Label.size.x= 10
+		$Label.position.x = -10
+		$Label.add_theme_color_override(\"font_color\",Color(\"white\"))
+	else:
+		$Label.size.x= (value/100)*212
+		$Label.position.x = 0
+		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
+
+func _on_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(name), (value-100)/2)
+	$Label.text = str(value)
+	if value <10:
+		$Label.position.x = -10
+		$Label.add_theme_color_override(\"font_color\",Color(\"white\"))
+		$Label.size.x= 10
+	else:
+		$Label.position.x = 0
+		$Label.add_theme_color_override(\"font_color\",Color(\"black\"))
+		$Label.size.x= (value/100)*212
+	pass # Replace with function body.
+	if name == \"Sfx\" and not $Timer.time_left:
+		$AudioStreamPlayer.play()
+		$Timer.start(.20)
+	
+
+
+func _on_drag_started():
+	if name == \"Master\" or name == \"Music\":
+		Music.stream_paused = false
+
+		
+
+func _on_drag_ended(value_changed):
+	if name == \"Master\" or name == \"Music\":
+		Music.stream_paused = true
+	pass # Replace with function body.
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tyajd"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tiwac"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ahlal"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxa4w"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="Game Settings Node" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_06d11")
+metadata/_edit_vertical_guides_ = [577.0]
+metadata/_edit_horizontal_guides_ = [324.0]
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+process_mode = 1
+modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -2
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("1_bvcfb")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("2_mr0cw")
+centered = false
+script = ExtResource("3_kh0ts")
+metadata/_edit_lock_ = true
+
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("4_wx7e0")
+offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
+metadata/_edit_lock_ = true
+
+[node name="Pause Fade" type="ColorRect" parent="."]
+process_mode = 1
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+scale = Vector2(1.01024, 1.02017)
+mouse_filter = 1
+color = Color(0.160784, 0.168627, 0.2, 0.666667)
+
+[node name="Box Shdow" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 287.0
+offset_top = 143.0
+offset_right = 851.0
+offset_bottom = 409.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ynqp8")
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 294.0
+offset_top = 140.0
+offset_right = 860.0
+offset_bottom = 399.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_6caci")
+
+[node name="Game Settings Box" type="HBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/Game Settings Box"]
+custom_minimum_size = Vector2(262, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ttfr7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 25
+text = "Audio Options"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Master Volume" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 20
+text = "Master"
+horizontal_alignment = 1
+
+[node name="Master" type="HSlider" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("2_i1fau")
+value = 90.0
+exp_edit = true
+script = SubResource("GDScript_7r57j")
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bnbmr")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Music Volume" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 20
+text = "Music"
+horizontal_alignment = 1
+
+[node name="Music" type="HSlider" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("2_i1fau")
+value = 90.0
+exp_edit = true
+script = SubResource("GDScript_7r57j")
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bnbmr")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX Volume" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 20
+text = "SFX"
+horizontal_alignment = 1
+
+[node name="Sfx" type="HSlider" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme = ExtResource("2_i1fau")
+value = 90.0
+exp_edit = true
+script = SubResource("GDScript_7r57j")
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -8.0
+offset_right = 84.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bnbmr")
+theme_override_font_sizes/font_size = 14
+text = "90"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+stream = ExtResource("4_raq5p")
+max_polyphony = 4
+bus = &"Sfx"
+
+[node name="Timer" type="Timer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx"]
+wait_time = 0.25
+one_shot = true
+
+[node name="PanelContainer7" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/PanelContainer7"]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer2/Game Settings Box"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ttfr7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 25
+text = "Game Options"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 18
+text = "AI Difficulty"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Easy" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_pressed = true
+button_group = SubResource("ButtonGroup_tyajd")
+text = "Easy"
+alignment = 1
+
+[node name="Normal" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_tyajd")
+text = "Normal"
+alignment = 1
+
+[node name="Hard" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_tyajd")
+text = "Hard"
+alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 18
+text = "Game Speed"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Normal" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_pressed = true
+button_group = SubResource("ButtonGroup_tiwac")
+text = "Normal"
+alignment = 1
+
+[node name="Fast" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_tiwac")
+text = "Fast"
+alignment = 1
+
+[node name="Fastest" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_tiwac")
+text = "Fastest"
+alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5dvb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_0ylhx")
+theme_override_font_sizes/font_size = 18
+text = "Guides/Highlights"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="None" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_pressed = true
+button_group = SubResource("ButtonGroup_ahlal")
+text = "None"
+alignment = 1
+
+[node name="Partial" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_ahlal")
+text = "Partial"
+alignment = 1
+
+[node name="Full" type="CheckBox" parent="PanelContainer2/Game Settings Box/PanelContainer2/VBoxContainer/PanelContainer5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("5_q3frl")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("1_0ylhx")
+button_group = SubResource("ButtonGroup_ahlal")
+text = "Full"
+alignment = 1
+
+[node name="Ready Shadow" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 299.0
+offset_top = 410.0
+offset_right = 398.0
+offset_bottom = 448.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dxa4w")
+
+[node name="Ready" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 748.0
+offset_top = 408.0
+offset_right = 988.0
+offset_bottom = 489.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("6_7m7j4")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Ready"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Ready"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 17.5
+offset_right = 222.0
+offset_bottom = 65.5
+theme = ExtResource("7_7qck6")
+theme_override_font_sizes/font_size = 33
+text = "Accept"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Accept Shadow" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 738.0
+offset_top = 410.0
+offset_right = 837.0
+offset_bottom = 448.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dxa4w")
+
+[node name="Cancel" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 309.0
+offset_top = 408.0
+offset_right = 549.0
+offset_bottom = 489.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("6_7m7j4")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Cancel"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Cancel"]
+layout_mode = 0
+offset_left = 19.0716
+offset_top = 15.7857
+offset_right = 221.072
+offset_bottom = 63.7857
+theme = ExtResource("7_7qck6")
+theme_override_font_sizes/font_size = 33
+text = "Cancel"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[connection signal="drag_ended" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_ended"]
+[connection signal="drag_started" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_drag_started"]
+[connection signal="value_changed" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Master Volume/VBoxContainer/Master" method="_on_value_changed"]
+[connection signal="drag_ended" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_ended"]
+[connection signal="drag_started" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_drag_started"]
+[connection signal="value_changed" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/Music Volume/VBoxContainer/Music" method="_on_value_changed"]
+[connection signal="value_changed" from="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" to="PanelContainer2/Game Settings Box/PanelContainer/VBoxContainer/SFX Volume/VBoxContainer/Sfx" method="_on_value_changed"]

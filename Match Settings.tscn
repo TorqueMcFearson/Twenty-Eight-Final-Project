@@ -1,0 +1,712 @@
+[gd_scene load_steps=27 format=3 uid="uid://cxl8scq7xo7cf"]
+
+[ext_resource type="Script" path="res://Scripts/Match Settings.gd" id="1_3s0mc"]
+[ext_resource type="FontFile" uid="uid://b44ucrwrsotcg" path="res://Assets/Fonts/PoetsenOne-Regular.ttf" id="2_gcpqs"]
+[ext_resource type="FontFile" uid="uid://cakwfk05xxfvj" path="res://Assets/Fonts/EBGaramond-VariableFont_wght.ttf" id="3_c1oab"]
+[ext_resource type="Theme" uid="uid://ohqo0pv8my16" path="res://Assets/Themes and Styleboxes/Radial Buttons.tres" id="4_5k4uv"]
+[ext_resource type="FontFile" uid="uid://cle2ntgv6jh42" path="res://Assets/Fonts/EBGaramond-Bold.ttf" id="4_41f7w"]
+[ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="4_nju3k"]
+[ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="5_5g6f1"]
+[ext_resource type="FontFile" uid="uid://2v7xkqdssjys" path="res://Assets/Fonts/EBGaramond-Italic.ttf" id="5_g0jl7"]
+[ext_resource type="Script" path="res://Scripts/Background.gd" id="6_amuc5"]
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="6_vctq2"]
+[ext_resource type="Texture2D" uid="uid://i0ujwyhyrrab" path="res://Assets/Cards/PNG/Border.png" id="7_a35ii"]
+[ext_resource type="Theme" uid="uid://bfjhhbjxqmnoq" path="res://Assets/Themes and Styleboxes/Check_buttons_theme_resave.tres" id="8_exk8e"]
+[ext_resource type="Theme" uid="uid://dlipcofxf27vx" path="res://Assets/Themes and Styleboxes/Title_theme.tres" id="13_43do1"]
+[ext_resource type="Theme" uid="uid://vaqjrd6whv3q" path="res://Assets/Themes and Styleboxes/SUB-TITLE.tres" id="14_txml4"]
+[ext_resource type="AudioStream" uid="uid://b48px1hjnuhte" path="res://Assets/SFX & Music/infographics-motion-slide-deep-whoosh-2-SBA-300463222.wav" id="15_mfbox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5hnot"]
+bg_color = Color(0, 0, 0, 0.0745098)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqoo"]
+content_margin_top = 15.0
+bg_color = Color(0.5, 0.46, 0.485333, 0.203922)
+draw_center = false
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kp2gr"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.266667)
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 0.415686)
+border_blend = true
+corner_radius_top_left = 12
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_famct"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_top_right = 12
+corner_radius_bottom_right = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vfpog"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.227451)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(1, 1, 1, 0.0666667)
+shadow_size = 2
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_pe3ai"]
+color = Color(0.65, 0.65, 0.65, 0.415686)
+grow_begin = -3.0
+grow_end = -3.0
+thickness = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iid8t"]
+content_margin_left = 15.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.0980392)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_op8ei"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_s8ymg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4g46"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_bottom_left = 12
+anti_aliasing = false
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_q871x"]
+
+[node name="Match Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3s0mc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 115.0
+offset_right = 977.0
+offset_bottom = 565.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5hnot")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 50
+metadata/_edit_lock_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 443.0
+offset_top = 49.0
+offset_right = 679.0
+offset_bottom = 100.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_lfqoo")
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.658824)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("2_gcpqs")
+theme_override_font_sizes/font_size = 30
+text = "Match Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Margin Container" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 168.0
+offset_top = 128.0
+offset_right = 984.0
+offset_bottom = 538.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="PanelContainer3" type="PanelContainer" parent="Margin Container"]
+custom_minimum_size = Vector2(400, 299)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kp2gr")
+
+[node name="Rule Text" type="RichTextLabel" parent="Margin Container/PanelContainer3"]
+layout_mode = 2
+size_flags_stretch_ratio = 9.71
+theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.364706)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("3_c1oab")
+theme_override_fonts/bold_font = ExtResource("4_41f7w")
+theme_override_fonts/italics_font = ExtResource("5_g0jl7")
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="Margin Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_famct")
+
+[node name="PanelContainer" type="PanelContainer" parent="Margin Container/PanelContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vfpog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 25
+text = "Rule Settings"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 0
+
+[node name="American" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+text = "American Mode"
+
+[node name="Traditional Rules" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_pressed = true
+text = "Customize Rules"
+
+[node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Redeal" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "    First-Hand Redeal"
+
+[node name="Trump Pair" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "    Trump Pair"
+
+[node name="Partner Overbid" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "    Partner Bid Minimum"
+
+[node name="Bet Based Pips" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "    Bet-Based Pips"
+
+[node name="Final Bet" type="CheckButton" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.06
+theme = ExtResource("8_exk8e")
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 18
+disabled = true
+button_pressed = true
+text = "         Post-Trump Bid"
+
+[node name="HSeparator" type="HSeparator" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 9
+theme_override_styles/separator = SubResource("StyleBoxLine_pe3ai")
+
+[node name="Label2" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 25
+text = "System settings"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 20
+text = "AI Difficulty"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Easy" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_pressed = true
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Easy"
+alignment = 1
+
+[node name="Normal" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Normal"
+alignment = 1
+
+[node name="Hard" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_op8ei")
+text = "Hard"
+alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 20
+text = "Game Speed"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Normal" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_pressed = true
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Normal"
+alignment = 1
+
+[node name="Fast" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Fast"
+alignment = 1
+
+[node name="Fastest" type="CheckBox" parent="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_s8ymg")
+text = "Fastest"
+alignment = 1
+
+[node name="Casino-background-green-texture-sbi-300447118(1)" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.74, 0.74, 0.74, 1)
+z_index = -2
+position = Vector2(579, 326)
+scale = Vector2(0.766667, 0.5168)
+texture = ExtResource("4_nju3k")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.819608, 0.670588, 0.756863, 0.72549)
+texture_repeat = 1
+position = Vector2(-755.217, -630.805)
+scale = Vector2(1.30435, 1.93498)
+texture = ExtResource("5_5g6f1")
+centered = false
+script = ExtResource("6_amuc5")
+metadata/_edit_lock_ = true
+
+[node name="Wooden-frame-sbi-300458350" type="Sprite2D" parent="Casino-background-green-texture-sbi-300447118(1)"]
+modulate = Color(0.73, 0.530467, 0.1314, 0.854902)
+position = Vector2(-738.26, -608.129)
+scale = Vector2(1.14642, 1.17701)
+texture = ExtResource("7_a35ii")
+offset = Vector2(636.687, 508.163)
+region_rect = Rect2(0, 0, 100, 1260)
+metadata/_edit_lock_ = true
+
+[node name="Ready" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 886.0
+offset_top = 72.0
+offset_right = 1126.0
+offset_bottom = 153.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("13_43do1")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Ready"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Ready"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 17.5
+offset_right = 222.0
+offset_bottom = 65.5
+theme = ExtResource("14_txml4")
+theme_override_font_sizes/font_size = 33
+text = "Ready"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Cancel" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 0
+offset_left = 168.0
+offset_top = 72.0
+offset_right = 408.0
+offset_bottom = 153.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("13_43do1")
+theme_type_variation = &"FlatButton"
+
+[node name="ColorRect3" type="ColorRect" parent="Cancel"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 5.50013
+offset_top = 7.00006
+offset_right = 235.5
+offset_bottom = 79.0001
+pivot_offset = Vector2(275, 78)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="Label2" type="Label" parent="Cancel"]
+layout_mode = 0
+offset_left = 19.0716
+offset_top = 15.7857
+offset_right = 221.072
+offset_bottom = 63.7857
+theme = ExtResource("14_txml4")
+theme_override_font_sizes/font_size = 33
+text = "Go Back"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Card_PopUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_mfbox")
+volume_db = -15.646
+pitch_scale = 1.1
+max_polyphony = 6
+bus = &"Sfx"
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 414.0
+offset_right = 568.0
+offset_bottom = 551.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4g46")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vfpog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 0
+
+[node name="Label2" type="Label" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 25
+text = "Assistance"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="PanelContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iid8t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.81
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.32, 0.32, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("6_vctq2")
+theme_override_font_sizes/font_size = 20
+text = "Guides/Highlights"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="None" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_pressed = true
+button_group = SubResource("ButtonGroup_q871x")
+text = "None"
+alignment = 1
+
+[node name="Partial" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_q871x")
+text = "Partial"
+alignment = 1
+
+[node name="Full" type="CheckBox" parent="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+mouse_filter = 1
+theme = ExtResource("4_5k4uv")
+theme_override_constants/h_separation = 15
+theme_override_constants/check_v_offset = 0
+theme_override_fonts/font = ExtResource("6_vctq2")
+button_group = SubResource("ButtonGroup_q871x")
+text = "Full"
+alignment = 1
+
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover" binds= [0]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_rule_hover_exit" binds= [0]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/American" to="." method="_on_checkbutton_toggled" binds= ["american"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_rule_hover" binds= [-1]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_rule_hover_exit" binds= [-1]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Traditional Rules" to="." method="_on_traditional_rules_toggled"]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_rule_hover" binds= [4]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_rule_hover_exit" binds= [2]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Redeal" to="." method="_on_checkbutton_toggled" binds= ["redeal"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_rule_hover" binds= [8]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_rule_hover_exit" binds= [8]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Trump Pair" to="." method="_on_checkbutton_toggled" binds= ["pair"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover" binds= [1]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_rule_hover_exit" binds= [1]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Partner Overbid" to="." method="_on_checkbutton_toggled" binds= ["partner_bid"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_rule_hover" binds= [3]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_rule_hover_exit" binds= [3]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Bet Based Pips" to="." method="_on_checkbutton_toggled" binds= ["bet_based_pips"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_rule_hover" binds= [2]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_rule_hover_exit" binds= [2]]
+[connection signal="toggled" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/VBoxContainer/Final Bet" to="." method="_on_checkbutton_toggled" binds= ["final_bet"]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover" binds= [5]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover_exit" binds= [5]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Easy" to="." method="_on_difficulty_button" binds= [0]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Normal" to="." method="_on_difficulty_button" binds= [1]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Hard" to="." method="_on_difficulty_button" binds= [2]]
+[connection signal="mouse_entered" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4" to="." method="_rule_hover" binds= [6]]
+[connection signal="mouse_exited" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4" to="." method="_rule_hover_exit" binds= [6]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Normal" to="." method="_on_game_speed" binds= [1.0]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fast" to="." method="_on_game_speed" binds= [1.5]]
+[connection signal="pressed" from="Margin Container/PanelContainer2/PanelContainer/VBoxContainer/PanelContainer4/VBoxContainer/HBoxContainer/Fastest" to="." method="_on_game_speed" binds= [2.0]]
+[connection signal="mouse_entered" from="Ready" to="." method="_on_cancel_ready_entered" binds= ["Ready"]]
+[connection signal="mouse_exited" from="Ready" to="." method="_on_cancel_ready_exited" binds= ["Ready"]]
+[connection signal="pressed" from="Ready" to="." method="_on_ready_pressed"]
+[connection signal="mouse_entered" from="Cancel" to="." method="_on_cancel_ready_entered" binds= ["Cancel"]]
+[connection signal="mouse_exited" from="Cancel" to="." method="_on_cancel_ready_exited" binds= ["Cancel"]]
+[connection signal="pressed" from="Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="mouse_entered" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover" binds= [7]]
+[connection signal="mouse_exited" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3" to="." method="_rule_hover_exit" binds= [7]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/None" to="." method="_on_guides_pressed" binds= ["NONE"]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Partial" to="." method="_on_guides_pressed" binds= ["PARTIAL"]]
+[connection signal="pressed" from="PanelContainer2/PanelContainer/VBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/Full" to="." method="_on_guides_pressed" binds= ["FULL"]]
