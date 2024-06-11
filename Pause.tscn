@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cekuxfe6x47bw"]
+[gd_scene load_steps=30 format=3 uid="uid://cekuxfe6x47bw"]
 
 [ext_resource type="Texture2D" uid="uid://bhrdddut7di7w" path="res://Assets/Background/casino-background-green-texture-SBI-300447118 (1).jpg" id="1_bwh40"]
 [ext_resource type="Texture2D" uid="uid://dg4iswuujwsgh" path="res://Assets/Cards/PNG/background7.jpg" id="2_a1wts"]
@@ -11,6 +11,7 @@
 [ext_resource type="Theme" uid="uid://c8cmykceu5nqm" path="res://Assets/Themes and Styleboxes/Audio Slider.tres" id="6_ya8pg"]
 [ext_resource type="FontFile" uid="uid://bpwhognjdjj52" path="res://Assets/Fonts/cour.ttf" id="7_i1mus"]
 [ext_resource type="AudioStream" uid="uid://fky775kmgs2w" path="res://Assets/Cards/Sounds/Card-Fwip.wav" id="8_ybp8i"]
+[ext_resource type="PackedScene" uid="uid://cotsys01qofn5" path="res://hotkeys.tscn" id="12_kbmwa"]
 
 [sub_resource type="GDScript" id="GDScript_0nqtg"]
 resource_name = "Pauser"
@@ -525,6 +526,8 @@ text = "Quit to Desktop"
 [node name="Game Settings Node" type="Control" parent="."]
 process_mode = 3
 anchors_preset = 0
+offset_top = 3.0
+offset_bottom = 3.0
 
 [node name="Box Shdow" type="Panel" parent="Game Settings Node"]
 process_mode = 3
@@ -1091,6 +1094,8 @@ text = "Cancel"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+
+[node name="Keys" parent="." instance=ExtResource("12_kbmwa")]
 
 [connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Resume Game" to="." method="_on_resume_game_pressed"]
 [connection signal="pressed" from="Pause Node/Pause Menu/VBoxContainer/Restart Game" to="." method="_on_restart_game_pressed"]

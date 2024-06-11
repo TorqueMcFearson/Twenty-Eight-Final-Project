@@ -1,0 +1,174 @@
+[gd_scene load_steps=7 format=3 uid="uid://cotsys01qofn5"]
+
+[ext_resource type="Texture2D" uid="uid://bals5nrshmndc" path="res://Assets/blank key.png" id="1_xfunr"]
+[ext_resource type="Texture2D" uid="uid://cqko6jj28a6aq" path="res://Assets/HyperCasual Game UI/playBtn.png" id="2_pguu6"]
+[ext_resource type="Texture2D" uid="uid://chc0x0jua6nwe" path="res://Assets/HyperCasual Game UI/nextBtn.png" id="3_6jmj8"]
+[ext_resource type="Texture2D" uid="uid://7smgrv48bn3t" path="res://Assets/HyperCasual Game UI/SuperNextButton.png" id="4_nbofb"]
+[ext_resource type="FontFile" uid="uid://b1d6taxtvntsg" path="res://Assets/Fonts/Gabriola.ttf" id="5_dbb68"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sv7ir"]
+bg_color = Color(0, 0, 0, 0.368627)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.81, 0.81, 0.81, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Keys" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 16.0
+offset_right = 201.0
+offset_bottom = 99.0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 190.0
+offset_bottom = 78.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sv7ir")
+
+[node name="Line2D" type="Line2D" parent="Panel"]
+points = PackedVector2Array(13, 11)
+
+[node name="1" type="Sprite2D" parent="."]
+position = Vector2(27, 26)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_xfunr")
+
+[node name="Label" type="Label" parent="1"]
+modulate = Color(1, 0.959167, 0.93, 0.784314)
+offset_left = -36.0
+offset_top = -60.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "1"
+
+[node name="2" type="Sprite2D" parent="."]
+position = Vector2(59, 26)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_xfunr")
+
+[node name="Label" type="Label" parent="2"]
+modulate = Color(1, 0.959167, 0.93, 0.784314)
+offset_left = -36.0
+offset_top = -60.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "2"
+
+[node name="3" type="Sprite2D" parent="."]
+position = Vector2(91, 26)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_xfunr")
+
+[node name="Label" type="Label" parent="3"]
+modulate = Color(1, 0.959167, 0.93, 0.784314)
+offset_left = -36.0
+offset_top = -60.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "3"
+
+[node name="ESC" type="Sprite2D" parent="."]
+position = Vector2(59, 58)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_xfunr")
+
+[node name="Label" type="Label" parent="ESC"]
+modulate = Color(1, 0.959167, 0.93, 0.784314)
+offset_left = -40.0
+offset_top = -52.0
+offset_right = 23.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.84, 0.84, 0.84, 0.635294)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 32
+text = "Esc"
+
+[node name="Icons" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -7.0
+offset_top = -6.0
+offset_right = 197.0
+offset_bottom = 83.0
+
+[node name="Normal" type="Sprite2D" parent="Icons"]
+modulate = Color(0, 0, 0, 0.686275)
+texture_filter = 2
+position = Vector2(34.75, 34.25)
+scale = Vector2(0.0410156, 0.0410156)
+texture = ExtResource("2_pguu6")
+
+[node name="Fast" type="Sprite2D" parent="Icons"]
+modulate = Color(0, 0, 0, 0.686275)
+texture_filter = 2
+position = Vector2(66, 34)
+scale = Vector2(0.0429688, 0.0429688)
+texture = ExtResource("3_6jmj8")
+
+[node name="Fastest" type="Sprite2D" parent="Icons"]
+modulate = Color(0, 0, 0, 0.686275)
+texture_filter = 2
+position = Vector2(98, 34)
+scale = Vector2(0.0429688, 0.0429688)
+texture = ExtResource("4_nbofb")
+
+[node name="Game Speed" type="Label" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 14.0
+offset_right = 197.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.309804)
+theme_override_colors/font_outline_color = Color(0.14902, 0.14902, 0.14902, 0)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("5_dbb68")
+theme_override_font_sizes/font_size = 18
+text = "Game Speed"
+vertical_alignment = 1
+
+[node name="Game Speed3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -15.0
+offset_right = 190.0
+offset_bottom = 8.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.309804)
+theme_override_colors/font_outline_color = Color(0.14902, 0.14902, 0.14902, 0)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("5_dbb68")
+theme_override_font_sizes/font_size = 18
+text = "Hotkeys"
+horizontal_alignment = 1
+vertical_alignment = 2
+uppercase = true
+
+[node name="Game Speed2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 45.0
+offset_right = 197.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.309804)
+theme_override_colors/font_outline_color = Color(0.14902, 0.14902, 0.14902, 0)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("5_dbb68")
+theme_override_font_sizes/font_size = 18
+text = "Pause Menu"
+vertical_alignment = 1
