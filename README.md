@@ -1,6 +1,7 @@
 # Twenty-Eight: A Card Game
 #### Video Demo: **_TODO_**
-#### Game Demo: https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY
+#### Game Demo (web): [https://torquemcfearson.itch.io/twenty-eight](https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY)
+#### Game Demo (Windows): [https://torquemcfearson.itch.io/twenty-eight?#download](https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY#download)
 
 ---
 ### || Description
@@ -8,7 +9,7 @@ Twenty-Eight is a 4-person trick-taking card game from India, similar to the ame
 I was inspired to try my hand at it's digital recreation when a friend was complaining there were no good versions of it on his mobile app store. His frustration made me realize it was a missing need that I could actually help fulfill. So, I began my journey into the world of game design like I'd always dream and have come out of it with the following game, which I submitted as my final project here at CS50.
 
 ### || Platforms & Tools
-I created the bulk of my project through the open-source game engine, **Godot 4**, a program I've never used before but read that it had a scripting language similar to **python** (a language I've become comfortable with thanks to CS50). This repo contains the source code for it's current stable version, which can be exported and played on **windows and web**. I've uploaded the current version to the indie game hosting platform **[itch.io](https://www.itch.io)** as a private project, which can be played on browser with this **[LINK](https://torquemcfearson.itch.io/twenty-eight?secret=IxK4IViKLl2EkFyLXBng4XUVKbY)**.
+I created the bulk of my project through the open-source game engine, **Godot 4**, a program I've never used before but read that it had a scripting language similar to **python** (a language I've become comfortable with thanks to CS50). This repo contains the source code for it's current stable version, which can be exported and played on **windows and web**. I've uploaded the current version to the indie game hosting platform **[itch.io](https://www.itch.io)** as a private project, which can be played on browser or downloaded using the link in the header.
 
 Here's a breakdown of the structures used in Godot 4:
 * Nodes - A thing. Defined by classes/node-types. Could be a sprite, an audio source, a button, text, slider.
