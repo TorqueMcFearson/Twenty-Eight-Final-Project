@@ -13,6 +13,8 @@ Traditional ranks: 7-8-Q-K-10-A-9-J[/font_size]
 [font_size=15]
 
 [/font_size]
+
+
 [center][u][font_size=16][color=red]For a traditional experience, this mode is not recommened.[/color][/font_size][/u][/center]"
 
 
@@ -186,7 +188,6 @@ func _on_traditional_rules_toggled(toggled_on):
 			each.set_pressed(true)
 			each.disabled = true
 	Global.variant_rules.traditional = toggled_on
-
 
 
 func _on_difficulty_button(value):

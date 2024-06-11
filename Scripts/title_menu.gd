@@ -26,7 +26,7 @@ func _process(delta):
 	if fade_mod.r <.01:
 		set_process(false)
 		if game_start == true:
-			$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
+			$Control/Buttons/New_Game.modulate = Color(1, 0.60, 0.14, 0.733)
 
 			get_tree().change_scene_to_packed(MAIN)
 		else:
@@ -34,18 +34,22 @@ func _process(delta):
 			get_tree().quit()
 
 func _on_new_game_mouse_entered(extra_arg_0):
-	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(0.79, 0.784, 0.427)
+	var butt = 	$Control/Buttons.get_node_or_null(extra_arg_0)
+	if not butt.disabled:
+		butt.modulate = Color(1, 0.60, 0.14, 0.733)
 	pass # Replace with function body.
 
 
 func _on_mouse_exited(extra_arg_0):
-	$Control/Buttons.get_node_or_null(extra_arg_0).modulate = Color(1, 1, 1,)
+	var butt = 	$Control/Buttons.get_node_or_null(extra_arg_0)
+	if not butt.disabled:
+		butt.modulate = Color(1, 1, 1,)
 	pass # Replace with function body.
 
 
 func _on_exit_pressed():
 	butts_off()
-	$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
+	$Control/Buttons/New_Game.modulate = Color(0.01176469959319, 0.57254898548126, 1, 0.77254897356033)
 	fade_goal = Color(1,1,1,1)
 	black_fade.color = Color(1,1,1,.12)
 	fade_rate = .03
@@ -53,7 +57,7 @@ func _on_exit_pressed():
 	
 func _on_new_game_pressed():
 	butts_off()
-	$Control/Buttons/New_Game.modulate = Color(0.79, 0.784, 0.427)
+	$Control/Buttons/New_Game.modulate = Color(0.01176469959319, 0.57254898548126, 1, 0.77254897356033)
 	fade_goal = Color(0,0,0,1)
 	black_fade.color = Color(.98,.98,.98,1)
 	fade_rate = .05
